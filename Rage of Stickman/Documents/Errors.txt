@@ -1,0 +1,2 @@
+﻿// Error.txt
+Here are all known bugs and errors listed. Maybe someone else can solve them. :P

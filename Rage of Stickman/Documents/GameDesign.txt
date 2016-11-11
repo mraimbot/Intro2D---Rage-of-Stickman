@@ -1,0 +1,5 @@
+﻿// GameDesign.txt
+Here are all ideas which we have and havn't implemented yet.
++ // Idea which is already implemented
+- // Idea which is not implemented
+? // Idea which is not known either it will be implemented or not

@@ -1,0 +1,16 @@
+﻿// Update.txt
+List of all changes.
+<Updatename> Update 0.0.0 // first digit: main-version; second digit: uploaded version; third digit: branch version
++ // added files or data
+- // removed files or data
+* // changed files or data
+
+MASTER Update 0.0.0
++ added project 'Rage of Stickman'
+	* changed class file name Game1.cs to Main.cs
+	- deleted unnecessary comments in Main.cs and Program.cs
+
++ added folder 'Documents' to represent important information
+	+ added file 'Updates.txt' to give an ordered list of all changes
+	+ added file 'GameDesign.txt' to show a list of ideas and features
+	+ added file 'Errors.txt' to show a list of known errors.
