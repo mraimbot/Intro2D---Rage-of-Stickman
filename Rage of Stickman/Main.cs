@@ -14,6 +14,8 @@ namespace Rage_of_Stickman
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 
+	    private Player player;
+
 		public Main()
 		{
 			graphics = new GraphicsDeviceManager(this);
@@ -28,6 +30,8 @@ namespace Rage_of_Stickman
 		protected override void LoadContent()
 		{
 			spriteBatch = new SpriteBatch(GraphicsDevice);
+
+		    player = new Player(Content.Load<Texture2D>("player"), new Vector2(0, 300));
 		}
 
 		protected override void UnloadContent(){}
@@ -37,12 +41,19 @@ namespace Rage_of_Stickman
 			// TODO Main - Update() - Delete Exit() through Escape-Key.
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
 				Exit();
+
+		    player.Update();
 			base.Update(gameTime);
 		}
 
 		protected override void Draw(GameTime gameTime)
 		{
 			GraphicsDevice.Clear(Color.CornflowerBlue);
+		    spriteBatch.Begin();
+
+		    player.Draw(spriteBatch);
+
+            spriteBatch.End();
 			base.Draw(gameTime);
 		}
 	}
