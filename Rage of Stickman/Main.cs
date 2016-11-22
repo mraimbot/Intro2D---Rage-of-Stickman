@@ -14,6 +14,8 @@ namespace Rage_of_Stickman
 		GraphicsDeviceManager graphics;
 		SpriteBatch spriteBatch;
 
+        TileMap tileMap;
+
 		public Main()
 		{
 			graphics = new GraphicsDeviceManager(this);
@@ -22,6 +24,7 @@ namespace Rage_of_Stickman
 
 		protected override void Initialize()
 		{
+            tileMap = new TileMap(new Texture2D[] { Content.Load<Texture2D>("Asphalt"),Content.Load<Texture2D>("Stein") }, Content.Load<Texture2D>("RageMap"),16);
 			base.Initialize();
 		}
 
@@ -37,13 +40,22 @@ namespace Rage_of_Stickman
 			// TODO Main - Update() - Delete Exit() through Escape-Key.
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
 				Exit();
+
+            tileMap.Update(gameTime);
 			base.Update(gameTime);
 		}
 
 		protected override void Draw(GameTime gameTime)
 		{
 			GraphicsDevice.Clear(Color.CornflowerBlue);
-			base.Draw(gameTime);
+
+            spriteBatch.Begin();
+
+            tileMap.Draw(spriteBatch);
+
+            spriteBatch.End();
+
+            base.Draw(gameTime);
 		}
 	}
 }
