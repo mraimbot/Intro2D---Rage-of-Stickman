@@ -11,45 +11,70 @@ namespace Rage_of_Stickman
 {
 	class TileMap
 	{
-            Tile[,] tileMap;
-            int tileSize;
-		public TileMap(Texture2D[] textures, Texture2D bitMap, int _tileSize)
-		{
-            // TODO TileMap - TileMap() - load picture
-            tileSize = _tileSize;
-            tileMap = new Tile[bitMap.Width, bitMap.Height];
-            BuildMap(textures, bitMap);
-		}
+		private Tile[] tileMap;
+		private int width;
+		private int height;
 
-        private void BuildMap(Texture2D[] textures, Texture2D bitMap)
-        {
-            Color[] colores = new Color[bitMap.Width * bitMap.Height];
-            bitMap.GetData(colores);
-            for(int y=0; y<tileMap.GetLength(1);y++)
-            {
-                for (int x = 0; x<tileMap.GetLength(0); x++)
-                {
-                    if (colores[y * tileMap.GetLength(0) + x] == Color.Black)
-                        tileMap[x, y] = new Tile(textures[0], new Vector2(x * tileSize, y * tileSize), 1);
-                    else tileMap[x, y] = new Tile(textures[1], new Vector2(x * tileSize, y * tileSize), 0);
-                }
-            }
-        }
-
-		public void Update(GameTime gameTime)
+		public TileMap()
 		{
 
 		}
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            for(int y =0; y < tileMap.GetLength(1); y++)
-            {
-                for(int x = 0; x<tileMap.GetLength(0);x++)
-                {
-                    tileMap[x, y].Draw(spriteBatch);
-                }
-            }
-        }
+		public void BuildTileMap(Texture2D bitMap)
+		{
+			this.width = bitMap.Width;
+			this.height = bitMap.Height;
+
+			if (tileMap == null)
+			{
+				tileMap = new Tile[width * height];
+			}
+
+			Color[] colorMap = new Color[width * height];
+			bitMap.GetData(colorMap);
+
+			for (int i = 0; i < width * height; i++)
+			{
+				if (colorMap[i] == Color.Black)
+				{
+					tileMap[i] = new Tile(Game.Content.animations[(int)EAnimation.asphalt], ECollision.impassable);
+				}
+				/* else if (colorMap[i] == Color.Xxxx)
+				 * {
+				 *		// add new colors here ...
+				 * }
+				 */
+				else
+				{
+					tileMap[i] = new Tile(null, ECollision.passable);
+				}
+			}	
+		}
+
+		public Vector2 Size()
+		{
+			return new Vector2(width, height);
+		}
+
+		public ECollision getCollisionTypeAt(int ID)
+		{
+			return tileMap[ID].getCollisionType();
+		}
+
+		public void Update()
+		{
+
+		}
+
+		public void Draw()
+		{
+			for (int y = 0; y < height; y++)
+			{
+				for (int x = 0; x < width; x++)
+				{
+					tileMap[y * width + x].Draw(new Vector2(x * Game.Content.tileSize, y  * Game.Content.tileSize));
+				}
+			}
+		}
 	}
 }

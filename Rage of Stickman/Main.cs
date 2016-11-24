@@ -9,13 +9,11 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Rage_of_Stickman
 {
-	public class Main : Game
+	public class Main : Microsoft.Xna.Framework.Game
 	{
-		GraphicsDeviceManager graphics;
-		SpriteBatch spriteBatch;
+		private GraphicsDeviceManager graphics;
 
-                TileMap tileMap;
-		private Player player;
+		private Level level;
 
 		public Main()
 		{
@@ -25,29 +23,86 @@ namespace Rage_of_Stickman
 
 		protected override void Initialize()
 		{
-            tileMap = new TileMap(new Texture2D[] { Content.Load<Texture2D>("Asphalt"),Content.Load<Texture2D>("Stein") }, Content.Load<Texture2D>("RageMap"),16);
+			// graphics.PreferredBackBufferWidth = 1366;
+			// graphics.PreferredBackBufferHeight = 768;
+			// graphics.ApplyChanges();
+
+			Game.Content.viewport = GraphicsDevice.Viewport;
+			Game.Content.camera = new Camera2D(GraphicsDevice.Viewport);
+
+			level = new Level();
+
+			Game.Content.tileMap = new TileMap();
+			Game.Content.player = new Player();
+
 			base.Initialize();
 		}
 
 		protected override void LoadContent()
 		{
-			spriteBatch = new SpriteBatch(GraphicsDevice);
+			Game.Content.spriteBatch = new SpriteBatch(GraphicsDevice);
 
-		    player = new Player(Content.Load<Texture2D>("player"), new Vector2(0, 300));
+			// TODO Main.cs - LoadContent() : Load fonts here.
+			// Fonts
+			// Example: Game.Content.fonts[(int)EFont.no_font] = Content.Load<SpriteFont>("consolas");
+
+			// Textures
+			// Backgrounds
+			Game.Content.textures[(int)ETexture.background] = Content.Load<Texture2D>("Graphics/Background");
+			// Tiles
+			Game.Content.textures[(int)ETexture.asphalt] = Content.Load<Texture2D>("Graphics/Tiles/Asphalt");
+			Game.Content.textures[(int)ETexture.stone] = Content.Load<Texture2D>("Graphics/Tiles/Stone");
+			// Player
+			Game.Content.textures[(int)ETexture.player] = Content.Load<Texture2D>("Graphics/Player");
+			// Enemies
+			// here ...			
+
+			// Animation
+			// Tiles
+			Texture2D[] asphalt = { Game.Content.textures[(int)ETexture.asphalt] };
+			Game.Content.animations[(int)EAnimation.asphalt] = new AnimatedTexture2D(asphalt, Game.Content.tileSize, Game.Content.tileSize);
+			Texture2D[] stone = { Game.Content.textures[(int)ETexture.stone] };
+			Game.Content.animations[(int)EAnimation.stone] = new AnimatedTexture2D(stone, Game.Content.tileSize, Game.Content.tileSize);
+			// Player
+			// Idle
+			Texture2D[] player_idle = { Game.Content.textures[(int)ETexture.player] };
+			Game.Content.animations[(int)EAnimation.player_idle] = new AnimatedTexture2D(player_idle, (int)Game.Content.player.Size().X, (int)Game.Content.player.Size().Y);
+
+			level.LoadBackground(Game.Content.textures[(int)ETexture.background]);
+			Game.Content.player.LoadAnimations(Game.Content.animations[(int)EAnimation.player_idle]);
+
+			Game.Content.tileMap.BuildTileMap(Content.Load<Texture2D>("Graphics/RageMap"));
 		}
 
 		protected override void UnloadContent(){}
 
+		private void Input()
+		{
+			// TODO Main.cs - Update() : Delete Exit() through Escape-Key.
+
+			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+			{
+				Exit();
+			}
+
+			if (Keyboard.GetState().IsKeyDown(Keys.F4) && !Game.Content.previousKeyState.IsKeyDown(Keys.F4))
+			{
+				graphics.ToggleFullScreen();
+				graphics.ApplyChanges();
+			}
+		}
+
 		protected override void Update(GameTime gameTime)
 		{
-			// TODO Main - Update() - Delete Exit() through Escape-Key.
-			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-				Exit();
+			Game.Content.gameTime = gameTime;
 
+			Input();
 
-            tileMap.Update(gameTime);
-            player.Update();
-     
+			level.Update();
+
+			Game.Content.camera.position = Game.Content.player.Position();
+			Game.Content.previousKeyState = Keyboard.GetState();
+
 			base.Update(gameTime);
 		}
 
@@ -55,17 +110,13 @@ namespace Rage_of_Stickman
 		{
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 
+            Game.Content.spriteBatch.Begin(transformMatrix: Game.Content.camera.GetViewMatrix());
+			{
+				level.Draw();
+			}
+			Game.Content.spriteBatch.End();
 
-            spriteBatch.Begin();
-
-            tileMap.Draw(spriteBatch);
-
-
-		    player.Draw(spriteBatch);
-
-            spriteBatch.End();
 			base.Draw(gameTime);
-
 		}
 	}
 }

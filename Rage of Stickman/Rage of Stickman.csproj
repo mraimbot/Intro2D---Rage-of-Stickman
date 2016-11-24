@@ -37,9 +37,16 @@
   <PropertyGroup>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AnimatedTexture2D.cs" />
+    <Compile Include="Camera2D.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="Entity.cs" />
+    <Compile Include="GameContent.cs" />
+    <Compile Include="Level.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
