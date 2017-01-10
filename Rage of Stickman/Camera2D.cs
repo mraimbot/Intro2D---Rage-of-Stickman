@@ -10,10 +10,10 @@ namespace Rage_of_Stickman
 {
 	class Camera2D
 	{
-		public Vector2 origin { get; set; }
-		public Vector2 position { get; set; }
-		public float rotation { get; set; }
-		public float zoom { get; set; }
+		public Vector2 origin;
+		public Vector2 position;
+		public float rotation;
+		public float zoom;
 
 		public Camera2D(Viewport viewport)
 		{

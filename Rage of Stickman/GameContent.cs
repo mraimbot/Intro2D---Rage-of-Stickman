@@ -17,6 +17,8 @@ namespace Rage_of_Stickman
 		// Tiles
 		asphalt,
 		stone,
+		gras,
+		wall,
 
 		// Player
 		player,
@@ -32,6 +34,8 @@ namespace Rage_of_Stickman
 		// Tiles
 		asphalt,
 		stone,
+		gras,
+		wall,
 
 		// Player
 		player_idle,

@@ -52,8 +52,10 @@ namespace Rage_of_Stickman
 			// Tiles
 			Game.Content.textures[(int)ETexture.asphalt] = Content.Load<Texture2D>("Graphics/Tiles/Asphalt");
 			Game.Content.textures[(int)ETexture.stone] = Content.Load<Texture2D>("Graphics/Tiles/Stone");
+			Game.Content.textures[(int)ETexture.gras] = Content.Load<Texture2D>("Graphics/Tiles/Gras");
+			Game.Content.textures[(int)ETexture.wall] = Content.Load<Texture2D>("Graphics/Tiles/Wall");
 			// Player
-			Game.Content.textures[(int)ETexture.player] = Content.Load<Texture2D>("Graphics/Player");
+			Game.Content.textures[(int)ETexture.player] = Content.Load<Texture2D>("Graphics/PlayerAnimation/Stickman01");
 			// Enemies
 			// here ...			
 
@@ -63,6 +65,10 @@ namespace Rage_of_Stickman
 			Game.Content.animations[(int)EAnimation.asphalt] = new AnimatedTexture2D(asphalt, Game.Content.tileSize, Game.Content.tileSize);
 			Texture2D[] stone = { Game.Content.textures[(int)ETexture.stone] };
 			Game.Content.animations[(int)EAnimation.stone] = new AnimatedTexture2D(stone, Game.Content.tileSize, Game.Content.tileSize);
+			Texture2D[] gras = { Game.Content.textures[(int)ETexture.gras] };
+			Game.Content.animations[(int)EAnimation.gras] = new AnimatedTexture2D(gras, Game.Content.tileSize, Game.Content.tileSize);
+			Texture2D[] wall = { Game.Content.textures[(int)ETexture.wall] };
+			Game.Content.animations[(int)EAnimation.wall] = new AnimatedTexture2D(wall, Game.Content.tileSize, Game.Content.tileSize);
 			// Player
 			// Idle
 			Texture2D[] player_idle = { Game.Content.textures[(int)ETexture.player] };
@@ -92,16 +98,38 @@ namespace Rage_of_Stickman
 			}
 		}
 
+		protected void UpdateCamera()
+		{
+			Game.Content.camera.position = Game.Content.player.Position();
+
+			if (Game.Content.camera.position.X - Game.Content.camera.origin.X < 0)
+			{
+				Game.Content.camera.position.X = Game.Content.camera.origin.X;
+			}
+			else if (Game.Content.camera.position.X + Game.Content.camera.origin.X > Game.Content.tileMap.Size().X * Game.Content.tileSize)
+			{
+				Game.Content.camera.position.X = Game.Content.tileMap.Size().X * Game.Content.tileSize - Game.Content.camera.origin.X;
+			}
+
+			if (Game.Content.camera.position.Y - Game.Content.camera.origin.Y < 0)
+			{
+				Game.Content.camera.position.Y = Game.Content.camera.origin.Y;
+			}
+			else if (Game.Content.camera.position.Y + Game.Content.camera.origin.Y > Game.Content.tileMap.Size().Y * Game.Content.tileSize)
+			{
+				Game.Content.camera.position.Y = Game.Content.tileMap.Size().Y * Game.Content.tileSize - Game.Content.camera.origin.Y;
+			}
+
+			Game.Content.previousKeyState = Keyboard.GetState();
+		}
+
 		protected override void Update(GameTime gameTime)
 		{
 			Game.Content.gameTime = gameTime;
 
 			Input();
-
 			level.Update();
-
-			Game.Content.camera.position = Game.Content.player.Position();
-			Game.Content.previousKeyState = Keyboard.GetState();
+			UpdateCamera();
 
 			base.Update(gameTime);
 		}

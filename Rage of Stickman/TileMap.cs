@@ -39,6 +39,22 @@ namespace Rage_of_Stickman
 				{
 					tileMap[i] = new Tile(Game.Content.animations[(int)EAnimation.asphalt], ECollision.impassable);
 				}
+				else if (colorMap[i] == Color.Green)
+				{
+					tileMap[i] = new Tile(Game.Content.animations[(int)EAnimation.gras], ECollision.impassable);
+				}
+				else if (colorMap[i] == Color.Gray)
+				{
+					tileMap[i] = new Tile(Game.Content.animations[(int)EAnimation.stone], ECollision.impassable);
+				}
+				else if (colorMap[i] == Color.Purple)
+				{
+					tileMap[i] = new Tile(Game.Content.animations[(int)EAnimation.wall], ECollision.impassable);
+				}
+				//else if(colorMap[i]==Color.Purple)
+				//{
+				// tileMap[i] = new Tile(Game.Content.animations[(int)EAnimation.wand], ECollision.impassable);
+				//}
 				/* else if (colorMap[i] == Color.Xxxx)
 				 * {
 				 *		// add new colors here ...
@@ -48,7 +64,7 @@ namespace Rage_of_Stickman
 				{
 					tileMap[i] = new Tile(null, ECollision.passable);
 				}
-			}	
+			}
 		}
 
 		public Vector2 Size()
@@ -72,7 +88,7 @@ namespace Rage_of_Stickman
 			{
 				for (int x = 0; x < width; x++)
 				{
-					tileMap[y * width + x].Draw(new Vector2(x * Game.Content.tileSize, y  * Game.Content.tileSize));
+					tileMap[y * width + x].Draw(new Vector2(x * Game.Content.tileSize, y * Game.Content.tileSize));
 				}
 			}
 		}

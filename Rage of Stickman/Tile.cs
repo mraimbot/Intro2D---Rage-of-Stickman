@@ -8,22 +8,22 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Rage_of_Stickman
 {
-    public enum ECollision
-    {
-        passable = 0,
-        impassable = 1
-    }
+	public enum ECollision
+	{
+		passable = 0,
+		impassable = 1
+	}
 
-    class Tile
-    {
-        private AnimatedTexture2D animatedTexture2D;
+	class Tile
+	{
+		private AnimatedTexture2D animatedTexture2D;
 		private ECollision collision_type;
 
 		public Tile(AnimatedTexture2D animatedTexture2D, ECollision collision_type)
-        {
+		{
 			this.animatedTexture2D = animatedTexture2D;
-            this.collision_type = collision_type;
-        }
+			this.collision_type = collision_type;
+		}
 
 		public ECollision getCollisionType()
 		{
@@ -41,6 +41,6 @@ namespace Rage_of_Stickman
 			{
 				animatedTexture2D.Draw(position);
 			}
-		}        
-    }
+		}
+	}
 }
