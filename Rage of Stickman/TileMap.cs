@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Diagnostics;
 
 namespace Rage_of_Stickman
 {
@@ -14,11 +15,13 @@ namespace Rage_of_Stickman
 		private Tile[] tileMap;
 		private int width;
 		private int height;
+        private Dictionary<Color, Tile> tileToColor;
 
-		public TileMap()
+
+        public TileMap()
 		{
 
-		}
+        }
 
 		public void BuildTileMap(Texture2D bitMap)
 		{
@@ -26,44 +29,25 @@ namespace Rage_of_Stickman
 			this.height = bitMap.Height;
 
 			if (tileMap == null)
-			{
 				tileMap = new Tile[width * height];
-			}
+			
 
 			Color[] colorMap = new Color[width * height];
 			bitMap.GetData(colorMap);
 
-			for (int i = 0; i < width * height; i++)
+            tileToColor = new Dictionary<Color, Tile>();
+            tileToColor.Add(Color.Black, new Tile(Game.Content.animations[(int)EAnimation.asphalt], ECollision.impassable));
+            tileToColor.Add(Color.Green, new Tile(Game.Content.animations[(int)EAnimation.gras], ECollision.impassable));
+            tileToColor.Add(Color.Gray, new Tile(Game.Content.animations[(int)EAnimation.stone], ECollision.impassable));
+            tileToColor.Add(Color.Purple, new Tile(Game.Content.animations[(int)EAnimation.wall], ECollision.impassable));
+
+            for (int i = 0; i < width * height; i++)
 			{
-				if (colorMap[i] == Color.Black)
-				{
-					tileMap[i] = new Tile(Game.Content.animations[(int)EAnimation.asphalt], ECollision.impassable);
-				}
-				else if (colorMap[i] == Color.Green)
-				{
-					tileMap[i] = new Tile(Game.Content.animations[(int)EAnimation.gras], ECollision.impassable);
-				}
-				else if (colorMap[i] == Color.Gray)
-				{
-					tileMap[i] = new Tile(Game.Content.animations[(int)EAnimation.stone], ECollision.impassable);
-				}
-				else if (colorMap[i] == Color.Purple)
-				{
-					tileMap[i] = new Tile(Game.Content.animations[(int)EAnimation.wall], ECollision.impassable);
-				}
-				//else if(colorMap[i]==Color.Purple)
-				//{
-				// tileMap[i] = new Tile(Game.Content.animations[(int)EAnimation.wand], ECollision.impassable);
-				//}
-				/* else if (colorMap[i] == Color.Xxxx)
-				 * {
-				 *		// add new colors here ...
-				 * }
-				 */
-				else
-				{
-					tileMap[i] = new Tile(null, ECollision.passable);
-				}
+                if (tileToColor.ContainsKey(colorMap[i]))
+                    tileMap[i] = tileToColor[colorMap[i]];
+                else
+                    tileMap[i] = new Tile(null, ECollision.impassable);
+                
 			}
 		}
 
@@ -85,12 +69,8 @@ namespace Rage_of_Stickman
 		public void Draw()
 		{
 			for (int y = 0; y < height; y++)
-			{
 				for (int x = 0; x < width; x++)
-				{
 					tileMap[y * width + x].Draw(new Vector2(x * Game.Content.tileSize, y * Game.Content.tileSize));
-				}
-			}
 		}
 	}
 }
