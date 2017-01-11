@@ -29,6 +29,12 @@ namespace Rage_of_Stickman
 		no_texture
 	}
 
+    enum EDirection
+    {
+        left,
+        right
+    }
+
 	enum EAnimation
 	{
 		// Tiles

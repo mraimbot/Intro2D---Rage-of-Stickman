@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Diagnostics;
 
 namespace Rage_of_Stickman
 {
@@ -29,12 +30,10 @@ namespace Rage_of_Stickman
 		private float mass;
 
 		private bool midair;
+        SpriteEffects s = SpriteEffects.None;
+        EDirection direction = EDirection.right;
 
-		private bool move_left;
-		private bool move_right;
-		private bool move_jump;
-
-		private Vector2 jump_force = new Vector2(0.0f, 1.0f);
+		private Vector2 jump_force = new Vector2(0.0f, -1.0f);
 
 		public Player()
         {
@@ -77,36 +76,37 @@ namespace Rage_of_Stickman
 			return new Vector2(width, height);
 		}
 
-		private void Input()
-		{
-			move_left = (Keyboard.GetState().IsKeyDown(Keys.Left) || Keyboard.GetState().IsKeyDown(Keys.A)) ? true : false;
-			move_right = (Keyboard.GetState().IsKeyDown(Keys.Right) || Keyboard.GetState().IsKeyDown(Keys.D)) ? true : false;
-			move_jump = (Keyboard.GetState().IsKeyDown(Keys.Space)) ? true : false;
+        private void Input()
+        {
+            KeyboardState ks = Keyboard.GetState();
+            Keys[] currentlyPressedKeys = ks.GetPressedKeys();
 
-			// for testing
-			position.Y += (Keyboard.GetState().IsKeyDown(Keys.Up) || Keyboard.GetState().IsKeyDown(Keys.W)) ? -10 : 0;
-			position.Y += (Keyboard.GetState().IsKeyDown(Keys.Down) || Keyboard.GetState().IsKeyDown(Keys.S)) ? 10 : 0;
-		}
+            foreach (Keys key in currentlyPressedKeys)
+                switch (key)
+                {
+                    case Keys.W:
+                    case Keys.Up:
+                        impulses.Add(new Vector2(0.0f, -speed));
+                        break;
+                    case Keys.A:
+                    case Keys.Left:
+                        impulses.Add(new Vector2(-speed, 0.0f));
+                        direction = EDirection.left;
+                        break;
+                    case Keys.D:
+                    case Keys.Right:
+                        impulses.Add(new Vector2(speed, 0.0f));
+                        direction = EDirection.right;
+                        break;
+                    case Keys.S:
+                    case Keys.Down:
+                        impulses.Add(new Vector2(0.0f, speed));
+                        break;
+                }
+        }
 
 		private void Logic()
 		{
-			if (move_left)
-			{
-				impulses.Add(new Vector2(-speed, 0.0f));
-			}
-
-			if (move_right)
-			{
-				impulses.Add(new Vector2(speed, 0.0f));
-			}
-
-			if (move_jump)
-			{
-				if (!midair)
-				{
-					impulses.Add(-jump_force);
-				}
-			}
 		}
 
 		private void Physic()
@@ -114,55 +114,24 @@ namespace Rage_of_Stickman
 			Vector2 force_max = Vector2.Zero;
 
 			foreach (Vector2 force in forces)
-			{
 				force_max += force;
-			}
-			foreach (Vector2 impulse in impulses)
-			{
+
+            foreach (Vector2 impulse in impulses)
 				force_max += impulse;
-			}
-			impulses.Clear();
+
+            impulses.Clear();
 
 			accel = force_max / mass;
 			velocity = accel * Game.Content.gameTime.ElapsedGameTime.Milliseconds;
 
 			Vector2 newPosition = position + velocity;
+            newPosition = Vector2.Clamp(newPosition, new Vector2(0, 0), Game.Content.tileMap.Size() * Game.Content.tileSize);
 
-			if (newPosition.X < 0.0f)
-			{
-				newPosition.X = 1.0f;
-			}
-			else if (newPosition.X > Game.Content.tileMap.Size().X * Game.Content.tileSize - Game.Content.tileSize)
-			{
-				newPosition.X = Game.Content.tileMap.Size().X * Game.Content.tileSize - 1;
-			}
+			Vector2 tilePositionVec = newPosition / Game.Content.tileSize;
+            int tilePositionId = (int)(tilePositionVec.X + tilePositionVec.Y * Game.Content.tileMap.Size().X);
 
-			if (newPosition.Y < 0.0f)
-			{
-				newPosition.Y = 0.0f;
-			}
-			else if (newPosition.Y > Game.Content.tileMap.Size().Y * Game.Content.tileSize)
-			{
-				newPosition.Y = Game.Content.tileMap.Size().Y * Game.Content.tileSize - 1;
-			}
-
-			// collision
-			// collision bestenfalls über Rectangle rect; rect.Intersects(rect2); prüfen
-			int tileID = (int)(newPosition.Y / Game.Content.tileSize) * (int)(Game.Content.tileMap.Size().X) + (int)(newPosition.X / Game.Content.tileSize);
-			// int tileIDX = (int)(newPosition.Y / Game.Content.tileSize) * (int)(Game.Content.tileMap.Size().X);
-			// int tileIDY = (int)(newPosition.X / Game.Content.tileSize);
-
-			switch (Game.Content.tileMap.getCollisionTypeAt(tileID))
-			{
-				case ECollision.passable:
-					break;
-
-				case ECollision.impassable:
-					break;
-			}
-
-			position.X = newPosition.X;
-			position.Y = newPosition.Y;
+            if (Game.Content.tileMap.getCollisionTypeAt(tilePositionId) == ECollision.passable)
+                position = newPosition;
 		}
 
 		public void Update()
@@ -174,28 +143,10 @@ namespace Rage_of_Stickman
 
         public void Draw()
         {
-			// lässt sich sicher optimieren mit einem weiteren Attribut und einer Anpassung in der Logic()
-			if (move_left)
-			{
-				animation_idle.Draw(position);
-			}
 
-			else if (move_right)
-			{
-				animation_idle.Draw(position);
-			}
-
-			else if (move_jump)
-			{
-				if (!midair)
-				{
-					animation_idle.Draw(position);
-				}
-			}
-			else
-			{
-				animation_idle.Draw(position);
-			}
+            if (direction == EDirection.left)
+                s = SpriteEffects.FlipHorizontally;
+			animation_idle.Draw(position,s);
 		}
     }
 }

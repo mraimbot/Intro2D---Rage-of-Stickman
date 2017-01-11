@@ -46,7 +46,7 @@ namespace Rage_of_Stickman
                 if (tileToColor.ContainsKey(colorMap[i]))
                     tileMap[i] = tileToColor[colorMap[i]];
                 else
-                    tileMap[i] = new Tile(null, ECollision.impassable);
+                    tileMap[i] = new Tile(null, ECollision.passable);
                 
 			}
 		}

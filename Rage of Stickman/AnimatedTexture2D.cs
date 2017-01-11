@@ -69,5 +69,10 @@ namespace Rage_of_Stickman
 		{
 			Game.Content.spriteBatch.Draw(textures[frameIndex], position, Color.White);
 		}
+
+        public void Draw(Vector2 position, SpriteEffects s)
+        {
+            Game.Content.spriteBatch.Draw(textures[frameIndex], position, null, null, null, 0, Vector2.One, Color.White, s, 0);
+        }
 	}
 }
