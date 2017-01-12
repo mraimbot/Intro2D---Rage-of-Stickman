@@ -49,7 +49,7 @@ namespace Rage_of_Stickman
 		public void Initialize()
 		{
 			forces.Clear();
-			// forces.Add(Game.Content.gravity);
+			forces.Add(Game.Content.gravity);
 			impulses.Clear();
 
 			position = Game.Content.player_startposition;
@@ -86,7 +86,7 @@ namespace Rage_of_Stickman
                 {
                     case Keys.W:
                     case Keys.Up:
-                        impulses.Add(new Vector2(0.0f, -speed));
+                        impulses.Add(-2*Game.Content.gravity);
                         break;
                     case Keys.A:
                     case Keys.Left:
@@ -98,16 +98,30 @@ namespace Rage_of_Stickman
                         impulses.Add(new Vector2(speed, 0.0f));
                         direction = EDirection.right;
                         break;
-                    case Keys.S:
-                    case Keys.Down:
-                        impulses.Add(new Vector2(0.0f, speed));
-                        break;
                 }
         }
 
 		private void Logic()
 		{
 		}
+
+        private void HandleCollision()
+        {
+            Rectangle bounds;
+
+            for (int y = topTile; y <= bottomTile; y++)
+                for(int x = leftTile; x<= rightTile; x++)
+                    if (Level.getCollision(x,y) == TileCollision.Impassable)
+                    {
+                        Rectangle tileBounds = level.GetBounds(x, y);
+                        Vector2 depth = bounds.GetIntersectionDepth(tileBounds);
+                        
+                        if (depth!=Vector2.Zero)
+                        {
+                            Position += depth;
+                        }
+                    }
+        }
 
 		private void Physic()
 		{
@@ -124,10 +138,11 @@ namespace Rage_of_Stickman
 			accel = force_max / mass;
 			velocity = accel * Game.Content.gameTime.ElapsedGameTime.Milliseconds;
 
-			Vector2 newPosition = position + velocity;
+			Vector2 newPosition = position + force_max;
             newPosition = Vector2.Clamp(newPosition, new Vector2(0, 0), Game.Content.tileMap.Size() * Game.Content.tileSize);
 
 			Vector2 tilePositionVec = newPosition / Game.Content.tileSize;
+            Debug.WriteLine(tilePositionVec);
             int tilePositionId = (int)(tilePositionVec.X + tilePositionVec.Y * Game.Content.tileMap.Size().X);
 
             if (Game.Content.tileMap.getCollisionTypeAt(tilePositionId) == ECollision.passable)
