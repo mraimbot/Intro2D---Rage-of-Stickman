@@ -250,3 +250,6 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+/Rage of Stickman/Content/Level/0.txt
+/Rage of Stickman/Content/BlockB.png
+/Rage of Stickman/Content/Exit.png

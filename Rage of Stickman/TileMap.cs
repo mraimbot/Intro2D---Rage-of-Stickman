@@ -61,6 +61,11 @@ namespace Rage_of_Stickman
 			return tileMap[ID].getCollisionType();
 		}
 
+	    public ECollision getCollisionTypeAt(int x, int y)
+	    {
+	        return getCollisionTypeAt(x+y*width);
+	    }
+
 		public void Update()
 		{
 
