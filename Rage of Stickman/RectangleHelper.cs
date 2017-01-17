@@ -35,5 +35,5 @@ namespace Rage_of_Stickman
             return distY > 0 ? minDistanceY - distY : -minDistanceY - distY;
         }
 
-        
+    }  
 }
