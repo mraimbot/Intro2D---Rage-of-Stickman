@@ -119,46 +119,43 @@ namespace Rage_of_Stickman
 		{
 		}
 
-        private void HandleCollision()
+        private void HandleCollision(EDirectionAxis directionAxis)
         {
             Rectangle bounds = BoundingRectangle;
 
             int leftTile = bounds.Left / Game.Content.tileSize;
             int topTile = bounds.Top / Game.Content.tileSize;
-            int rightTile = (int) Math.Ceiling((float) bounds.Right/Game.Content.tileSize) - 1;
-            int bottomTile = (int) Math.Ceiling((float) bounds.Bottom/Game.Content.tileSize) - 1;
+            int rightTile = (int)Math.Ceiling((float)bounds.Right / Game.Content.tileSize) - 1;
+            int bottomTile = (int)Math.Ceiling((float)bounds.Bottom / Game.Content.tileSize) - 1;
 
             for (int y = topTile; y <= bottomTile; y++)
                 for (int x = leftTile; x <= rightTile; x++)
-                { 
+                {
                     Vector2 depth;
-                    if (Game.Content.tileMap.getCollisionTypeAt(x,y) == ECollision.impassable && TileIntersectsPlayer(bounds, new Rectangle(x*Game.Content.tileSize,y*Game.Content.tileSize,Game.Content.tileSize,Game.Content.tileSize),direction,out depth)
+                    if (Game.Content.tileMap.getCollisionTypeAt(x, y) == ECollision.impassable &&
+                        TileIntersectsPlayer(bounds, new Rectangle(x * Game.Content.tileSize, y * Game.Content.tileSize, Game.Content.tileSize, Game.Content.tileSize), directionAxis, out depth))
                     {
-                        Rectangle tileBounds = new Rectangle(Game.Content.tileSize * x, Game.Content.tileSize * y, Game.Content.tileSize, Game.Content.tileSize);
-                        Vector2 depth = bounds.GetIntersectionDepth(tileBounds);
-                        
-                        if (depth!=Vector2.Zero)
-                        {
-                            Position += depth;
-                        }
+                        position += depth;
+                        bounds = BoundingRectangle;
                     }
+                }
         }
 
-        public enum Direction
+        public enum EDirectionAxis
         {
             Horizontal,
             Vertical
         }
 
-        private static bool TileIntersectsPlayer(Rectangle player, Rectangle block, Direction direction,
+        private static bool TileIntersectsPlayer(Rectangle player, Rectangle block, EDirectionAxis directionAxis,
             out Vector2 depth)
         {
-            depth = direction == Direction.Horizontal
+            depth = directionAxis == EDirectionAxis.Horizontal
                 ? new Vector2(0, player.GetVerticalIntersectionDepth(block))
                 : new Vector2(player.GetHorizontalIntersectionDepth(block));
             return depth.X != 0 || depth.Y != 0;
         }
-    }
+    
 
     private void Physic()
 		{
@@ -175,7 +172,11 @@ namespace Rage_of_Stickman
 			accel = force_max / mass;
 			velocity = accel * Game.Content.gameTime.ElapsedGameTime.Milliseconds;
 
-			Vector2 newPosition = position + force_max;
+            Vector2 newPosition;
+            newPosition.X= position.X + velocity.X;
+            HandleCollision(EDirectionAxis.Horizontal);
+            newPosition.Y = position.Y + velocity.Y;
+            HandleCollision(EDirectionAxis.Vertical);
             newPosition = Vector2.Clamp(newPosition, new Vector2(0, 0), Game.Content.tileMap.Size() * Game.Content.tileSize);
 
 			Vector2 tilePositionVec = newPosition / Game.Content.tileSize;
