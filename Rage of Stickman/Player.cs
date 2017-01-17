@@ -32,8 +32,8 @@ namespace Rage_of_Stickman
         {
             get
             {
-                int left = (int)Math.Round(position.X) + localBounds.X;
-                int top = (int)Math.Round(position.Y) + localBounds.Y;
+                int left = (int)Math.Round(position.X)*Game.Content.tileSize + localBounds.X;
+                int top = (int)Math.Round(position.Y) * Game.Content.tileSize + localBounds.Y;
 
                 return new Rectangle(left, top, localBounds.Width, localBounds.Height);
             }
@@ -53,6 +53,7 @@ namespace Rage_of_Stickman
         {
 			this.width = Game.Content.tileSize;
 			this.height = Game.Content.tileSize;
+            localBounds = new Rectangle(0, 0, Game.Content.tileSize, 2*Game.Content.tileSize);
 
 			forces = new List<Vector2>();
 			impulses = new List<Vector2>();
@@ -135,7 +136,8 @@ namespace Rage_of_Stickman
                     if (Game.Content.tileMap.getCollisionTypeAt(x, y) == ECollision.impassable &&
                         TileIntersectsPlayer(bounds, new Rectangle(x * Game.Content.tileSize, y * Game.Content.tileSize, Game.Content.tileSize, Game.Content.tileSize), directionAxis, out depth))
                     {
-                        position += depth;
+                        Console.WriteLine(depth);
+                        position += depth/Game.Content.tileSize;
                         bounds = BoundingRectangle;
                     }
                 }
@@ -170,7 +172,7 @@ namespace Rage_of_Stickman
             impulses.Clear();
 
 			accel = force_max / mass;
-			velocity = accel * Game.Content.gameTime.ElapsedGameTime.Milliseconds;
+			velocity = accel * Game.Content.gameTime.ElapsedGameTime.Milliseconds/Game.Content.tileSize;
 
             Vector2 newPosition;
             newPosition.X= position.X + velocity.X;
@@ -191,8 +193,6 @@ namespace Rage_of_Stickman
 			Input();
 			Logic();
 			Physic();
-            Debug.Print(position.X + " " + position.Y);
-            Debug.Print(Game.Content.tileMap.getCollisionTypeAt((int)position.X,(int)position.Y)==ECollision.passable?"passable":"impassable");
         }
 
         public void Draw()
@@ -200,7 +200,7 @@ namespace Rage_of_Stickman
 
             if (direction == EDirection.left)
                 s = SpriteEffects.FlipHorizontally;
-			animation_idle.Draw(position,s);
+			animation_idle.Draw(position*Game.Content.tileSize,s);
 		}
     }
 }

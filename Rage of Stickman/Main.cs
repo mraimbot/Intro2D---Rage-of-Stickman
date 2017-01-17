@@ -100,7 +100,7 @@ namespace Rage_of_Stickman
 
 		protected void UpdateCamera()
 		{
-			Game.Content.camera.position = Game.Content.player.Position();
+			Game.Content.camera.position = Game.Content.player.Position()*Game.Content.tileSize;
 
 			if (Game.Content.camera.position.X - Game.Content.camera.origin.X < 0)
 			{
