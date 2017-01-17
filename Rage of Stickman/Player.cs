@@ -180,7 +180,6 @@ namespace Rage_of_Stickman
             newPosition = Vector2.Clamp(newPosition, new Vector2(0, 0), Game.Content.tileMap.Size() * Game.Content.tileSize);
 
 			Vector2 tilePositionVec = newPosition / Game.Content.tileSize;
-            Debug.WriteLine(tilePositionVec);
             int tilePositionId = (int)(tilePositionVec.X + tilePositionVec.Y * Game.Content.tileMap.Size().X);
 
             if (Game.Content.tileMap.getCollisionTypeAt(tilePositionId) == ECollision.passable)
@@ -192,6 +191,8 @@ namespace Rage_of_Stickman
 			Input();
 			Logic();
 			Physic();
+            Debug.Print(position.X + " " + position.Y);
+            Debug.Print(Game.Content.tileMap.getCollisionTypeAt((int)position.X,(int)position.Y)==ECollision.passable?"passable":"impassable");
         }
 
         public void Draw()
