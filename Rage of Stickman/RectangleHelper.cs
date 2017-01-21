@@ -13,11 +13,12 @@ namespace Rage_of_Stickman
         {
             float centerA = aRectangle.Left + aRectangle.Width / 2;
             float centerB = bRectangle.Left + bRectangle.Width / 2;
+            Console.WriteLine("centerA :"+centerA);
+            Console.WriteLine("centerB :"+centerB);
+
 
             float distX = centerA - centerB;
             float minDistanceX = (aRectangle.Width + bRectangle.Width) / 2;
-            Console.WriteLine(distX);
-            Console.WriteLine(minDistanceX);
             if (Math.Abs(distX) >= minDistanceX)
                 return 0f;
             return distX > 0 ? minDistanceX - distX : -minDistanceX - distX;
@@ -27,11 +28,10 @@ namespace Rage_of_Stickman
         {
             float centerA = aRectangle.Top + aRectangle.Height / 2;
             float centerB = bRectangle.Top + bRectangle.Height / 2;
-
+            Console.WriteLine("centerA :" + centerA);
+            Console.WriteLine("centerB :" + centerB);
             float distY = centerA - centerB;
             float minDistanceY = (aRectangle.Height + bRectangle.Height) / 2;
-            Console.WriteLine(distY);
-            Console.WriteLine(minDistanceY);
             if (Math.Abs(distY) >= minDistanceY)
                 return 0f;
             return distY > 0 ? minDistanceY - distY : -minDistanceY - distY;

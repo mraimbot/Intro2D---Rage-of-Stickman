@@ -159,36 +159,30 @@ namespace Rage_of_Stickman
                 : new Vector2(player.GetHorizontalIntersectionDepth(block),0);
             return depth.X != 0 || depth.Y != 0;
         }
-    
 
-    private void Physic()
-		{
-			Vector2 force_max = Vector2.Zero;
 
-			foreach (Vector2 force in forces)
-				force_max += force;
+        private void Physic()
+        {
+            Vector2 force_max = Vector2.Zero;
+
+            foreach (Vector2 force in forces)
+                force_max += force;
 
             foreach (Vector2 impulse in impulses)
-				force_max += impulse;
+                force_max += impulse;
 
             impulses.Clear();
 
-			accel = force_max / mass;
-			velocity = accel * Game.Content.gameTime.ElapsedGameTime.Milliseconds/Game.Content.tileSize;
+            accel = force_max / mass;
+            velocity = accel * Game.Content.gameTime.ElapsedGameTime.Milliseconds / Game.Content.tileSize;
 
-            Vector2 newPosition;
-            newPosition.X= position.X + velocity.X;
+            position += velocity;
             HandleCollision(EDirectionAxis.Horizontal);
-            newPosition.Y = position.Y + velocity.Y;
             HandleCollision(EDirectionAxis.Vertical);
-            newPosition = Vector2.Clamp(newPosition, new Vector2(0, 0), Game.Content.tileMap.Size() * Game.Content.tileSize);
+            position = Vector2.Clamp(position, new Vector2(0, 0), Game.Content.tileMap.Size() * Game.Content.tileSize);
 
-			Vector2 tilePositionVec = newPosition / Game.Content.tileSize;
-            int tilePositionId = (int)(tilePositionVec.X + tilePositionVec.Y * Game.Content.tileMap.Size().X);
-
-            //if (Game.Content.tileMap.getCollisionTypeAt(tilePositionId) == ECollision.passable)
-                position = newPosition;
-		}
+            Vector2 tilePositionVec = position / Game.Content.tileSize;
+        }
 
 		public void Update()
         {
