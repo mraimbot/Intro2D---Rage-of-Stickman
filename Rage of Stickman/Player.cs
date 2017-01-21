@@ -16,10 +16,21 @@ namespace Rage_of_Stickman
     class Player
     {
 		private AnimatedTexture2D animation_idle;
+		private AnimatedTexture2D animation_move;
+		private AnimatedTexture2D animation_punch;
+		private AnimatedTexture2D animation_kick;
+
 		private Vector2 position;
 
 		private int width;
 		private int height;
+
+		private bool move_left;
+		private bool move_right;
+		private bool move_punch;
+		private bool move_kick;
+		private bool move_jump;
+		private bool isFlipped;
 
 		private List<Vector2> forces;
 		private List<Vector2> impulses;
@@ -72,14 +83,20 @@ namespace Rage_of_Stickman
 			speed = 1;
 			mass = 2;
 			midair = false;
+
+			isFlipped = false;
 		}
 
-		public void LoadAnimations(AnimatedTexture2D animation_idle)
+		public void LoadAnimations(AnimatedTexture2D[] animationList)
 		{
-			this.animation_idle = animation_idle;
+			this.animation_idle = animationList[0];
 			this.width = (int)animation_idle.Size().X;
 			this.height = (int)animation_idle.Size().Y;
-		}
+
+			this.animation_move = animationList[1];
+			this.animation_punch = animationList[2];
+			this.animation_kick = animationList[3];
+	}
 
 		public Vector2 Position()
 		{
@@ -96,28 +113,73 @@ namespace Rage_of_Stickman
             KeyboardState ks = Keyboard.GetState();
             Keys[] currentlyPressedKeys = ks.GetPressedKeys();
 
+			move_jump = false;
+			move_left = false;
+			move_right = false;
+			move_punch = false;
+			move_kick = false;
+
             foreach (Keys key in currentlyPressedKeys)
                 switch (key)
                 {
                     case Keys.W:
                     case Keys.Up:
-                        impulses.Add(-2*Game.Content.gravity);
+					case Keys.Space:
+						move_jump = true;
                         break;
                     case Keys.A:
                     case Keys.Left:
-                        impulses.Add(new Vector2(-speed, 0.0f));
-                        direction = EDirection.left;
+						move_left = true;                        
                         break;
                     case Keys.D:
                     case Keys.Right:
-                        impulses.Add(new Vector2(speed, 0.0f));
-                        direction = EDirection.right;
+						move_right = true;
                         break;
+					case Keys.E:
+					case Keys.Y:
+						move_punch = true;
+						break;
+					case Keys.F:
+					case Keys.X:
+						move_kick = true;
+						break;
                 }
         }
 
 		private void Logic()
 		{
+			if (move_jump && !midair)
+			{
+				animation_kick.Update();
+				impulses.Add(-2 * Game.Content.gravity);
+				// midair = true;
+			}
+
+			if (move_left)
+			{
+				animation_move.Update();
+				impulses.Add(new Vector2(-speed, 0.0f));
+				direction = EDirection.left;
+			}
+			
+			if (move_right)
+			{
+				animation_move.Update();
+				impulses.Add(new Vector2(speed, 0.0f));
+				direction = EDirection.right;
+			}
+
+			if (move_punch)
+			{
+				animation_punch.Update();
+				// TODO move_punch
+			}
+
+			if (move_kick)
+			{
+				animation_kick.Update();
+				// TODO move_kick
+			}
 		}
 
         private void HandleCollision(EDirectionAxis directionAxis)
@@ -195,8 +257,36 @@ namespace Rage_of_Stickman
         {
 
             if (direction == EDirection.left)
-                s = SpriteEffects.FlipHorizontally;
-			animation_idle.Draw(position*Game.Content.tileSize,s);
+			{
+				isFlipped = true;
+				s = SpriteEffects.FlipHorizontally;
+			}
+			else if (isFlipped)
+			{
+				isFlipped = false;
+				s = SpriteEffects.None;
+			}
+
+			if (move_left || move_right)
+			{
+				animation_move.Draw(position * Game.Content.tileSize, s);
+			}
+			else if (move_punch)
+			{
+				animation_punch.Draw(position * Game.Content.tileSize, s);
+			}
+			else if (move_kick)
+			{
+				animation_kick.Draw(position * Game.Content.tileSize, s);
+			}
+			else if (move_jump)
+			{
+				animation_kick.Draw(position * Game.Content.tileSize, s);
+			}
+			else
+			{
+				animation_idle.Draw(position * Game.Content.tileSize, s);
+			}
 		}
     }
 }

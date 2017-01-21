@@ -28,7 +28,7 @@ namespace Rage_of_Stickman
 			this.height = height;
 			this.width = width;
 
-			frameTime = 0.1f;
+			frameTime = 100.0f;
 
 			active = true;
 		}
@@ -53,12 +53,12 @@ namespace Rage_of_Stickman
 			if (active)
 			{
 				time += (float)Game.Content.gameTime.ElapsedGameTime.Milliseconds;
-				while (time > frameTime)
+				if (time > frameTime)
 				{
 					frameIndex++;
-					if (frameIndex > textures.Length)
+					if (frameIndex >= textures.Length)
 					{ 
-						frameIndex = 1;
+						frameIndex = 0;
 					}
 					time = 0.0f;
 				}

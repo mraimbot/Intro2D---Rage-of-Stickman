@@ -21,19 +21,23 @@ namespace Rage_of_Stickman
 		wall,
 
 		// Player
-		player,
+		player_idle_0,
+		player_move_0,
+		player_move_1,
+		player_move_2,
+		player_punch_0,
+		player_punch_1,
+		player_punch_2,
+		player_kick_0,
+		player_kick_1,
+		player_kick_2,
+		player_kick_3,
 
 		// Enemies
 
 
 		no_texture
 	}
-
-    enum EDirection
-    {
-        left,
-        right
-    }
 
 	enum EAnimation
 	{
@@ -45,6 +49,9 @@ namespace Rage_of_Stickman
 
 		// Player
 		player_idle,
+		player_move,
+		player_punch,
+		player_kick,
 
 		// Enemies
 
@@ -55,6 +62,12 @@ namespace Rage_of_Stickman
 	enum EFont
 	{
 		no_font
+	}
+
+	enum EDirection
+	{
+		left,
+		right
 	}
 
 	class Game
@@ -78,7 +91,7 @@ namespace Rage_of_Stickman
 		public Vector2 gravity = new Vector2(0.0f, 0.8f);
 
 		public Player player;
-		public Vector2 player_startposition = new Vector2(0, 0);
+		public Vector2 player_startposition = new Vector2(9, 26);
 
 		public List<Enemy> enemies;
 

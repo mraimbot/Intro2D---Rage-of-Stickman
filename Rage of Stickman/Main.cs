@@ -55,9 +55,20 @@ namespace Rage_of_Stickman
 			Game.Content.textures[(int)ETexture.gras] = Content.Load<Texture2D>("Graphics/Tiles/Gras");
 			Game.Content.textures[(int)ETexture.wall] = Content.Load<Texture2D>("Graphics/Tiles/Wall");
 			// Player
-			Game.Content.textures[(int)ETexture.player] = Content.Load<Texture2D>("Graphics/PlayerAnimation/Stickman01");
+			Game.Content.textures[(int)ETexture.player_idle_0] = Content.Load<Texture2D>("Graphics/PlayerAnimation/Stehen");
+			Game.Content.textures[(int)ETexture.player_move_0] = Content.Load<Texture2D>("Graphics/PlayerAnimation/PlayerLauf/Player_Move_0");
+			Game.Content.textures[(int)ETexture.player_move_1] = Content.Load<Texture2D>("Graphics/PlayerAnimation/PlayerLauf/Player_Move_1");
+			Game.Content.textures[(int)ETexture.player_move_2] = Content.Load<Texture2D>("Graphics/PlayerAnimation/PlayerLauf/Player_Move_2");
+			Game.Content.textures[(int)ETexture.player_punch_0] = Content.Load<Texture2D>("Graphics/PlayerAnimation/Schlag/Schlag0");
+			Game.Content.textures[(int)ETexture.player_punch_1] = Content.Load<Texture2D>("Graphics/PlayerAnimation/Schlag/Schlag1");
+			Game.Content.textures[(int)ETexture.player_punch_2] = Content.Load<Texture2D>("Graphics/PlayerAnimation/Schlag/Schlag2");
+			Game.Content.textures[(int)ETexture.player_kick_0] = Content.Load<Texture2D>("Graphics/PlayerAnimation/Kick/Kick0");
+			Game.Content.textures[(int)ETexture.player_kick_1] = Content.Load<Texture2D>("Graphics/PlayerAnimation/Kick/Kick1");
+			Game.Content.textures[(int)ETexture.player_kick_2] = Content.Load<Texture2D>("Graphics/PlayerAnimation/Kick/Kick2");
+			Game.Content.textures[(int)ETexture.player_kick_3] = Content.Load<Texture2D>("Graphics/PlayerAnimation/Kick/Kick3");
+
 			// Enemies
-			// here ...			
+			// here ...
 
 			// Animation
 			// Tiles
@@ -71,11 +82,22 @@ namespace Rage_of_Stickman
 			Game.Content.animations[(int)EAnimation.wall] = new AnimatedTexture2D(wall, Game.Content.tileSize, Game.Content.tileSize);
 			// Player
 			// Idle
-			Texture2D[] player_idle = { Game.Content.textures[(int)ETexture.player] };
+			Texture2D[] player_idle = { Game.Content.textures[(int)ETexture.player_idle_0] };
 			Game.Content.animations[(int)EAnimation.player_idle] = new AnimatedTexture2D(player_idle, (int)Game.Content.player.Size().X, (int)Game.Content.player.Size().Y);
+			// Move
+			Texture2D[] player_move = { Game.Content.textures[(int)ETexture.player_move_0], Game.Content.textures[(int)ETexture.player_move_1], Game.Content.textures[(int)ETexture.player_move_2] };
+			Game.Content.animations[(int)EAnimation.player_move] = new AnimatedTexture2D(player_move, (int)Game.Content.player.Size().X, (int)Game.Content.player.Size().Y);
+			// Punch
+			Texture2D[] player_punch = { Game.Content.textures[(int)ETexture.player_punch_0], Game.Content.textures[(int)ETexture.player_punch_1], Game.Content.textures[(int)ETexture.player_punch_2] };
+			Game.Content.animations[(int)EAnimation.player_punch] = new AnimatedTexture2D(player_punch, (int)Game.Content.player.Size().X, (int)Game.Content.player.Size().Y);
+			// Kick
+			Texture2D[] player_kick = { Game.Content.textures[(int)ETexture.player_kick_0], Game.Content.textures[(int)ETexture.player_kick_1], Game.Content.textures[(int)ETexture.player_kick_2], Game.Content.textures[(int)ETexture.player_kick_3] };
+			Game.Content.animations[(int)EAnimation.player_kick] = new AnimatedTexture2D(player_kick, (int)Game.Content.player.Size().X, (int)Game.Content.player.Size().Y);
 
 			level.LoadBackground(Game.Content.textures[(int)ETexture.background]);
-			Game.Content.player.LoadAnimations(Game.Content.animations[(int)EAnimation.player_idle]);
+
+			AnimatedTexture2D[] animationlist = { Game.Content.animations[(int)EAnimation.player_idle], Game.Content.animations[(int)EAnimation.player_move], Game.Content.animations[(int)EAnimation.player_punch], Game.Content.animations[(int)EAnimation.player_kick] };
+			Game.Content.player.LoadAnimations(animationlist);
 
 			Game.Content.tileMap.BuildTileMap(Content.Load<Texture2D>("Graphics/RageMap"));
 		}
