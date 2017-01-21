@@ -102,6 +102,8 @@ namespace Rage_of_Stickman
 		{
 			Game.Content.camera.position = Game.Content.player.Position()*Game.Content.tileSize;
 
+            //Vector2.Clamp(Game.Content.camera.position, Game.Content.camera.origin, Game.Content.tileMap.Size() * Game.Content.tileSize - Game.Content.camera.position);
+            
 			if (Game.Content.camera.position.X - Game.Content.camera.origin.X < 0)
 			{
 				Game.Content.camera.position.X = Game.Content.camera.origin.X;
@@ -119,7 +121,7 @@ namespace Rage_of_Stickman
 			{
 				Game.Content.camera.position.Y = Game.Content.tileMap.Size().Y * Game.Content.tileSize - Game.Content.camera.origin.Y;
 			}
-
+            
 			Game.Content.previousKeyState = Keyboard.GetState();
 		}
 

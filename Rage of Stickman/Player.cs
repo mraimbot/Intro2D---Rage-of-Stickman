@@ -136,8 +136,8 @@ namespace Rage_of_Stickman
                     if (Game.Content.tileMap.getCollisionTypeAt(x, y) == ECollision.impassable &&
                         TileIntersectsPlayer(bounds, new Rectangle(x * Game.Content.tileSize, y * Game.Content.tileSize, Game.Content.tileSize, Game.Content.tileSize), directionAxis, out depth))
                     {
-                        Console.WriteLine(depth);
-                        position += depth/Game.Content.tileSize;
+                        Console.WriteLine(position);
+                        position += (depth/Game.Content.tileSize/5);
                         bounds = BoundingRectangle;
                     }
                 }
@@ -152,9 +152,11 @@ namespace Rage_of_Stickman
         private static bool TileIntersectsPlayer(Rectangle player, Rectangle block, EDirectionAxis directionAxis,
             out Vector2 depth)
         {
+            //depth = player.GetIntersectionDepth(block);
+            
             depth = directionAxis == EDirectionAxis.Horizontal
-                ? new Vector2(0, player.GetVerticalIntersectionDepth(block))
-                : new Vector2(player.GetHorizontalIntersectionDepth(block));
+                ? new Vector2(0,player.GetVerticalIntersectionDepth(block))
+                : new Vector2(player.GetHorizontalIntersectionDepth(block),0);
             return depth.X != 0 || depth.Y != 0;
         }
     
@@ -184,7 +186,7 @@ namespace Rage_of_Stickman
 			Vector2 tilePositionVec = newPosition / Game.Content.tileSize;
             int tilePositionId = (int)(tilePositionVec.X + tilePositionVec.Y * Game.Content.tileMap.Size().X);
 
-            if (Game.Content.tileMap.getCollisionTypeAt(tilePositionId) == ECollision.passable)
+            //if (Game.Content.tileMap.getCollisionTypeAt(tilePositionId) == ECollision.passable)
                 position = newPosition;
 		}
 
