@@ -11,6 +11,7 @@ namespace Rage_of_Stickman
     {
         public static float GetHorizontalIntersectionDepth(this Rectangle aRectangle, Rectangle bRectangle)
         {
+            Console.WriteLine(aRectangle + " " + bRectangle);
             float centerA = aRectangle.Left + aRectangle.Width / 2;
             float centerB = bRectangle.Left + bRectangle.Width / 2;
             Console.WriteLine("centerA :"+centerA);

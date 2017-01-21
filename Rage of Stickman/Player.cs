@@ -32,8 +32,8 @@ namespace Rage_of_Stickman
         {
             get
             {
-                int left = (int)Math.Round(position.X)*Game.Content.tileSize + localBounds.X;
-                int top = (int)Math.Round(position.Y) * Game.Content.tileSize + localBounds.Y;
+                int left = (int)Math.Round(position.X*Game.Content.tileSize + localBounds.X);
+                int top = (int)Math.Round(position.Y * Game.Content.tileSize + localBounds.Y);
 
                 return new Rectangle(left, top, localBounds.Width, localBounds.Height);
             }
@@ -136,7 +136,7 @@ namespace Rage_of_Stickman
                     if (Game.Content.tileMap.getCollisionTypeAt(x, y) == ECollision.impassable &&
                         TileIntersectsPlayer(bounds, new Rectangle(x * Game.Content.tileSize, y * Game.Content.tileSize, Game.Content.tileSize, Game.Content.tileSize), directionAxis, out depth))
                     {
-                        Console.WriteLine(position);
+                        Console.WriteLine(bounds);
                         position += (depth/Game.Content.tileSize/5);
                         bounds = BoundingRectangle;
                     }
