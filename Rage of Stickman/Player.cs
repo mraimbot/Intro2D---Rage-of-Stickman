@@ -51,7 +51,7 @@ namespace Rage_of_Stickman
         }
 
         private int health;
-		private int speed;
+		private float speed;
 		private float mass;
 
 		private bool midair;
@@ -80,8 +80,8 @@ namespace Rage_of_Stickman
 
 			position = Game.Content.player_startposition;
 			health = 100;
-			speed = 1;
-			mass = 2;
+			speed = 0.7f;
+			mass = 1.5f;
 			midair = false;
 
 			isFlipped = false;
@@ -198,7 +198,6 @@ namespace Rage_of_Stickman
                     if (Game.Content.tileMap.getCollisionTypeAt(x, y) == ECollision.impassable &&
                         TileIntersectsPlayer(bounds, new Rectangle(x * Game.Content.tileSize, y * Game.Content.tileSize, Game.Content.tileSize, Game.Content.tileSize), directionAxis, out depth))
                     {
-                        Console.WriteLine(bounds);
                         position += (depth/Game.Content.tileSize/5);
                         bounds = BoundingRectangle;
                     }

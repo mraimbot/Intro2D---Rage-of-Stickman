@@ -31,7 +31,10 @@ namespace Rage_of_Stickman
 
 		public void Initialize()
 		{
-
+			// Enemies
+			Game.Content.enemies.Add(new Kid(new Vector2(11, 27)));
+			Game.Content.enemies.Add(new Oma(new Vector2(26, 25)));
+			Game.Content.enemies.Add(new Zombie(new Vector2(33, 25)));
 		}
 
 		public void LoadBackground(Texture2D background)

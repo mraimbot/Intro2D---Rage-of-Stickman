@@ -1,9 +1,4 @@
-﻿/*
- * File: Main.cs
- * Description: This is the main file where all important data is created and initialized.
- */
-
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -68,7 +63,20 @@ namespace Rage_of_Stickman
 			Game.Content.textures[(int)ETexture.player_kick_3] = Content.Load<Texture2D>("Graphics/PlayerAnimation/Kick/Kick3");
 
 			// Enemies
-			// here ...
+			// Kid
+			Game.Content.textures[(int)ETexture.enemy_kid_0] = Content.Load<Texture2D>("Graphics/Enemies/Kid/Kid1");
+			Game.Content.textures[(int)ETexture.enemy_kid_1] = Content.Load<Texture2D>("Graphics/Enemies/Kid/Kid2");
+			Game.Content.textures[(int)ETexture.enemy_kid_2] = Content.Load<Texture2D>("Graphics/Enemies/Kid/Kid3");
+			Game.Content.textures[(int)ETexture.enemy_kid_3] = Content.Load<Texture2D>("Graphics/Enemies/Kid/Kid4");
+			// Oma
+			Game.Content.textures[(int)ETexture.enemy_oma_0] = Content.Load<Texture2D>("Graphics/Enemies/Oma/Oma0");
+			Game.Content.textures[(int)ETexture.enemy_oma_1] = Content.Load<Texture2D>("Graphics/Enemies/Oma/Oma1");
+			Game.Content.textures[(int)ETexture.enemy_oma_2] = Content.Load<Texture2D>("Graphics/Enemies/Oma/Oma2");
+			Game.Content.textures[(int)ETexture.enemy_oma_3] = Content.Load<Texture2D>("Graphics/Enemies/Oma/Oma3");
+			// Zombie
+			Game.Content.textures[(int)ETexture.enemy_zombie_0] = Content.Load<Texture2D>("Graphics/Enemies/Zombie/Zombie0");
+			Game.Content.textures[(int)ETexture.enemy_zombie_1] = Content.Load<Texture2D>("Graphics/Enemies/Zombie/Zombie1");
+			Game.Content.textures[(int)ETexture.enemy_zombie_2] = Content.Load<Texture2D>("Graphics/Enemies/Zombie/Zombie2");
 
 			// Animation
 			// Tiles
@@ -94,11 +102,24 @@ namespace Rage_of_Stickman
 			Texture2D[] player_kick = { Game.Content.textures[(int)ETexture.player_kick_0], Game.Content.textures[(int)ETexture.player_kick_1], Game.Content.textures[(int)ETexture.player_kick_2], Game.Content.textures[(int)ETexture.player_kick_3] };
 			Game.Content.animations[(int)EAnimation.player_kick] = new AnimatedTexture2D(player_kick, (int)Game.Content.player.Size().X, (int)Game.Content.player.Size().Y);
 
-			level.LoadBackground(Game.Content.textures[(int)ETexture.background]);
-
 			AnimatedTexture2D[] animationlist = { Game.Content.animations[(int)EAnimation.player_idle], Game.Content.animations[(int)EAnimation.player_move], Game.Content.animations[(int)EAnimation.player_punch], Game.Content.animations[(int)EAnimation.player_kick] };
 			Game.Content.player.LoadAnimations(animationlist);
 
+			// Enemies
+			// Kid
+			Texture2D[] kid_move = { Game.Content.textures[(int)ETexture.enemy_kid_0], Game.Content.textures[(int)ETexture.enemy_kid_1], Game.Content.textures[(int)ETexture.enemy_kid_2], Game.Content.textures[(int)ETexture.enemy_kid_3] };
+			Game.Content.animations[(int)EAnimation.enemie_kid_move] = new AnimatedTexture2D(kid_move, Game.Content.tileSize, Game.Content.tileSize);
+
+			// Oma
+			Texture2D[] oma_move = { Game.Content.textures[(int)ETexture.enemy_oma_0], Game.Content.textures[(int)ETexture.enemy_oma_1], Game.Content.textures[(int)ETexture.enemy_oma_2], Game.Content.textures[(int)ETexture.enemy_oma_3] };
+			Game.Content.animations[(int)EAnimation.enemie_oma_move] = new AnimatedTexture2D(oma_move, Game.Content.tileSize, Game.Content.tileSize * 2);
+
+			// Zombie
+			Texture2D[] zombie_move = { Game.Content.textures[(int)ETexture.enemy_zombie_0], Game.Content.textures[(int)ETexture.enemy_zombie_1], Game.Content.textures[(int)ETexture.enemy_zombie_2] };
+			Game.Content.animations[(int)EAnimation.enemie_zombie_move] = new AnimatedTexture2D(zombie_move, Game.Content.tileSize, Game.Content.tileSize * 2);
+
+			// Others
+			level.LoadBackground(Game.Content.textures[(int)ETexture.background]);
 			Game.Content.tileMap.BuildTileMap(Content.Load<Texture2D>("Graphics/RageMap"));
 		}
 
@@ -106,8 +127,6 @@ namespace Rage_of_Stickman
 
 		private void Input()
 		{
-			// TODO Main.cs - Update() : Delete Exit() through Escape-Key.
-
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
 			{
 				Exit();
@@ -124,8 +143,6 @@ namespace Rage_of_Stickman
 		{
 			Game.Content.camera.position = Game.Content.player.Position()*Game.Content.tileSize;
 
-            //Vector2.Clamp(Game.Content.camera.position, Game.Content.camera.origin, Game.Content.tileMap.Size() * Game.Content.tileSize - Game.Content.camera.position);
-            
 			if (Game.Content.camera.position.X - Game.Content.camera.origin.X < 0)
 			{
 				Game.Content.camera.position.X = Game.Content.camera.origin.X;

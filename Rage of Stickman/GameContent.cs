@@ -34,7 +34,20 @@ namespace Rage_of_Stickman
 		player_kick_3,
 
 		// Enemies
-
+		// Kid
+		enemy_kid_0,
+		enemy_kid_1,
+		enemy_kid_2,
+		enemy_kid_3,
+		// Oma
+		enemy_oma_0,
+		enemy_oma_1,
+		enemy_oma_2,
+		enemy_oma_3,
+		// Zombie
+		enemy_zombie_0,
+		enemy_zombie_1,
+		enemy_zombie_2,
 
 		no_texture
 	}
@@ -54,7 +67,9 @@ namespace Rage_of_Stickman
 		player_kick,
 
 		// Enemies
-
+		enemie_kid_move,
+		enemie_oma_move,
+		enemie_zombie_move,
 
 		no_animation
 	}
@@ -68,6 +83,13 @@ namespace Rage_of_Stickman
 	{
 		left,
 		right
+	}
+
+	enum EEnemy
+	{
+		kid,
+		oma,
+		zombie
 	}
 
 	class Game
