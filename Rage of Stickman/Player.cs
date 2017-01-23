@@ -19,6 +19,9 @@ namespace Rage_of_Stickman
 		private AnimatedTexture2D animation_move;
 		private AnimatedTexture2D animation_punch;
 		private AnimatedTexture2D animation_kick;
+		private AnimatedTexture2D animation_jump;
+		private AnimatedTexture2D animation_midair;
+		private AnimatedTexture2D animation_land;
 
 		private Vector2 position;
 
@@ -96,6 +99,9 @@ namespace Rage_of_Stickman
 			this.animation_move = animationList[1];
 			this.animation_punch = animationList[2];
 			this.animation_kick = animationList[3];
+			this.animation_jump = animationList[4];
+			this.animation_midair = animationList[5];
+			this.animation_land = animationList[6];
 	}
 
 		public Vector2 Position()
@@ -266,7 +272,13 @@ namespace Rage_of_Stickman
 				s = SpriteEffects.None;
 			}
 
-			if (move_left || move_right)
+			// TODO Build in animation_land
+
+			if (midair)
+			{
+				animation_midair.Draw(position * Game.Content.tileSize, s);
+			}
+			else if (move_left || move_right)
 			{
 				animation_move.Draw(position * Game.Content.tileSize, s);
 			}
@@ -280,7 +292,7 @@ namespace Rage_of_Stickman
 			}
 			else if (move_jump)
 			{
-				animation_kick.Draw(position * Game.Content.tileSize, s);
+				animation_jump.Draw(position * Game.Content.tileSize, s);
 			}
 			else
 			{

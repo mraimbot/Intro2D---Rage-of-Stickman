@@ -32,6 +32,10 @@ namespace Rage_of_Stickman
 		player_kick_1,
 		player_kick_2,
 		player_kick_3,
+		player_jump_0,
+		player_land_0,
+		player_land_1,
+		player_midair_0,
 
 		// Enemies
 		// Kid
@@ -65,6 +69,9 @@ namespace Rage_of_Stickman
 		player_move,
 		player_punch,
 		player_kick,
+		player_jump,
+		player_midair,
+		player_land,
 
 		// Enemies
 		enemie_kid_move,

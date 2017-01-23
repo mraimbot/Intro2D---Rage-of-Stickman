@@ -61,6 +61,10 @@ namespace Rage_of_Stickman
 			Game.Content.textures[(int)ETexture.player_kick_1] = Content.Load<Texture2D>("Graphics/PlayerAnimation/Kick/Kick1");
 			Game.Content.textures[(int)ETexture.player_kick_2] = Content.Load<Texture2D>("Graphics/PlayerAnimation/Kick/Kick2");
 			Game.Content.textures[(int)ETexture.player_kick_3] = Content.Load<Texture2D>("Graphics/PlayerAnimation/Kick/Kick3");
+			Game.Content.textures[(int)ETexture.player_jump_0] = Content.Load<Texture2D>("Graphics/PlayerAnimation/Sprung/Sprung0");
+			Game.Content.textures[(int)ETexture.player_land_0] = Content.Load<Texture2D>("Graphics/PlayerAnimation/Sprung/SprungLanding0");
+			Game.Content.textures[(int)ETexture.player_land_1] = Content.Load<Texture2D>("Graphics/PlayerAnimation/Sprung/SprungLanding1");
+			Game.Content.textures[(int)ETexture.player_midair_0] = Content.Load<Texture2D>("Graphics/PlayerAnimation/Sprung/SprungMidair");
 
 			// Enemies
 			// Kid
@@ -101,8 +105,17 @@ namespace Rage_of_Stickman
 			// Kick
 			Texture2D[] player_kick = { Game.Content.textures[(int)ETexture.player_kick_0], Game.Content.textures[(int)ETexture.player_kick_1], Game.Content.textures[(int)ETexture.player_kick_2], Game.Content.textures[(int)ETexture.player_kick_3] };
 			Game.Content.animations[(int)EAnimation.player_kick] = new AnimatedTexture2D(player_kick, (int)Game.Content.player.Size().X, (int)Game.Content.player.Size().Y);
+			// jumping
+			Texture2D[] player_jump = { Game.Content.textures[(int)ETexture.player_jump_0] };
+			Game.Content.animations[(int)EAnimation.player_jump] = new AnimatedTexture2D(player_jump, (int)Game.Content.player.Size().X, (int)Game.Content.player.Size().Y);
+			// midair
+			Texture2D[] player_midair = { Game.Content.textures[(int)ETexture.player_midair_0] };
+			Game.Content.animations[(int)EAnimation.player_midair] = new AnimatedTexture2D(player_midair, (int)Game.Content.player.Size().X, (int)Game.Content.player.Size().Y);
+			// landing
+			Texture2D[] player_land = { Game.Content.textures[(int)ETexture.player_land_0], Game.Content.textures[(int)ETexture.player_land_1] };
+			Game.Content.animations[(int)EAnimation.player_land] = new AnimatedTexture2D(player_land, (int)Game.Content.player.Size().X, (int)Game.Content.player.Size().Y);
 
-			AnimatedTexture2D[] animationlist = { Game.Content.animations[(int)EAnimation.player_idle], Game.Content.animations[(int)EAnimation.player_move], Game.Content.animations[(int)EAnimation.player_punch], Game.Content.animations[(int)EAnimation.player_kick] };
+			AnimatedTexture2D[] animationlist = { Game.Content.animations[(int)EAnimation.player_idle], Game.Content.animations[(int)EAnimation.player_move], Game.Content.animations[(int)EAnimation.player_punch], Game.Content.animations[(int)EAnimation.player_kick], Game.Content.animations[(int)EAnimation.player_jump], Game.Content.animations[(int)EAnimation.player_midair], Game.Content.animations[(int)EAnimation.player_land] };
 			Game.Content.player.LoadAnimations(animationlist);
 
 			// Enemies
