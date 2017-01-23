@@ -41,6 +41,7 @@ namespace Rage_of_Stickman
 		private Vector2 velocity;
 
         private Rectangle localBounds;
+		private float distanceToGround;
 
         public Rectangle BoundingRectangle
         {
@@ -154,11 +155,19 @@ namespace Rage_of_Stickman
 
 		private void Logic()
 		{
+			if (calcDistanceToGround() < 0.48f)
+			{
+				midair = false;
+			}
+			else
+			{
+				midair = true;
+			}
+
 			if (move_jump && !midair)
 			{
-				animation_kick.Update();
-				impulses.Add(-2 * Game.Content.gravity);
-				// midair = true;
+				animation_jump.Update();
+				impulses.Add(-8 * Game.Content.gravity);
 			}
 
 			if (move_left)
@@ -188,7 +197,20 @@ namespace Rage_of_Stickman
 			}
 		}
 
-        private void HandleCollision(EDirectionAxis directionAxis)
+		private float calcDistanceToGround()
+		{
+			float distance = (float)(position.Y) - (float)(Math.Round(position.Y));
+			int tileBelow = (int)Math.Round(position.Y) + 2;
+
+			while (Game.Content.tileMap.getCollisionTypeAt((int)Math.Round(position.X), tileBelow) == ECollision.passable)
+			{
+				tileBelow++;
+				distance += 1;
+			}
+			return distance;
+		}
+
+		private void HandleCollision(EDirectionAxis directionAxis)
         {
             Rectangle bounds = BoundingRectangle;
 
@@ -256,6 +278,7 @@ namespace Rage_of_Stickman
 			Input();
 			Logic();
 			Physic();
+			Console.WriteLine("Position: [" + position.X + "|" + position.Y + "]");
         }
 
         public void Draw()

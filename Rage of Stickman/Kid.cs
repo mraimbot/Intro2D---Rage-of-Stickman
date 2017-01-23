@@ -9,7 +9,7 @@ namespace Rage_of_Stickman
 {
 	class Kid : Enemy
 	{
-		public Kid(Vector2 startPosition) : base(EEnemy.kid, startPosition, 5, 0.6f)
+		public Kid(Vector2 startPosition) : base(EEnemy.kid, startPosition, 5, 1f/2f)
 		{
 			width = Game.Content.tileSize;
 			height = Game.Content.tileSize;
