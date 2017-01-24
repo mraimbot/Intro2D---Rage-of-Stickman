@@ -54,12 +54,11 @@ namespace Rage_of_Stickman
 			{
 				Input();
 				Logic();
+				Console.WriteLine("Position = " + "[" + this.position.X / Game.Content.tileSize + "|" + this.position.Y / Game.Content.tileSize + "] || calcDistanceToGround = " + calcDistanceToGround());
 			}
 
 			base.Update();
 			// TODO TESTOUTPUT Player.cs Update()
-			Console.WriteLine("Position = " + "[" + this.position.X / Game.Content.tileSize + "|" + this.position.Y / Game.Content.tileSize + "] || calcDistanceToGround = " + calcDistanceToGround());
-
 		}
 
 		private void Input()

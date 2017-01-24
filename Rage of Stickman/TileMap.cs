@@ -88,6 +88,11 @@ namespace Rage_of_Stickman
 				}
 			}
 
+			if (getCollisionTypeAt(xStartID, yEndID) == ECollision.impassable)
+			{
+				return true;
+			}
+
 			return false;
 		}
 

@@ -153,20 +153,25 @@ namespace Rage_of_Stickman
 
 		private void HandleTransformation(Vector2 velocity)
 		{
-			if (!Game.Content.tileMap.CheckCollisionYRay(new Vector2(position.X + size.X / 2, position.Y + size.Y), new Vector2(position.X + size.X / 2, position.Y + velocity.Y + size.Y)) && !Game.Content.tileMap.CheckCollisionYRay(new Vector2(position.X + size.X / 2, position.Y), new Vector2(position.X + size.X / 2, position.Y + velocity.Y)))
+			if (!(isGrounded && velocity.Y > 0))
 			{
-				position.Y += velocity.Y;
-			}
-			else
-			{
-				if (position.Y <= position.Y + velocity.Y) // falling down
+				if (!Game.Content.tileMap.CheckCollisionYRay(new Vector2(position.X, position.Y), new Vector2(position.X, position.Y + velocity.Y))
+					&& !Game.Content.tileMap.CheckCollisionYRay(new Vector2(position.X, position.Y + size.Y), new Vector2(position.X, position.Y + size.Y + velocity.Y))
+					&& !Game.Content.tileMap.CheckCollisionYRay(new Vector2(position.X + size.X, position.Y), new Vector2(position.X + size.X, position.Y + velocity.Y))
+					&& !Game.Content.tileMap.CheckCollisionYRay(new Vector2(position.X + size.X, position.Y + size.Y), new Vector2(position.X + size.X, position.Y + size.Y + velocity.Y)))
 				{
-					position.Y = position.Y + calcDistanceToGround() - minGroundDistance;
-					isGrounded = true;
+					position.Y += velocity.Y;
 				}
 				else
 				{
-					isGrounded = false;
+					if (velocity.Y > 0) // falling down
+					{
+						isGrounded = true;
+					}
+					else if (velocity.Y < 0)
+					{
+						isGrounded = false;
+					}
 				}
 			}
 
@@ -178,14 +183,24 @@ namespace Rage_of_Stickman
 				position.X += velocity.X;
 			}
 
-			if (!isGrounded && calcDistanceToGround() <= minGroundDistance)
+			//if (calcDistanceToGround() <= minGroundDistance)
+			//{
+			//	position.Y = position.Y + calcDistanceToGround() - minGroundDistance;
+			//	isGrounded = true;
+			//}
+			//else
+			if (isGrounded || calcDistanceToGround() <= minGroundDistance)
 			{
 				position.Y = position.Y + calcDistanceToGround() - minGroundDistance;
-				isGrounded = true;
 			}
-			else if (calcDistanceToGround() > minGroundDistance)
+
+			if (calcDistanceToGround() > minGroundDistance)
 			{
 				isGrounded = false;
+			}
+			else
+			{
+				isGrounded = true;
 			}
 		}
 
@@ -194,7 +209,7 @@ namespace Rage_of_Stickman
 			float distance = ((int)((position.Y + size.Y) / Game.Content.tileSize) + 1) * Game.Content.tileSize - (position.Y + size.Y);
 			int tileBelow = (int)((position.Y + size.Y) / Game.Content.tileSize) + 1;
 
-			while (Game.Content.tileMap.getCollisionTypeAt((int)position.X / Game.Content.tileSize, tileBelow) == ECollision.passable
+			while (Game.Content.tileMap.getCollisionTypeAt((int)(position.X / Game.Content.tileSize), tileBelow) == ECollision.passable
 				&& Game.Content.tileMap.getCollisionTypeAt((int)((position.X + size.X) / Game.Content.tileSize), tileBelow) == ECollision.passable)
 			{
 				tileBelow++;
