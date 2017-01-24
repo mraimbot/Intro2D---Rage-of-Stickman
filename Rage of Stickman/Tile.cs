@@ -14,32 +14,50 @@ namespace Rage_of_Stickman
 		impassable = 1
 	}
 
-	class Tile
+	class Tile : Entity
 	{
-		private AnimatedTexture2D animatedTexture2D;
-		private ECollision collision_type;
+		private ECollision collision_type = ECollision.impassable;
 
-		public Tile(AnimatedTexture2D animatedTexture2D, ECollision collision_type)
+		public Tile(AnimatedTexture2D animatedTexture, ECollision collision_type, Vector2 startPosition, Vector2 size)
+			: base(startPosition, size, EDirection.right, 1, 0, false, -1)
 		{
-			this.animatedTexture2D = animatedTexture2D;
+			if (animatedTexture != null)
+			{
+				this.LoadAnimations(animatedTexture);
+			}
+
 			this.collision_type = collision_type;
 		}
 
 		public ECollision getCollisionType()
 		{
-			return collision_type;
+			return this.collision_type;
 		}
 
-		public void Update()
+		public new void Update()
 		{
-			animatedTexture2D.Update();
-		}
-
-		public void Draw(Vector2 position)
-		{
-			if (animatedTexture2D != null)
+			if (active)
 			{
-				animatedTexture2D.Draw(position);
+				this.Logic();
+			}
+			base.Update();
+		}
+
+		private void Logic()
+		{
+			// TODO Tile.Logic()
+		}
+
+		public new void Draw()
+		{
+			if (animations == null || animations.Length == 0)
+			{
+				base.Draw();
+			}
+			else
+			{
+				this.animations[0].Update();
+				this.animations[0].Draw(this.position);
 			}
 		}
 	}

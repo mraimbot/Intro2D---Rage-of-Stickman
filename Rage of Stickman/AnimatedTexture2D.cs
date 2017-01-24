@@ -22,13 +22,12 @@ namespace Rage_of_Stickman
 
 		private bool active;
 
-		public AnimatedTexture2D(Texture2D[] textures, int height, int width)
+		public AnimatedTexture2D(Texture2D[] textures, int width, int height, float frameTime)
 		{
 			this.textures = textures;
 			this.height = height;
 			this.width = width;
-
-			frameTime = 100.0f;
+			this.frameTime = frameTime;
 
 			active = true;
 		}

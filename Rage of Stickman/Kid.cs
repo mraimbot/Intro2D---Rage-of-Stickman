@@ -9,11 +9,30 @@ namespace Rage_of_Stickman
 {
 	class Kid : Enemy
 	{
-		public Kid(Vector2 startPosition) : base(EEnemy.kid, startPosition, 5, 1f/2f)
+		public Kid(Vector2 startPosition)
+			: base(startPosition, new Vector2(1, 1), 1, 0.6f, 5)
 		{
-			width = Game.Content.tileSize;
-			height = Game.Content.tileSize;
-			localBounds = new Rectangle(0, 0, Game.Content.tileSize, Game.Content.tileSize * 2);
+			this.LoadAnimations(Game.Content.animations[(int)EAnimation.enemie_kid_move]);
+		}
+
+		public new void Update()
+		{
+			if (this.active)
+			{
+				Logic();
+			}
+
+			base.Update();
+		}
+
+		private void Logic()
+		{
+			// TODO Kid.Logic()
+		}
+
+		public new void Draw()
+		{
+			base.Draw();
 		}
 	}
 }

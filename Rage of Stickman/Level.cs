@@ -24,22 +24,26 @@ namespace Rage_of_Stickman
         private bool ReachedExit => reachedExit;
         private bool reachedExit;
 
-		public Level()
+		private Vector2 goal;
+
+		public Level(Texture2D bitMap, Texture2D background, Vector2 playerStartPosition, Vector2 goal)
 		{
-			Initialize();
+			Initialize(bitMap, background, playerStartPosition, goal);
 		}
 
-		public void Initialize()
+		public void Initialize(Texture2D bitMap, Texture2D background, Vector2 playerStartPosition, Vector2 goal)
 		{
-			// Enemies
-			Game.Content.enemies.Add(new Kid(new Vector2(11, 27)));
-			Game.Content.enemies.Add(new Oma(new Vector2(26, 25)));
-			Game.Content.enemies.Add(new Zombie(new Vector2(33, 25)));
-		}
-
-		public void LoadBackground(Texture2D background)
-		{
+			// Map
+			Game.Content.tileMap = new TileMap(bitMap);
 			this.background = background;
+			// Player
+			Game.Content.player = new Player(new Vector2(playerStartPosition.X * Game.Content.tileSize, playerStartPosition.Y * Game.Content.tileSize), EDirection.right, 1.5f, 0.7f, 100);
+			// Enemies
+			// Game.Content.enemies.Add(new Kid(new Vector2(11, 27)));
+			// Game.Content.enemies.Add(new Oma(new Vector2(26, 25)));
+			// Game.Content.enemies.Add(new Zombie(new Vector2(33, 25)));
+			// Goal
+			this.goal = goal;
 		}
 
 		public void Update()
@@ -47,10 +51,12 @@ namespace Rage_of_Stickman
 			Game.Content.tileMap.Update();
 			Game.Content.player.Update();
 
+			// TODO Check player for goal-position
+
 			for (int i = Game.Content.enemies.Count - 1; i >= 0; i--)
 			{
 				Game.Content.enemies[i].Update();
-				if (Game.Content.enemies[i].IsDead())
+				if (Game.Content.enemies[i].isDead())
 				{
 					Game.Content.enemies.RemoveAt(i);
 				}

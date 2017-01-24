@@ -11,9 +11,6 @@ namespace Rage_of_Stickman
 {
 	enum ETexture
 	{
-		// Background
-		background,
-
 		// Tiles
 		asphalt,
 		stone,
@@ -86,12 +83,6 @@ namespace Rage_of_Stickman
 		no_font
 	}
 
-	enum EDirection
-	{
-		left,
-		right
-	}
-
 	enum EEnemy
 	{
 		kid,
@@ -117,10 +108,9 @@ namespace Rage_of_Stickman
 		public TileMap tileMap;
 		public int tileSize = 32;
 
-		public Vector2 gravity = new Vector2(0.0f, 0.8f);
+		public Vector2 force_gravity = new Vector2(0.0f, 0.9807f);
 
 		public Player player;
-		public Vector2 player_startposition = new Vector2(9, 26);
 
 		public List<Enemy> enemies;
 

@@ -13,314 +13,177 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace Rage_of_Stickman
 {
-    class Player
-    {
-		private AnimatedTexture2D animation_idle;
-		private AnimatedTexture2D animation_move;
-		private AnimatedTexture2D animation_punch;
-		private AnimatedTexture2D animation_kick;
-		private AnimatedTexture2D animation_jump;
-		private AnimatedTexture2D animation_midair;
-		private AnimatedTexture2D animation_land;
-
-		private Vector2 position;
-
-		private int width;
-		private int height;
+	class Player : Entity
+	{
+		/// <summary>
+		/// Animations:
+		///		1: idle
+		///		2: move
+		///		3: punch
+		///		4: kick
+		///		5: jump
+		///		6: midair
+		///		7: land
+		/// </summary>
 
 		private bool move_left;
 		private bool move_right;
 		private bool move_punch;
 		private bool move_kick;
 		private bool move_jump;
-		private bool isFlipped;
 
-		private List<Vector2> forces;
-		private List<Vector2> impulses;
-		private Vector2 accel;
-		private Vector2 velocity;
+		private Vector2 force_jump = new Vector2(0.0f, -7.5f);
 
-        private Rectangle localBounds;
-		private float distanceToGround;
-
-        public Rectangle BoundingRectangle
-        {
-            get
-            {
-                int left = (int)Math.Round(position.X*Game.Content.tileSize + localBounds.X);
-                int top = (int)Math.Round(position.Y * Game.Content.tileSize + localBounds.Y);
-
-                return new Rectangle(left, top, localBounds.Width, localBounds.Height);
-            }
-        }
-
-        private int health;
-		private float speed;
-		private float mass;
-
-		private bool midair;
-        SpriteEffects s = SpriteEffects.None;
-        EDirection direction = EDirection.right;
-
-		private Vector2 jump_force = new Vector2(0.0f, -1.0f);
-
-		public Player()
-        {
-			this.width = Game.Content.tileSize;
-			this.height = Game.Content.tileSize;
-            localBounds = new Rectangle(0, 0, Game.Content.tileSize, 2*Game.Content.tileSize);
-
-			forces = new List<Vector2>();
-			impulses = new List<Vector2>();
-
+		public Player(Vector2 startPosition, EDirection lookAtDirection, float mass, float speed, int health)
+			: base(startPosition, new Vector2(1, 1), lookAtDirection, mass, speed, true, health)
+		{
+			AnimatedTexture2D[] animationlist = { Game.Content.animations[(int)EAnimation.player_idle], Game.Content.animations[(int)EAnimation.player_move], Game.Content.animations[(int)EAnimation.player_punch], Game.Content.animations[(int)EAnimation.player_kick], Game.Content.animations[(int)EAnimation.player_jump], Game.Content.animations[(int)EAnimation.player_midair], Game.Content.animations[(int)EAnimation.player_land] };
+			this.LoadAnimations(animationlist);
 			Initialize();
-        }
+		}
 
 		public void Initialize()
 		{
-			forces.Clear();
-			forces.Add(Game.Content.gravity);
-			impulses.Clear();
-
-			position = Game.Content.player_startposition;
-			health = 100;
-			speed = 0.7f;
-			mass = 1.5f;
-			midair = false;
-
-			isFlipped = false;
+			this.position = this.startPosition;
+			this.health = this.health_max;
 		}
 
-		public void LoadAnimations(AnimatedTexture2D[] animationList)
+		public new void Update()
 		{
-			this.animation_idle = animationList[0];
-			this.width = (int)animation_idle.Size().X;
-			this.height = (int)animation_idle.Size().Y;
+			if (this.active)
+			{
+				Input();
+				Logic();
+			}
 
-			this.animation_move = animationList[1];
-			this.animation_punch = animationList[2];
-			this.animation_kick = animationList[3];
-			this.animation_jump = animationList[4];
-			this.animation_midair = animationList[5];
-			this.animation_land = animationList[6];
-	}
-
-		public Vector2 Position()
-		{
-			return position;
+			base.Update();
+			// TODO TESTOUTPUT Player.cs Update()
+			Console.WriteLine("Position = " + "[" + this.position.X / Game.Content.tileSize + "|" + this.position.Y / Game.Content.tileSize + "] || groundDistance = " + calcDistanceToGround(new Vector2(position.X + size.X / 2, position.Y + size.Y)));
 		}
 
-		public Vector2 Size()
+		private void Input()
 		{
-			return new Vector2(width, height);
+			this.move_jump = false;
+			this.move_left = false;
+			this.move_right = false;
+			this.move_punch = false;
+			this.move_kick = false;
+
+			if (!this.isDead())
+			{
+				foreach (Keys key in Keyboard.GetState().GetPressedKeys())
+					switch (key)
+					{
+						case Keys.W:
+						case Keys.Up:
+						case Keys.Space:
+							this.move_jump = true;
+							break;
+
+						case Keys.A:
+						case Keys.Left:
+							this.move_left = true;
+							break;
+
+						case Keys.D:
+						case Keys.Right:
+							this.move_right = true;
+							break;
+
+						case Keys.E:
+						case Keys.Y:
+							this.move_punch = true;
+							break;
+
+						case Keys.F:
+						case Keys.X:
+							this.move_kick = true;
+							break;
+					}
+			}
 		}
-
-        private void Input()
-        {
-            KeyboardState ks = Keyboard.GetState();
-            Keys[] currentlyPressedKeys = ks.GetPressedKeys();
-
-			move_jump = false;
-			move_left = false;
-			move_right = false;
-			move_punch = false;
-			move_kick = false;
-
-            foreach (Keys key in currentlyPressedKeys)
-                switch (key)
-                {
-                    case Keys.W:
-                    case Keys.Up:
-					case Keys.Space:
-						move_jump = true;
-                        break;
-                    case Keys.A:
-                    case Keys.Left:
-						move_left = true;                        
-                        break;
-                    case Keys.D:
-                    case Keys.Right:
-						move_right = true;
-                        break;
-					case Keys.E:
-					case Keys.Y:
-						move_punch = true;
-						break;
-					case Keys.F:
-					case Keys.X:
-						move_kick = true;
-						break;
-                }
-        }
 
 		private void Logic()
 		{
-			if (calcDistanceToGround() < 0.48f)
+			if (this.move_jump && this.isGrounded)
 			{
-				midair = false;
+				this.impulses.Add(force_jump);
+			}
+
+			if (this.move_left && this.isGrounded)
+			{
+				this.impulses.Add(new Vector2(-speed, 0.0f));
+				this.lookAtDirection = EDirection.left;
+			}
+			
+			if (this.move_right && this.isGrounded)
+			{
+				this.impulses.Add(new Vector2(speed, 0.0f));
+				this.lookAtDirection = EDirection.right;
+			}
+
+			if (this.move_punch)
+			{
+				// TODO Player.move_punch
+			}
+
+			if (this.move_kick)
+			{
+				// TODO Player.move_kick
+			}
+		}
+
+		public new void Draw()
+		{
+			SpriteEffects s = SpriteEffects.None;
+
+			if (lookAtDirection == EDirection.left)
+			{
+				s = SpriteEffects.FlipHorizontally;
 			}
 			else
 			{
-				midair = true;
-			}
-
-			if (move_jump && !midair)
-			{
-				animation_jump.Update();
-				impulses.Add(-8 * Game.Content.gravity);
-			}
-
-			if (move_left)
-			{
-				animation_move.Update();
-				impulses.Add(new Vector2(-speed, 0.0f));
-				direction = EDirection.left;
-			}
-			
-			if (move_right)
-			{
-				animation_move.Update();
-				impulses.Add(new Vector2(speed, 0.0f));
-				direction = EDirection.right;
-			}
-
-			if (move_punch)
-			{
-				animation_punch.Update();
-				// TODO move_punch
-			}
-
-			if (move_kick)
-			{
-				animation_kick.Update();
-				// TODO move_kick
-			}
-		}
-
-		private float calcDistanceToGround()
-		{
-			float distance = (float)(position.Y) - (float)(Math.Round(position.Y));
-			int tileBelow = (int)Math.Round(position.Y) + 2;
-
-			while (Game.Content.tileMap.getCollisionTypeAt((int)Math.Round(position.X), tileBelow) == ECollision.passable)
-			{
-				tileBelow++;
-				distance += 1;
-			}
-			return distance;
-		}
-
-		private void HandleCollision(EDirectionAxis directionAxis)
-        {
-            Rectangle bounds = BoundingRectangle;
-
-            int leftTile = bounds.Left / Game.Content.tileSize;
-            int topTile = bounds.Top / Game.Content.tileSize;
-            int rightTile = (int)Math.Ceiling((float)bounds.Right / Game.Content.tileSize) - 1;
-            int bottomTile = (int)Math.Ceiling((float)bounds.Bottom / Game.Content.tileSize) - 1;
-
-            for (int y = topTile; y <= bottomTile; y++)
-                for (int x = leftTile; x <= rightTile; x++)
-                {
-                    Vector2 depth;
-                    if (Game.Content.tileMap.getCollisionTypeAt(x, y) == ECollision.impassable &&
-                        TileIntersectsPlayer(bounds, new Rectangle(x * Game.Content.tileSize, y * Game.Content.tileSize, Game.Content.tileSize, Game.Content.tileSize), directionAxis, out depth))
-                    {
-                        position += (depth/Game.Content.tileSize/5);
-                        bounds = BoundingRectangle;
-                    }
-                }
-        }
-
-        public enum EDirectionAxis
-        {
-            Horizontal,
-            Vertical
-        }
-
-        private static bool TileIntersectsPlayer(Rectangle player, Rectangle block, EDirectionAxis directionAxis,
-            out Vector2 depth)
-        {
-            //depth = player.GetIntersectionDepth(block);
-            
-            depth = directionAxis == EDirectionAxis.Horizontal
-                ? new Vector2(0,player.GetVerticalIntersectionDepth(block))
-                : new Vector2(player.GetHorizontalIntersectionDepth(block),0);
-            return depth.X != 0 || depth.Y != 0;
-        }
-
-
-        private void Physic()
-        {
-            Vector2 force_max = Vector2.Zero;
-
-            foreach (Vector2 force in forces)
-                force_max += force;
-
-            foreach (Vector2 impulse in impulses)
-                force_max += impulse;
-
-            impulses.Clear();
-
-            accel = force_max / mass;
-            velocity = accel * Game.Content.gameTime.ElapsedGameTime.Milliseconds / Game.Content.tileSize;
-
-            position += velocity;
-            HandleCollision(EDirectionAxis.Horizontal);
-            HandleCollision(EDirectionAxis.Vertical);
-            position = Vector2.Clamp(position, new Vector2(0, 0), Game.Content.tileMap.Size() * Game.Content.tileSize);
-
-            Vector2 tilePositionVec = position / Game.Content.tileSize;
-        }
-
-		public void Update()
-        {
-			Input();
-			Logic();
-			Physic();
-			Console.WriteLine("Position: [" + position.X + "|" + position.Y + "]");
-        }
-
-        public void Draw()
-        {
-
-            if (direction == EDirection.left)
-			{
-				isFlipped = true;
-				s = SpriteEffects.FlipHorizontally;
-			}
-			else if (isFlipped)
-			{
-				isFlipped = false;
 				s = SpriteEffects.None;
 			}
 
-			// TODO Build in animation_land
-
-			if (midair)
+			if (animations == null || animations.Length == 0)
 			{
-				animation_midair.Draw(position * Game.Content.tileSize, s);
-			}
-			else if (move_left || move_right)
-			{
-				animation_move.Draw(position * Game.Content.tileSize, s);
-			}
-			else if (move_punch)
-			{
-				animation_punch.Draw(position * Game.Content.tileSize, s);
-			}
-			else if (move_kick)
-			{
-				animation_kick.Draw(position * Game.Content.tileSize, s);
-			}
-			else if (move_jump)
-			{
-				animation_jump.Draw(position * Game.Content.tileSize, s);
+				base.Draw();
 			}
 			else
 			{
-				animation_idle.Draw(position * Game.Content.tileSize, s);
+				// TODO Player: Build in animation_land
+				if (!isGrounded)
+				{
+					this.animations[5].Update();
+					this.animations[5].Draw(position, s);
+				}
+				else if (move_left || move_right)
+				{
+					this.animations[1].Update();
+					this.animations[1].Draw(position, s);
+				}
+				else if (move_punch)
+				{
+					this.animations[2].Update();
+					this.animations[2].Draw(position, s);
+				}
+				else if (move_kick)
+				{
+					this.animations[3].Update();
+					this.animations[3].Draw(position, s);
+				}
+				else if (move_jump)
+				{
+					this.animations[4].Update();
+					this.animations[4].Draw(position, s);
+				}
+				else
+				{
+					this.animations[0].Update();
+					this.animations[0].Draw(position, s);
+				}
 			}
 		}
-    }
+	}
 }

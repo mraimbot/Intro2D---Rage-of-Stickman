@@ -9,11 +9,30 @@ namespace Rage_of_Stickman
 {
 	class Oma : Enemy
 	{
-		public Oma(Vector2 startPosition) : base(EEnemy.oma, startPosition, 100, 0.1f)
+		public Oma(Vector2 startPosition)
+			: base(startPosition, new Vector2(1, 1), 2, 0.2f, 500)
 		{
-			width = Game.Content.tileSize;
-			height = Game.Content.tileSize * 2;
-			localBounds = new Rectangle(0, 0, Game.Content.tileSize, Game.Content.tileSize * 2);
+			this.LoadAnimations(Game.Content.animations[(int)EAnimation.enemie_oma_move]);
+		}
+
+		public new void Update()
+		{
+			if (this.active)
+			{
+				Logic();
+			}
+
+			base.Update();
+		}
+
+		private void Logic()
+		{
+			// TODO Oma.Logic()
+		}
+
+		public new void Draw()
+		{
+			base.Draw();
 		}
 	}
 }

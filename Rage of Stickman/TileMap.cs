@@ -12,42 +12,37 @@ namespace Rage_of_Stickman
 {
 	class TileMap
 	{
-		private Tile[] tileMap;
 		private int width;
 		private int height;
-        private Dictionary<Color, Tile> tileToColor;
 
+		private Tile[] tileMap;
 
-        public TileMap()
+		public TileMap(Texture2D bitMap)
 		{
-
-        }
+			this.BuildTileMap(bitMap);
+		}
 
 		public void BuildTileMap(Texture2D bitMap)
 		{
 			this.width = bitMap.Width;
 			this.height = bitMap.Height;
 
-			if (tileMap == null)
-				tileMap = new Tile[width * height];
-			
+			this.tileMap = new Tile[width * height];
 
 			Color[] colorMap = new Color[width * height];
+
 			bitMap.GetData(colorMap);
 
-            tileToColor = new Dictionary<Color, Tile>();
-            tileToColor.Add(Color.Black, new Tile(Game.Content.animations[(int)EAnimation.asphalt], ECollision.impassable));
-            tileToColor.Add(Color.Green, new Tile(Game.Content.animations[(int)EAnimation.gras], ECollision.impassable));
-            tileToColor.Add(Color.Gray, new Tile(Game.Content.animations[(int)EAnimation.stone], ECollision.impassable));
-            tileToColor.Add(Color.Purple, new Tile(Game.Content.animations[(int)EAnimation.wall], ECollision.impassable));
-
-            for (int i = 0; i < width * height; i++)
+			for (int h = 0; h < this.height; h++)
 			{
-                if (tileToColor.ContainsKey(colorMap[i]))
-                    tileMap[i] = tileToColor[colorMap[i]];
-                else
-                    tileMap[i] = new Tile(null, ECollision.passable);
-                
+				for (int w = 0; w < this.width; w++)
+				{
+					if (colorMap[h * this.width + w] == Color.Black) { tileMap[h * this.width + w] = new Tile(Game.Content.animations[(int)EAnimation.asphalt], ECollision.impassable, new Vector2(w * Game.Content.tileSize, h * Game.Content.tileSize), new Vector2(Game.Content.tileSize)); }
+					else if (colorMap[h * this.width + w] == Color.Green) { tileMap[h * this.width + w] = new Tile(Game.Content.animations[(int)EAnimation.gras], ECollision.impassable, new Vector2(w * Game.Content.tileSize, h * Game.Content.tileSize), new Vector2(Game.Content.tileSize)); }
+					else if (colorMap[h * this.width + w] == Color.Gray) { tileMap[h * this.width + w] = new Tile(Game.Content.animations[(int)EAnimation.stone], ECollision.impassable, new Vector2(w * Game.Content.tileSize, h * Game.Content.tileSize), new Vector2(Game.Content.tileSize)); }
+					else if (colorMap[h * this.width + w] == Color.Purple) { tileMap[h * this.width + w] = new Tile(Game.Content.animations[(int)EAnimation.wall], ECollision.impassable, new Vector2(w * Game.Content.tileSize, h * Game.Content.tileSize), new Vector2(Game.Content.tileSize)); }
+					else tileMap[h * this.width + w] = new Tile(null, ECollision.passable, new Vector2(w * Game.Content.tileSize, h * Game.Content.tileSize), new Vector2(Game.Content.tileSize));
+				}
 			}
 		}
 
@@ -56,26 +51,66 @@ namespace Rage_of_Stickman
 			return new Vector2(width, height);
 		}
 
-		public ECollision getCollisionTypeAt(int ID)
+		public ECollision getCollisionTypeAt(int w, int h)
 		{
-			return tileMap[ID].getCollisionType();
+			return getCollisionTypeAtID(w + h * this.width);
 		}
 
-	    public ECollision getCollisionTypeAt(int x, int y)
-	    {
-	        return getCollisionTypeAt(x+y*width);
-	    }
+		public ECollision getCollisionTypeAtID(int ID)
+		{
+			if (ID < width * height)
+			{
+				return tileMap[ID].getCollisionType();
+			}
+			return ECollision.impassable;
+		}
+
+		public bool CheckCollision(Vector2 point)
+		{
+			if (getCollisionTypeAt((int)(point.X / Game.Content.tileSize), (int)(point.Y / Game.Content.tileSize)) == ECollision.impassable)
+			{
+				return true;
+			}
+			return false;
+		}
+
+		public bool CheckCollisionYRay(Vector2 start, Vector2 end)
+		{
+			int xStartID = (int)(start.X / Game.Content.tileSize);
+			int yStartID = (int)(start.Y / Game.Content.tileSize);
+			int yEndID = (int)(end.Y / Game.Content.tileSize);
+			
+			for (int yID = yStartID; yID != yEndID; yID = (yStartID > yEndID) ? yID - 1 : yID + 1)
+			{
+				if (getCollisionTypeAt(xStartID, yID) == ECollision.impassable)
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
 
 		public void Update()
 		{
-
+			for (int h = 0; h < this.height; h++)
+			{
+				for (int w = 0; w < this.width; w++)
+				{
+					tileMap[h * this.width + w].Update();
+				}
+			}
 		}
 
 		public void Draw()
 		{
-			for (int y = 0; y < height; y++)
-				for (int x = 0; x < width; x++)
-					tileMap[y * width + x].Draw(new Vector2(x * Game.Content.tileSize, y * Game.Content.tileSize));
+			for (int h = 0; h < this.height; h++)
+			{
+				for (int w = 0; w < this.width; w++)
+				{
+					tileMap[h * this.width + w].Draw();
+				}
+			}
 		}
 	}
 }

@@ -46,6 +46,7 @@
     <Compile Include="Enemy.cs" />
     <Compile Include="Entity.cs" />
     <Compile Include="GameContent.cs" />
+    <Compile Include="GameObject.cs" />
     <Compile Include="Kid.cs" />
     <Compile Include="Level.cs" />
     <Compile Include="Main.cs" />
@@ -53,7 +54,6 @@
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RectangleHelper.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="TileMap.cs" />
     <Compile Include="Zombie.cs" />
