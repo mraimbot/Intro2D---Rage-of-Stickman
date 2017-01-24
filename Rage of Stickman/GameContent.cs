@@ -11,6 +11,9 @@ namespace Rage_of_Stickman
 {
 	enum ETexture
 	{
+		// Debug
+		pixel,
+
 		// Tiles
 		asphalt,
 		stone,

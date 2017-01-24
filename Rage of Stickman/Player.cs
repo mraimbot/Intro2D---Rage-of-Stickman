@@ -58,7 +58,8 @@ namespace Rage_of_Stickman
 
 			base.Update();
 			// TODO TESTOUTPUT Player.cs Update()
-			Console.WriteLine("Position = " + "[" + this.position.X / Game.Content.tileSize + "|" + this.position.Y / Game.Content.tileSize + "] || groundDistance = " + calcDistanceToGround(new Vector2(position.X + size.X / 2, position.Y + size.Y)));
+			Console.WriteLine("Position = " + "[" + this.position.X / Game.Content.tileSize + "|" + this.position.Y / Game.Content.tileSize + "] || calcDistanceToGround = " + calcDistanceToGround());
+
 		}
 
 		private void Input()
@@ -184,6 +185,8 @@ namespace Rage_of_Stickman
 					this.animations[0].Draw(position, s);
 				}
 			}
+
+			// Game.Content.spriteBatch.Draw(Game.Content.textures[(int)ETexture.pixel], new Rectangle((int)this.position.X, (int)this.position.Y, (int)size.X, (int)size.Y), Color.Green); 
 		}
 	}
 }

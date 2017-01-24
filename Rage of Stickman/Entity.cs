@@ -29,7 +29,7 @@ namespace Rage_of_Stickman
 		protected List<Vector2> impulses;
 		protected Vector2 force_input;
 
-		protected float minGroundDistance = 0.1f;
+		protected float minGroundDistance = Game.Content.tileSize / 10;
 		protected bool isGrounded;
 
 		protected int health;
@@ -148,16 +148,6 @@ namespace Rage_of_Stickman
 				Vector2 velocity = accel * Game.Content.gameTime.ElapsedGameTime.Milliseconds;
 
 				HandleTransformation(velocity);
-
-				if (!isGrounded && calcDistanceToGround(new Vector2(position.X + size.X / 2, position.Y + size.Y)) <= minGroundDistance)
-				{
-					position.Y = ((int)(position.Y / Game.Content.tileSize) + 1) * Game.Content.tileSize - minGroundDistance;
-					isGrounded = true;
-				}
-				else if (calcDistanceToGround(new Vector2(position.X + size.X / 2, position.Y + size.Y)) > minGroundDistance)
-				{
-					isGrounded = false;
-				}
 			}
 		}
 
@@ -171,7 +161,7 @@ namespace Rage_of_Stickman
 			{
 				if (position.Y <= position.Y + velocity.Y) // falling down
 				{
-					position.Y = ((int)(position.Y / Game.Content.tileSize) + (int)calcDistanceToGround(new Vector2(position.X + size.X / 2, position.Y + size.Y)) + 1) * Game.Content.tileSize - minGroundDistance;
+					position.Y = position.Y + calcDistanceToGround() - minGroundDistance;
 					isGrounded = true;
 				}
 				else
@@ -180,23 +170,37 @@ namespace Rage_of_Stickman
 				}
 			}
 
-			if (!Game.Content.tileMap.CheckCollision(new Vector2(position.X + velocity.X + size.X, position.Y)) && !Game.Content.tileMap.CheckCollision(new Vector2(position.X + velocity.X, position.Y)))
+			if (!Game.Content.tileMap.CheckCollision(new Vector2(position.X + velocity.X, position.Y))
+				&& !Game.Content.tileMap.CheckCollision(new Vector2(position.X + size.X + velocity.X, position.Y))
+				&& !Game.Content.tileMap.CheckCollision(new Vector2(position.X + velocity.X, position.Y + size.Y))
+				&& !Game.Content.tileMap.CheckCollision(new Vector2(position.X + size.X + velocity.X, position.Y + size.Y)))
 			{
 				position.X += velocity.X;
 			}
+
+			if (!isGrounded && calcDistanceToGround() <= minGroundDistance)
+			{
+				position.Y = position.Y + calcDistanceToGround() - minGroundDistance;
+				isGrounded = true;
+			}
+			else if (calcDistanceToGround() > minGroundDistance)
+			{
+				isGrounded = false;
+			}
 		}
 
-		protected float calcDistanceToGround(Vector2 point)
+		protected float calcDistanceToGround()
 		{
-			float distance = point.Y - (int)point.Y;
-			int tileBelow = (int)(point.Y / Game.Content.tileSize) + 1;
+			float distance = ((int)((position.Y + size.Y) / Game.Content.tileSize) + 1) * Game.Content.tileSize - (position.Y + size.Y);
+			int tileBelow = (int)((position.Y + size.Y) / Game.Content.tileSize) + 1;
 
-			while (Game.Content.tileMap.getCollisionTypeAt((int)((point.X + size.X / 2) / Game.Content.tileSize), tileBelow) == ECollision.passable)
+			while (Game.Content.tileMap.getCollisionTypeAt((int)position.X / Game.Content.tileSize, tileBelow) == ECollision.passable
+				&& Game.Content.tileMap.getCollisionTypeAt((int)((position.X + size.X) / Game.Content.tileSize), tileBelow) == ECollision.passable)
 			{
 				tileBelow++;
 				distance += Game.Content.tileSize;
 			}
-			return distance / Game.Content.tileSize;
+			return distance;
 		}
 
 		public void Draw()

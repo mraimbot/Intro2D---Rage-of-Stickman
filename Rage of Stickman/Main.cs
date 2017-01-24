@@ -44,6 +44,8 @@ namespace Rage_of_Stickman
 			// Example: Game.Content.fonts[(int)EFont.no_font] = Content.Load<SpriteFont>("consolas");
 
 			// Textures
+			// Debug
+			Game.Content.textures[(int)ETexture.pixel] = Content.Load<Texture2D>("Graphics/Pixel");
 			// Tiles
 			Game.Content.textures[(int)ETexture.asphalt] = Content.Load<Texture2D>("Graphics/Tiles/Asphalt");
 			Game.Content.textures[(int)ETexture.stone] = Content.Load<Texture2D>("Graphics/Tiles/Stone");

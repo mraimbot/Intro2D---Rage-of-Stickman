@@ -39,9 +39,9 @@ namespace Rage_of_Stickman
 			// Player
 			Game.Content.player = new Player(new Vector2(playerStartPosition.X * Game.Content.tileSize, playerStartPosition.Y * Game.Content.tileSize), EDirection.right, 1.5f, 0.7f, 100);
 			// Enemies
-			// Game.Content.enemies.Add(new Kid(new Vector2(11, 27)));
-			// Game.Content.enemies.Add(new Oma(new Vector2(26, 25)));
-			// Game.Content.enemies.Add(new Zombie(new Vector2(33, 25)));
+			Game.Content.enemies.Add(new Kid(new Vector2(11 * Game.Content.tileSize, 27 * Game.Content.tileSize)));
+			Game.Content.enemies.Add(new Oma(new Vector2(26 * Game.Content.tileSize, 25 * Game.Content.tileSize)));
+			Game.Content.enemies.Add(new Zombie(new Vector2(33 * Game.Content.tileSize, 25 * Game.Content.tileSize)));
 			// Goal
 			this.goal = goal;
 		}
