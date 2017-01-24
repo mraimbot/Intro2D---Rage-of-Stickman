@@ -37,7 +37,65 @@ namespace Rage_of_Stickman
 		public Player(Vector2 startPosition, EDirection lookAtDirection, float mass, float speed, int health)
 			: base(startPosition, new Vector2(1, 1), lookAtDirection, mass, speed, true, health)
 		{
-			AnimatedTexture2D[] animationlist = { Game.Content.animations[(int)EAnimation.player_idle], Game.Content.animations[(int)EAnimation.player_move], Game.Content.animations[(int)EAnimation.player_punch], Game.Content.animations[(int)EAnimation.player_kick], Game.Content.animations[(int)EAnimation.player_jump], Game.Content.animations[(int)EAnimation.player_midair], Game.Content.animations[(int)EAnimation.player_land] };
+			if (Game.Content.animations[(int)EAnimation.player_idle] == null)
+			{
+				Game.Content.textures[(int)ETexture.player_idle_0] = Game.Content.contentManager.Load<Texture2D>("Graphics/PlayerAnimation/Stehen");
+				Texture2D[] player_idle = { Game.Content.textures[(int)ETexture.player_idle_0] };
+				Game.Content.animations[(int)EAnimation.player_idle] = new AnimatedTexture2D(player_idle, Game.Content.textures[(int)ETexture.player_idle_0].Width, Game.Content.textures[(int)ETexture.player_idle_0].Height, 100.0f);
+			}
+
+			if (Game.Content.animations[(int)EAnimation.player_move] == null)
+			{
+				Game.Content.textures[(int)ETexture.player_move_0] = Game.Content.contentManager.Load<Texture2D>("Graphics/PlayerAnimation/PlayerLauf/Player_Move_0");
+				Game.Content.textures[(int)ETexture.player_move_1] = Game.Content.contentManager.Load<Texture2D>("Graphics/PlayerAnimation/PlayerLauf/Player_Move_1");
+				Game.Content.textures[(int)ETexture.player_move_2] = Game.Content.contentManager.Load<Texture2D>("Graphics/PlayerAnimation/PlayerLauf/Player_Move_2");
+				Texture2D[] player_move = { Game.Content.textures[(int)ETexture.player_move_0], Game.Content.textures[(int)ETexture.player_move_1], Game.Content.textures[(int)ETexture.player_move_2] };
+				Game.Content.animations[(int)EAnimation.player_move] = new AnimatedTexture2D(player_move, Game.Content.tileSize, Game.Content.tileSize * 2, 100.0f);
+			}
+
+			if (Game.Content.animations[(int)EAnimation.player_punch] == null)
+			{
+				Game.Content.textures[(int)ETexture.player_punch_0] = Game.Content.contentManager.Load<Texture2D>("Graphics/PlayerAnimation/Schlag/Schlag0");
+				Game.Content.textures[(int)ETexture.player_punch_1] = Game.Content.contentManager.Load<Texture2D>("Graphics/PlayerAnimation/Schlag/Schlag1");
+				Game.Content.textures[(int)ETexture.player_punch_2] = Game.Content.contentManager.Load<Texture2D>("Graphics/PlayerAnimation/Schlag/Schlag2");
+				Texture2D[] player_punch = { Game.Content.textures[(int)ETexture.player_punch_0], Game.Content.textures[(int)ETexture.player_punch_1], Game.Content.textures[(int)ETexture.player_punch_2] };
+				Game.Content.animations[(int)EAnimation.player_punch] = new AnimatedTexture2D(player_punch, Game.Content.tileSize, Game.Content.tileSize * 2, 100.0f);
+			}
+
+			if (Game.Content.animations[(int)EAnimation.player_kick] == null)
+			{
+				Game.Content.textures[(int)ETexture.player_kick_0] = Game.Content.contentManager.Load<Texture2D>("Graphics/PlayerAnimation/Kick/Kick0");
+				Game.Content.textures[(int)ETexture.player_kick_1] = Game.Content.contentManager.Load<Texture2D>("Graphics/PlayerAnimation/Kick/Kick1");
+				Game.Content.textures[(int)ETexture.player_kick_2] = Game.Content.contentManager.Load<Texture2D>("Graphics/PlayerAnimation/Kick/Kick2");
+				Game.Content.textures[(int)ETexture.player_kick_3] = Game.Content.contentManager.Load<Texture2D>("Graphics/PlayerAnimation/Kick/Kick3");
+				Texture2D[] player_kick = { Game.Content.textures[(int)ETexture.player_kick_0], Game.Content.textures[(int)ETexture.player_kick_1], Game.Content.textures[(int)ETexture.player_kick_2], Game.Content.textures[(int)ETexture.player_kick_3] };
+				Game.Content.animations[(int)EAnimation.player_kick] = new AnimatedTexture2D(player_kick, Game.Content.tileSize, Game.Content.tileSize * 2, 100.0f);
+			}
+
+			if (Game.Content.animations[(int)EAnimation.player_jump] == null)
+			{
+				Game.Content.textures[(int)ETexture.player_jump_0] = Game.Content.contentManager.Load<Texture2D>("Graphics/PlayerAnimation/Sprung/Sprung0");
+				Texture2D[] player_jump = { Game.Content.textures[(int)ETexture.player_jump_0] };
+				Game.Content.animations[(int)EAnimation.player_jump] = new AnimatedTexture2D(player_jump, Game.Content.tileSize, Game.Content.tileSize * 2, 100.0f);
+			}
+
+			if (Game.Content.animations[(int)EAnimation.player_midair] == null)
+			{
+				Game.Content.textures[(int)ETexture.player_midair_0] = Game.Content.contentManager.Load<Texture2D>("Graphics/PlayerAnimation/Sprung/SprungMidair");
+				Texture2D[] player_midair = { Game.Content.textures[(int)ETexture.player_midair_0] };
+				Game.Content.animations[(int)EAnimation.player_midair] = new AnimatedTexture2D(player_midair, Game.Content.tileSize, Game.Content.tileSize * 2, 100.0f);
+			}
+
+			if (Game.Content.animations[(int)EAnimation.player_landing] == null)
+			{
+				Game.Content.textures[(int)ETexture.player_landing_0] = Game.Content.contentManager.Load<Texture2D>("Graphics/PlayerAnimation/Sprung/SprungLanding0");
+				Game.Content.textures[(int)ETexture.player_landing_1] = Game.Content.contentManager.Load<Texture2D>("Graphics/PlayerAnimation/Sprung/SprungLanding1");
+				Texture2D[] player_land = { Game.Content.textures[(int)ETexture.player_landing_0], Game.Content.textures[(int)ETexture.player_landing_1] };
+				Game.Content.animations[(int)EAnimation.player_landing] = new AnimatedTexture2D(player_land, Game.Content.tileSize, Game.Content.tileSize * 2, 100.0f);
+			}
+
+			AnimatedTexture2D[] animationlist = { Game.Content.animations[(int)EAnimation.player_idle], Game.Content.animations[(int)EAnimation.player_move], Game.Content.animations[(int)EAnimation.player_punch], Game.Content.animations[(int)EAnimation.player_kick], Game.Content.animations[(int)EAnimation.player_jump], Game.Content.animations[(int)EAnimation.player_midair], Game.Content.animations[(int)EAnimation.player_landing] };
+
 			this.LoadAnimations(animationlist);
 			Initialize();
 		}

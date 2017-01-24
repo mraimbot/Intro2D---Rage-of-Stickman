@@ -179,15 +179,12 @@ namespace Rage_of_Stickman
 				position.X += velocity.X;
 			}
 
-			//if (calcDistanceToGround() <= minGroundDistance)
-			//{
-			//	position.Y = position.Y + calcDistanceToGround() - minGroundDistance;
-			//	isGrounded = true;
-			//}
-			//else
 			if ((isGrounded || calcDistanceToGround() <= minGroundDistance) && velocity.Y >= 0)
 			{
-				position.Y = position.Y + calcDistanceToGround() - minGroundDistance;
+				if (calcDistanceToGround() < Game.Content.tileSize / 2)
+				{
+					position.Y = position.Y + calcDistanceToGround() - minGroundDistance;
+				}
 			}
 
 			if (calcDistanceToGround() > minGroundDistance)

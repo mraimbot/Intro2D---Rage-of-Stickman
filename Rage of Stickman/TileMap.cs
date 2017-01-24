@@ -37,11 +37,50 @@ namespace Rage_of_Stickman
 			{
 				for (int w = 0; w < this.width; w++)
 				{
-					if (colorMap[h * this.width + w] == Color.Black) { tileMap[h * this.width + w] = new Tile(Game.Content.animations[(int)EAnimation.asphalt], ECollision.impassable, new Vector2(w * Game.Content.tileSize, h * Game.Content.tileSize), new Vector2(Game.Content.tileSize)); }
-					else if (colorMap[h * this.width + w] == Color.Green) { tileMap[h * this.width + w] = new Tile(Game.Content.animations[(int)EAnimation.gras], ECollision.impassable, new Vector2(w * Game.Content.tileSize, h * Game.Content.tileSize), new Vector2(Game.Content.tileSize)); }
-					else if (colorMap[h * this.width + w] == Color.Gray) { tileMap[h * this.width + w] = new Tile(Game.Content.animations[(int)EAnimation.stone], ECollision.impassable, new Vector2(w * Game.Content.tileSize, h * Game.Content.tileSize), new Vector2(Game.Content.tileSize)); }
-					else if (colorMap[h * this.width + w] == Color.Purple) { tileMap[h * this.width + w] = new Tile(Game.Content.animations[(int)EAnimation.wall], ECollision.impassable, new Vector2(w * Game.Content.tileSize, h * Game.Content.tileSize), new Vector2(Game.Content.tileSize)); }
-					else tileMap[h * this.width + w] = new Tile(null, ECollision.passable, new Vector2(w * Game.Content.tileSize, h * Game.Content.tileSize), new Vector2(Game.Content.tileSize));
+					if (colorMap[h * this.width + w] == Color.Green)
+					{
+						if (Game.Content.animations[(int)EAnimation.grass] == null)
+						{
+							Game.Content.textures[(int)ETexture.grass] = Game.Content.contentManager.Load<Texture2D>("Graphics/Tiles/Gras");
+							Texture2D[] grass = { Game.Content.textures[(int)ETexture.grass] };
+							Game.Content.animations[(int)EAnimation.grass] = new AnimatedTexture2D(grass, Game.Content.tileSize, Game.Content.tileSize, 999.0f);
+						}
+						tileMap[h * this.width + w] = new Tile(Game.Content.animations[(int)EAnimation.grass], ECollision.impassable, new Vector2(w * Game.Content.tileSize, h * Game.Content.tileSize), new Vector2(Game.Content.tileSize));
+					}
+					else if (colorMap[h * this.width + w] == Color.Gray)
+					{
+						if (Game.Content.animations[(int)EAnimation.stone] == null)
+						{
+							Game.Content.textures[(int)ETexture.stone] = Game.Content.contentManager.Load<Texture2D>("Graphics/Tiles/Stone");
+							Texture2D[] stone = { Game.Content.textures[(int)ETexture.stone] };
+							Game.Content.animations[(int)EAnimation.stone] = new AnimatedTexture2D(stone, Game.Content.tileSize, Game.Content.tileSize, 999.0f);
+						}
+						tileMap[h * this.width + w] = new Tile(Game.Content.animations[(int)EAnimation.stone], ECollision.impassable, new Vector2(w * Game.Content.tileSize, h * Game.Content.tileSize), new Vector2(Game.Content.tileSize));
+					}
+					else if (colorMap[h * this.width + w] == Color.Black)
+					{
+						if (Game.Content.animations[(int)EAnimation.asphalt] == null)
+						{
+							Game.Content.textures[(int)ETexture.asphalt] = Game.Content.contentManager.Load<Texture2D>("Graphics/Tiles/Asphalt");
+							Texture2D[] asphalt = { Game.Content.textures[(int)ETexture.asphalt] };
+							Game.Content.animations[(int)EAnimation.asphalt] = new AnimatedTexture2D(asphalt, Game.Content.tileSize, Game.Content.tileSize, 999.0f);
+						}
+						tileMap[h * this.width + w] = new Tile(Game.Content.animations[(int)EAnimation.asphalt], ECollision.impassable, new Vector2(w * Game.Content.tileSize, h * Game.Content.tileSize), new Vector2(Game.Content.tileSize));
+					}
+					else if (colorMap[h * this.width + w] == Color.Purple)
+					{
+						if (Game.Content.animations[(int)EAnimation.brick] == null)
+						{
+							Game.Content.textures[(int)ETexture.brick] = Game.Content.contentManager.Load<Texture2D>("Graphics/Tiles/Wall");
+							Texture2D[] wall = { Game.Content.textures[(int)ETexture.brick] };
+							Game.Content.animations[(int)EAnimation.brick] = new AnimatedTexture2D(wall, Game.Content.tileSize, Game.Content.tileSize, 999.0f);
+						}
+						tileMap[h * this.width + w] = new Tile(Game.Content.animations[(int)EAnimation.brick], ECollision.impassable, new Vector2(w * Game.Content.tileSize, h * Game.Content.tileSize), new Vector2(Game.Content.tileSize));
+					}
+					else
+					{
+						tileMap[h * this.width + w] = new Tile(null, ECollision.passable, new Vector2(w * Game.Content.tileSize, h * Game.Content.tileSize), new Vector2(Game.Content.tileSize));
+					}
 				}
 			}
 		}

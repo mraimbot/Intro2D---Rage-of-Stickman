@@ -1,6 +1,6 @@
 ﻿/*
  * File: Program.cs
- * Description: Here is the Main-function where the application starts to work. 
+ * Description: Main-function where the application starts to work. 
  */
 
 using System;

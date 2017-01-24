@@ -20,7 +20,7 @@ namespace Rage_of_Stickman
 			origin = new Vector2(viewport.Width / 2.0f, viewport.Height / 2.0f);
 			position = Vector2.Zero;
 			rotation = 0;
-			zoom = 1;
+			zoom = 1.0f; // TODO Camera2D.zoom : Greater zoom, maybe some zoom-effects while moving
 		}
 
 		public Matrix GetViewMatrix()

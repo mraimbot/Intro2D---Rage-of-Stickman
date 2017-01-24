@@ -9,29 +9,16 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Rage_of_Stickman
 {
-	enum EGameState
-	{
-		paused,
-		run
-	}
     class Level
     {
 		Texture2D background;
-
-        private Point exit = InvalidPosition;
-        private static readonly Point InvalidPosition = new Point(-1,-1);
-
-        private bool ReachedExit => reachedExit;
-        private bool reachedExit;
+		Texture2D foreground;
 
 		private Vector2 goal;
 
-		public Level(Texture2D bitMap, Texture2D background, Vector2 playerStartPosition, Vector2 goal)
-		{
-			Initialize(bitMap, background, playerStartPosition, goal);
-		}
+		public Level() {}
 
-		public void Initialize(Texture2D bitMap, Texture2D background, Vector2 playerStartPosition, Vector2 goal)
+		public void InitializeLevel0(Texture2D bitMap, Texture2D background, Vector2 playerStartPosition, Vector2 goal)
 		{
 			// Map
 			Game.Content.tileMap = new TileMap(bitMap);
@@ -51,7 +38,7 @@ namespace Rage_of_Stickman
 			Game.Content.tileMap.Update();
 			Game.Content.player.Update();
 
-			// TODO Check player for goal-position
+			// TODO Level.Update : Check player for goal-position
 
 			for (int i = Game.Content.enemies.Count - 1; i >= 0; i--)
 			{
@@ -68,12 +55,13 @@ namespace Rage_of_Stickman
 			Game.Content.spriteBatch.Draw(background, new Vector2(0.0f, 0.0f), Color.White);
 
 			Game.Content.tileMap.Draw();
-			Game.Content.player.Draw();
 
 			for (int i = 0; i < Game.Content.enemies.Count; i++)
 			{
 				Game.Content.enemies[i].Draw();
 			}
+
+			Game.Content.player.Draw();
 		}
-    }
+	}
 }
