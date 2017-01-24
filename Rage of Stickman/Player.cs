@@ -32,7 +32,7 @@ namespace Rage_of_Stickman
 		private bool move_kick;
 		private bool move_jump;
 
-		private Vector2 force_jump = new Vector2(0.0f, -7.5f);
+		private Vector2 force_jump = new Vector2(0.0f, -1.5f);
 
 		public Player(Vector2 startPosition, EDirection lookAtDirection, float mass, float speed, int health)
 			: base(startPosition, new Vector2(1, 1), lookAtDirection, mass, speed, true, health)
@@ -54,11 +54,9 @@ namespace Rage_of_Stickman
 			{
 				Input();
 				Logic();
-				Console.WriteLine("Position = " + "[" + this.position.X / Game.Content.tileSize + "|" + this.position.Y / Game.Content.tileSize + "] || calcDistanceToGround = " + calcDistanceToGround());
 			}
 
 			base.Update();
-			// TODO TESTOUTPUT Player.cs Update()
 		}
 
 		private void Input()

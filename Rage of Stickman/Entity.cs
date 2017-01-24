@@ -168,10 +168,6 @@ namespace Rage_of_Stickman
 					{
 						isGrounded = true;
 					}
-					else if (velocity.Y < 0)
-					{
-						isGrounded = false;
-					}
 				}
 			}
 
@@ -189,7 +185,7 @@ namespace Rage_of_Stickman
 			//	isGrounded = true;
 			//}
 			//else
-			if (isGrounded || calcDistanceToGround() <= minGroundDistance)
+			if ((isGrounded || calcDistanceToGround() <= minGroundDistance) && velocity.Y >= 0)
 			{
 				position.Y = position.Y + calcDistanceToGround() - minGroundDistance;
 			}

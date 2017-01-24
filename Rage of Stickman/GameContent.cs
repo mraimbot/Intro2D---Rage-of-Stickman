@@ -111,7 +111,7 @@ namespace Rage_of_Stickman
 		public TileMap tileMap;
 		public int tileSize = 32;
 
-		public Vector2 force_gravity = new Vector2(0.0f, 0.9807f);
+		public Vector2 force_gravity = new Vector2(0.0f, 0.1f);
 
 		public Player player;
 
