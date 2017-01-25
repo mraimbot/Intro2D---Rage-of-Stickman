@@ -59,6 +59,7 @@
     <Compile Include="Tile.cs" />
     <Compile Include="TileMap.cs" />
     <Compile Include="Window.cs" />
+    <Compile Include="WindowComponent.cs" />
     <Compile Include="Zombie.cs" />
   </ItemGroup>
   <ItemGroup>
