@@ -14,31 +14,29 @@ namespace Rage_of_Stickman
 		AnimatedTexture2D background_marked;
 
 		private bool marked;
-		private int ID;
 
 		private bool onClick;
 
 		private GameEvent gameEvent;
 
 
-		public WindowButton(int ID, GameEvent gameEvent, AnimatedTexture2D[] backgrounds, Vector2 position, Vector2 size, bool active = true, bool visible = true)
-			: base(position, size, active, visible)
+		public WindowButton(bool markable, GameEvent gameEvent, AnimatedTexture2D[] backgrounds, Vector2 position, Vector2 size, bool active = true, bool visible = true)
+			: base(markable, position, size, active, visible)
 		{
 			marked = false;
-			this.ID = ID;
 
 			this.gameEvent = gameEvent;
 		}
 
-		public void Update(int index)
+		public void Update(bool marked)
 		{
+			base.Update();
+
 			if (active)
 			{
 				Input();
-				Logic(index);
+				Logic(marked);
 			}
-
-			base.Update();
 		}
 
 		private void Input()
@@ -60,9 +58,9 @@ namespace Rage_of_Stickman
 			}
 		}
 
-		private void Logic(int index)
+		private void Logic(bool marked)
 		{
-			marked = (index == ID) ? (true) : (false);
+			this.marked = marked;
 
 			if (onClick)
 			{
