@@ -12,7 +12,7 @@ namespace Rage_of_Stickman
 		private EGameEvent gameEvent;
 		private float value;
 
-		public GameEvent(ETarget target, EGameEvent gameEvent, float value)
+		public GameEvent(ETarget target, EGameEvent gameEvent, float value = 0.0f)
 		{
 			this.target = target;
 			this.gameEvent = gameEvent;

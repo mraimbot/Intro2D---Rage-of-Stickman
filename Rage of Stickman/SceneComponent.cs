@@ -16,7 +16,7 @@ namespace Rage_of_Stickman
 		/// Examples are gamelevels and windows forms.
 		/// </summary>
 
-		private AnimatedTexture2D background;
+		protected AnimatedTexture2D background;
 
 		public SceneComponent(AnimatedTexture2D background, Vector2 position, Vector2 size, bool active = true, bool visible = true)
 			: base(position, size, active, visible)
@@ -26,8 +26,11 @@ namespace Rage_of_Stickman
 
 		public override void Update()
 		{
-			// TODO SceneComponent.Update()
 			base.Update();
+			//if (active)
+			//{
+
+			//}
 		}
 
 		public override void Draw()

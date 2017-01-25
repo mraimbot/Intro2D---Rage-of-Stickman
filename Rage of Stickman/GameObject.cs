@@ -75,12 +75,18 @@ namespace Rage_of_Stickman
 
 		public virtual void Update()
 		{
-			// TODO GameObject.Update()
+			//if (active)
+			//{
+
+			//}
 		}
 
 		public virtual void Draw()
 		{
-			// TODO GameObject.Draw()
+			//if (visible)
+			//{
+
+			//}
 		}
 	}
 }

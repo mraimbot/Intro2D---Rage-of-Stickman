@@ -20,6 +20,7 @@ namespace Rage_of_Stickman
 		{
 			graphics.PreferredBackBufferWidth = 1366;
 			graphics.PreferredBackBufferHeight = 768;
+			graphics.ToggleFullScreen();
 			graphics.ApplyChanges();
 
 			Game.Content.contentManager = Content;
@@ -42,6 +43,7 @@ namespace Rage_of_Stickman
 
 			InputHandler();
 			SceneHandler();
+			GameEventHandler();
 
 			base.Update(gameTime);
 		}
@@ -49,11 +51,6 @@ namespace Rage_of_Stickman
 		private void InputHandler()
 		{
 			// ----- Main-Inputs -----
-			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-			{
-				Game.Content.sceneState = EScenes.Exit;
-			}
-
 			if (Keyboard.GetState().IsKeyDown(Keys.F4) && !Game.Content.previousKeyState.IsKeyDown(Keys.F4))
 			{
 				graphics.ToggleFullScreen();
@@ -79,11 +76,42 @@ namespace Rage_of_Stickman
 			}
 		}
 
+		private void GameEventHandler()
+		{
+			if (Game.Content.gameEvents.Count > 0)
+			{
+				foreach (GameEvent gameEvent in Game.Content.gameEvents)
+				{
+					if (gameEvent.Target() == ETarget.Main)
+					{
+						switch (gameEvent.Event())
+						{
+							case EGameEvent.Game_Exit:
+								Game.Content.sceneState = EScenes.Exit;
+								break;
+
+							case EGameEvent.Open_Mainmenu:
+								Game.Content.sceneState = EScenes.Mainmenu;
+								Game.Content.flag_newScene = true;
+								break;
+
+							case EGameEvent.Open_Level1:
+								Game.Content.sceneState = EScenes.Level1;
+								Game.Content.flag_newScene = true;
+								break;
+						}
+					}
+				}
+				Game.Content.gameEvents.Clear();
+			}
+		}
+
 		private void MenuHandler()
 		{
 			if (scene == null || Game.Content.flag_newScene)
 			{
 				scene = Scene.CreateMainmenu();
+				Game.Content.flag_newScene = false;
 			}
 
 			scene.Update();
@@ -97,14 +125,6 @@ namespace Rage_of_Stickman
 				{
 					case 1:
 						scene = Scene.CreateLevel1();
-						break;
-
-					case 2:
-						scene = Scene.CreateLevel2();
-						break;
-
-					case 3:
-						scene = Scene.CreateLevel3();
 						break;
 				}
 

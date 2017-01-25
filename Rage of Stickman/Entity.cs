@@ -82,24 +82,24 @@ namespace Rage_of_Stickman
 
 		public void LoadAnimations(AnimatedTexture2D animation)
 		{
-			this.animations = new AnimatedTexture2D[1];
-			this.animations[0] = animation;
+			animations = new AnimatedTexture2D[1];
+			animations[0] = animation;
 
-			this.size.X = (int)animations[0].Size().X;
-			this.size.Y = (int)animations[0].Size().Y;
+			size.X = (int)animations[0].Size().X;
+			size.Y = (int)animations[0].Size().Y;
 		}
 
 		public void addDamage(int damage)
 		{
-			this.damages.Add(damage);
+			damages.Add(damage);
 		}
 
 		public new void Update()
 		{
-			if (this.active)
+			if (active)
 			{
-				this.Logic();
-				this.Physic();
+				Logic();
+				Physic();
 			}
 
 			base.Update();

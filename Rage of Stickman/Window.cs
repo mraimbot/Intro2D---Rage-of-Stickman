@@ -22,39 +22,51 @@ namespace Rage_of_Stickman
 		{
 			this.components = components;
 
-			index_max = 0;
+			index_max = -1;
 			foreach (WindowComponent component in this.components)
 			{
 				if (component.Markable())
 				{
 					index_max++;
+					component.SetID(index_max);
 				}
 			}
 
-			index = 0;
+			index = (index_max >= 0) ? (0) : (-1);
 		}
 
 		public override void Update()
 		{
-			Input();
-			Logic();
-
-			if (components == null)
+			if (active)
 			{
-				components = new List<WindowComponent>();
-			}
+				Input();
+				Logic();
 
-			if (components.Count > 0)
-			{
-				foreach (WindowComponent component in components)
+				if (components == null)
 				{
-					component.Update(true);
+					components = new List<WindowComponent>();
+				}
+
+				if (components.Count > 0)
+				{
+					foreach (WindowComponent component in components)
+					{
+						component.Update(index);
+					}
 				}
 			}
+
+			base.Update();
+
+			// TODO DEBUG A
+			Console.WriteLine("index_max = " + index_max + "; index = " + index);
 		}
 
 		private void Input()
 		{
+			onUp = false;
+			onDown = false;
+
 			foreach (Keys key in Keyboard.GetState().GetPressedKeys())
 			{
 				if (!Game.Content.previousKeyState.IsKeyDown(key))
@@ -63,7 +75,12 @@ namespace Rage_of_Stickman
 					{
 						case Keys.W:
 						case Keys.Up:
-							onClick = true;
+							onUp = true;
+							break;
+
+						case Keys.S:
+						case Keys.Down:
+							onDown = true;
 							break;
 					}
 				}
@@ -72,21 +89,43 @@ namespace Rage_of_Stickman
 
 		private void Logic()
 		{
+			if (onUp)
+			{
+				index--;
+			}
 
+			if (onDown)
+			{
+				index++;
+			}
+
+			if (index < 0 && index_max >= 0)
+			{
+				index = 0;
+			}
+			else if (index > index_max)
+			{
+				index = index_max;
+			}
 		}
 
 		public override void Draw()
 		{
-			if (components == null)
-			{
-				components = new List<WindowComponent>();
-			}
+			base.Draw();
 
-			if (components.Count > 0)
+			if (visible)
 			{
-				foreach (WindowComponent component in components)
+				if (components == null)
 				{
-					component.Draw();
+					components = new List<WindowComponent>();
+				}
+
+				if (components.Count > 0)
+				{
+					foreach (WindowComponent component in components)
+					{
+						component.Draw();
+					}
 				}
 			}
 		}

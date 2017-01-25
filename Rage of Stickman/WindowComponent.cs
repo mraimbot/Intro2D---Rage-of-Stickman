@@ -9,12 +9,20 @@ namespace Rage_of_Stickman
 {
 	class WindowComponent : GameObject
 	{
+		protected int ID;
 		protected bool markable;
+		protected bool marked;
 
 		public WindowComponent(bool markable, Vector2 position, Vector2 size, bool active = true, bool visible = true)
 			: base(position, size, active, visible)
 		{
+			ID = -1;
 			this.markable = markable;
+		}
+
+		public void SetID(int ID)
+		{
+			this.ID = ID;
 		}
 
 		public bool Markable()
@@ -22,15 +30,23 @@ namespace Rage_of_Stickman
 			return markable;
 		}
 
-		public override void Update()
+		public virtual void Update(int index)
 		{
-			// TODO SceneComponent.Update()
 			base.Update();
+			if (active)
+			{
+				marked = (index == ID) ? (true) : (false);
+			}
 		}
 
 		public override void Draw()
 		{
 			base.Draw();
+
+			//if (visible)
+			//{
+
+			//}
 		}
 	}
 }

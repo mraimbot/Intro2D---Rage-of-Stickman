@@ -12,16 +12,13 @@ namespace Rage_of_Stickman
 {
 	enum ETexture
 	{
-		// ----- Background Textures -----
-		background_mainmenu,
-
 		// ----- Tiles in 32x32 Formate -----
 		grass,
 		stone,
 		asphalt,
 		brick,
 
-		// ----- Player Textures -----
+		// ----- Player-Textures -----
 		player_idle_0,
 		player_move_0,
 		player_move_1,
@@ -38,7 +35,7 @@ namespace Rage_of_Stickman
 		player_landing_1,
 		player_midair_0,
 
-		// Enemies
+		// ----- Enemy-Textures -----
 		enemy_kid_move_0,
 		enemy_kid_move_1,
 		enemy_kid_move_2,
@@ -58,16 +55,13 @@ namespace Rage_of_Stickman
 
 	enum EAnimation
 	{
-		// ----- Background-Animations -----
-		background_mainmenu,
-
-		// Tiles
+		// ----- Tile-Animation -----
 		grass,
 		stone,
 		asphalt,
 		brick,
 
-		// Player
+		// ----- Player-Animation -----
 		player_idle,
 		player_move,
 		player_punch,
@@ -76,7 +70,7 @@ namespace Rage_of_Stickman
 		player_midair,
 		player_landing,
 
-		// Enemies
+		// ----- Enemy-Animation -----
 		enemie_kid_move,
 
 		enemie_oma_move,

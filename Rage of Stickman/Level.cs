@@ -6,62 +6,80 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Rage_of_Stickman
 {
     class Level : SceneComponent
     {
-		private AnimatedTexture2D level_background;
-		private AnimatedTexture2D level_foreground;
+		private AnimatedTexture2D foreground;
 
-		public Level(AnimatedTexture2D background, Vector2 position, Vector2 size, bool active = true, bool visible = true)
+		private bool onBackToMenu;
+
+		public Level(AnimatedTexture2D background, AnimatedTexture2D foreground, Vector2 position, Vector2 size, bool active = true, bool visible = true)
 			: base(background, position, size, active, visible)
 		{
-			Initialize();
-		}
-
-		public void Initialize()
-		{
-			// TODO Level.InitializeLevel0() : Make better level creating (maybe with files)
-			// ----- Map -----
-			Game.Content.tileMap = new TileMap(Game.Content.contentManager.Load<Texture2D>("Graphics/RageMap"));
-			level_background = new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Background") } );
-			level_foreground = null;
-			// ----- Player -----
-			Game.Content.player = new Player(new Vector2(9 * Game.Content.tileSize, 20 * Game.Content.tileSize), EDirection.right, 1.5f, 0.7f, 100);
-			// ----- Enemies -----
-			Game.Content.enemies.Add(new Kid(new Vector2(11 * Game.Content.tileSize, 27 * Game.Content.tileSize)));
-			Game.Content.enemies.Add(new Oma(new Vector2(26 * Game.Content.tileSize, 25 * Game.Content.tileSize)));
-			Game.Content.enemies.Add(new Zombie(new Vector2(33 * Game.Content.tileSize, 25 * Game.Content.tileSize)));
+			this.foreground = foreground;
 		}
 
 		public override void Update()
 		{
-			Game.Content.tileMap.Update();
-
-			Game.Content.player.Update();
-
-			// TODO Level.Update : Check player for goal-position
-
-			for (int i = Game.Content.enemies.Count - 1; i >= 0; i--)
+			if (active)
 			{
-				Game.Content.enemies[i].Update();
-				if (Game.Content.enemies[i].isDead())
+				Input();
+				Logic();
+
+				Game.Content.tileMap.Update();
+				Game.Content.player.Update();
+
+				// TODO Level.Update : Check player for goal-position
+
+				for (int i = Game.Content.enemies.Count - 1; i >= 0; i--)
 				{
-					Game.Content.enemies.RemoveAt(i);
+					Game.Content.enemies[i].Update();
+					if (Game.Content.enemies[i].isDead())
+					{
+						Game.Content.enemies.RemoveAt(i);
+					}
 				}
 			}
 
 			base.Update();
 		}
 
+		private void Input()
+		{
+			onBackToMenu = false;
+
+			foreach (Keys key in Keyboard.GetState().GetPressedKeys())
+			{
+				if (!Game.Content.previousKeyState.IsKeyDown(key))
+				{
+					switch (key)
+					{
+						case Keys.Escape:
+							onBackToMenu = true;
+							break;
+					}
+				}
+			}
+		}
+
+		private void Logic()
+		{
+			if (onBackToMenu)
+			{
+				Game.Content.gameEvents.Add(new GameEvent(ETarget.Main, EGameEvent.Open_Mainmenu));
+			}
+		}
+
 		public override void Draw()
 		{
 			base.Draw();
 
-			if (level_background != null)
+			if (background != null)
 			{
-				level_background.Draw(position);
+				background.Draw(position);
 			}
 
 			Game.Content.tileMap.Draw();
@@ -73,9 +91,9 @@ namespace Rage_of_Stickman
 
 			Game.Content.player.Draw();
 
-			if (level_foreground != null)
+			if (foreground != null)
 			{
-				level_foreground.Draw(position);
+				foreground.Draw(position);
 			}
 		}
 	}

@@ -13,8 +13,6 @@ namespace Rage_of_Stickman
 		AnimatedTexture2D background_notMarked;
 		AnimatedTexture2D background_marked;
 
-		private bool marked;
-
 		private bool onClick;
 
 		private GameEvent gameEvent;
@@ -26,16 +24,23 @@ namespace Rage_of_Stickman
 			marked = false;
 
 			this.gameEvent = gameEvent;
+			background_notMarked = backgrounds[0];
+			background_marked = backgrounds[1];
+
+			if (size == Vector2.Zero)
+			{
+				size = background_notMarked.Size();
+			}
 		}
 
-		public void Update(bool marked)
+		public override void Update(int index)
 		{
-			base.Update();
+			base.Update(index);
 
 			if (active)
 			{
 				Input();
-				Logic(marked);
+				Logic();
 			}
 		}
 
@@ -58,13 +63,14 @@ namespace Rage_of_Stickman
 			}
 		}
 
-		private void Logic(bool marked)
+		private void Logic()
 		{
-			this.marked = marked;
-
-			if (onClick)
+			if (marked)
 			{
-				Game.Content.gameEvents.Add(gameEvent);
+				if (onClick)
+				{
+					Game.Content.gameEvents.Add(gameEvent);
+				}
 			}
 		}
 
@@ -72,18 +78,21 @@ namespace Rage_of_Stickman
 		{
 			base.Draw();
 
-			if (marked)
+			if (visible)
 			{
-				if (background_marked != null)
+				if (marked)
 				{
-					background_marked.Draw(position);
+					if (background_marked != null)
+					{
+						background_marked.Draw(position);
+					}
 				}
-			}
-			else
-			{
-				if (background_notMarked != null)
+				else
 				{
-					background_notMarked.Draw(position);
+					if (background_notMarked != null)
+					{
+						background_notMarked.Draw(position);
+					}
 				}
 			}
 		}
