@@ -18,7 +18,7 @@ namespace Rage_of_Stickman
 	{
 		protected AnimatedTexture2D[] animations;
 
-		protected Vector2 startPosition;
+		protected Vector2 position_start;
 
 		protected EDirection lookAtDirection;
 
@@ -29,19 +29,27 @@ namespace Rage_of_Stickman
 		protected List<Vector2> impulses;
 		protected Vector2 force_input;
 
+		protected Vector2 force_jump = new Vector2(0.0f, -1.5f);
+
 		protected float minGroundDistance = Game.Content.tileSize / 10;
 		protected bool isGrounded;
 
 		protected int health;
-		protected int health_max;
+		protected int health_start;
 
 		protected List<int> damages;
+
+		protected bool move_left;
+		protected bool move_right;
+		protected bool move_jump;
+		protected bool move_attack1;
+		protected bool move_attack2;
 
 		public Entity(Vector2 startPosition, Vector2 size, EDirection lookAtDirection, float mass, float speed, bool enableGravity, int health)
 			: base()
 		{
-			this.startPosition = startPosition;
-			this.position = this.startPosition;
+			this.position_start = startPosition;
+			this.position = this.position_start;
 			this.size = size;
 			this.lookAtDirection = EDirection.right;
 			this.mass = mass;
@@ -56,8 +64,8 @@ namespace Rage_of_Stickman
 				this.forces.Add(Game.Content.force_gravity);
 			}
 
-			this.health_max = health;
-			this.health = this.health_max;
+			this.health_start = health;
+			this.health = this.health_start;
 
 			this.damages = new List<int>();
 		}
@@ -101,10 +109,12 @@ namespace Rage_of_Stickman
 
 		private void Logic()
 		{
+			// ----- Damage -----
 			int damage = 0;
 			foreach (int damage_input in damages)
 				damage += damage_input;
 
+			// ----- Health -----
 			if (health > 0)
 			{
 				health -= damage;
@@ -118,6 +128,38 @@ namespace Rage_of_Stickman
 			{
 				this.visible = false;
 				this.active = false;
+			}
+
+			// ----- Movement -----
+			// TODO Entity.Logic : Add movement here!
+			if (!this.isDead())
+			{
+				if (this.move_jump && this.isGrounded)
+				{
+					this.impulses.Add(force_jump);
+				}
+
+				if (this.move_left && this.isGrounded)
+				{
+					this.impulses.Add(new Vector2(-speed, 0.0f));
+					this.lookAtDirection = EDirection.left;
+				}
+
+				if (this.move_right && this.isGrounded)
+				{
+					this.impulses.Add(new Vector2(speed, 0.0f));
+					this.lookAtDirection = EDirection.right;
+				}
+
+				if (this.move_attack1)
+				{
+					// TODO Player.move_punch
+				}
+
+				if (this.move_attack2)
+				{
+					// TODO Player.move_kick
+				}
 			}
 		}
 

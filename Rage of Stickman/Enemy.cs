@@ -18,8 +18,8 @@ namespace Rage_of_Stickman
 
 		public void Initialize()
 		{
-			this.position = this.startPosition;
-			this.health = this.health_max;
+			this.position = this.position_start;
+			this.health = this.health_start;
 		}
 
 		public new void Update()

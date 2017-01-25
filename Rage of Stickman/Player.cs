@@ -15,28 +15,10 @@ namespace Rage_of_Stickman
 {
 	class Player : Entity
 	{
-		/// <summary>
-		/// Animations:
-		///		1: idle
-		///		2: move
-		///		3: punch
-		///		4: kick
-		///		5: jump
-		///		6: midair
-		///		7: land
-		/// </summary>
-
-		private bool move_left;
-		private bool move_right;
-		private bool move_punch;
-		private bool move_kick;
-		private bool move_jump;
-
-		private Vector2 force_jump = new Vector2(0.0f, -1.5f);
-
 		public Player(Vector2 startPosition, EDirection lookAtDirection, float mass, float speed, int health)
 			: base(startPosition, new Vector2(1, 1), lookAtDirection, mass, speed, true, health)
 		{
+			// ----- Load Textures & Animations -----
 			if (Game.Content.animations[(int)EAnimation.player_idle] == null)
 			{
 				Game.Content.textures[(int)ETexture.player_idle_0] = Game.Content.contentManager.Load<Texture2D>("Graphics/PlayerAnimation/Stehen");
@@ -97,13 +79,16 @@ namespace Rage_of_Stickman
 			AnimatedTexture2D[] animationlist = { Game.Content.animations[(int)EAnimation.player_idle], Game.Content.animations[(int)EAnimation.player_move], Game.Content.animations[(int)EAnimation.player_punch], Game.Content.animations[(int)EAnimation.player_kick], Game.Content.animations[(int)EAnimation.player_jump], Game.Content.animations[(int)EAnimation.player_midair], Game.Content.animations[(int)EAnimation.player_landing] };
 
 			this.LoadAnimations(animationlist);
+
+			// ----- Initialize start settings -----
 			Initialize();
 		}
 
 		public void Initialize()
 		{
-			this.position = this.startPosition;
-			this.health = this.health_max;
+			// ----- Start settings -----
+			this.position = this.position_start;
+			this.health = this.health_start;
 		}
 
 		public new void Update()
@@ -122,71 +107,46 @@ namespace Rage_of_Stickman
 			this.move_jump = false;
 			this.move_left = false;
 			this.move_right = false;
-			this.move_punch = false;
-			this.move_kick = false;
+			this.move_attack1 = false;
+			this.move_attack2 = false;
 
-			if (!this.isDead())
+			// TODO Player.Input() : Change isDead to Logic()
+			foreach (Keys key in Keyboard.GetState().GetPressedKeys())
 			{
-				foreach (Keys key in Keyboard.GetState().GetPressedKeys())
-					switch (key)
-					{
-						case Keys.W:
-						case Keys.Up:
-						case Keys.Space:
-							this.move_jump = true;
-							break;
+				switch (key)
+				{
+					case Keys.W:
+					case Keys.Up:
+					case Keys.Space:
+						this.move_jump = true;
+						break;
 
-						case Keys.A:
-						case Keys.Left:
-							this.move_left = true;
-							break;
+					case Keys.A:
+					case Keys.Left:
+						this.move_left = true;
+						break;
 
-						case Keys.D:
-						case Keys.Right:
-							this.move_right = true;
-							break;
+					case Keys.D:
+					case Keys.Right:
+						this.move_right = true;
+						break;
 
-						case Keys.E:
-						case Keys.Y:
-							this.move_punch = true;
-							break;
+					case Keys.E:
+					case Keys.Y:
+						this.move_attack1 = true;
+						break;
 
-						case Keys.F:
-						case Keys.X:
-							this.move_kick = true;
-							break;
-					}
+					case Keys.F:
+					case Keys.X:
+						this.move_attack2 = true;
+						break;
+				}
 			}
 		}
 
 		private void Logic()
 		{
-			if (this.move_jump && this.isGrounded)
-			{
-				this.impulses.Add(force_jump);
-			}
-
-			if (this.move_left && this.isGrounded)
-			{
-				this.impulses.Add(new Vector2(-speed, 0.0f));
-				this.lookAtDirection = EDirection.left;
-			}
-			
-			if (this.move_right && this.isGrounded)
-			{
-				this.impulses.Add(new Vector2(speed, 0.0f));
-				this.lookAtDirection = EDirection.right;
-			}
-
-			if (this.move_punch)
-			{
-				// TODO Player.move_punch
-			}
-
-			if (this.move_kick)
-			{
-				// TODO Player.move_kick
-			}
+			// TODO Player.Logic()
 		}
 
 		public new void Draw()
@@ -208,7 +168,16 @@ namespace Rage_of_Stickman
 			}
 			else
 			{
-				// TODO Player: Build in animation_land
+				// Animations:
+				//		1: idle
+				//		2: move
+				//		3: punch
+				//		4: kick
+				//		5: jump
+				//		6: midair
+				//		7: land
+
+				// TODO Player.Draw() : Build in animation_landing
 				if (!isGrounded)
 				{
 					this.animations[5].Update();
@@ -219,12 +188,12 @@ namespace Rage_of_Stickman
 					this.animations[1].Update();
 					this.animations[1].Draw(position, s);
 				}
-				else if (move_punch)
+				else if (move_attack1)
 				{
 					this.animations[2].Update();
 					this.animations[2].Draw(position, s);
 				}
-				else if (move_kick)
+				else if (move_attack2)
 				{
 					this.animations[3].Update();
 					this.animations[3].Draw(position, s);
