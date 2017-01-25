@@ -87,14 +87,14 @@ namespace Rage_of_Stickman
 		public void Initialize()
 		{
 			// ----- Start settings -----
-			this.position = this.position_start;
-			this.health = this.health_start;
+			position = position_start;
+			health = health_start;
 		}
 
 		public new void Update()
 		{
 
-			if (this.active)
+			if (active)
 			{
 				Input();
 				Logic();
@@ -107,11 +107,11 @@ namespace Rage_of_Stickman
 
 		private void Input()
 		{
-			this.move_jump = false;
-			this.move_left = false;
-			this.move_right = false;
-			this.move_attack1 = false;
-			this.move_attack2 = false;
+			move_jump = false;
+			move_left = false;
+			move_right = false;
+			move_attack1 = false;
+			move_attack2 = false;
 
 			// TODO Player.Input() : Change isDead to Logic()
 			foreach (Keys key in Keyboard.GetState().GetPressedKeys())

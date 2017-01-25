@@ -110,6 +110,21 @@ namespace Rage_of_Stickman
 		BackToMenu
 	}
 
+	enum ETarget
+	{
+		Main
+	}
+
+	enum EGameEvent
+	{
+		Open_Mainmenu,
+		Open_Level1,
+		Open_Level2,
+		Open_Level3,
+
+		Game_Exit
+	}
+
 	enum EEnemy
 	{
 		kid,
@@ -137,7 +152,9 @@ namespace Rage_of_Stickman
 		public int tileSize = 32;
 
 		// TODO Main.gameWindowState : Start with MainWindow
-		public EScenes sceneState = EScenes.Level1;
+		public EScenes sceneState = EScenes.Mainmenu;
+
+		public List<GameEvent> gameEvents;
 
 		public int gameLevel_max = 3;
 		public int gameLevel_first = 1;
@@ -163,6 +180,8 @@ namespace Rage_of_Stickman
 					content.textures = new Texture2D[(int)ETexture.no_texture];
 					content.animations = new AnimatedTexture2D[(int)EAnimation.no_animation];
 					content.fonts = new SpriteFont[(int)EFont.no_font];
+
+					content.gameEvents = new List<GameEvent>();
 
 					content.enemies = new List<Enemy>();
 				}

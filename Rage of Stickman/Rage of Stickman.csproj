@@ -45,6 +45,7 @@
     <Compile Include="Camera2D.cs" />
     <Compile Include="Enemy.cs" />
     <Compile Include="Entity.cs" />
+    <Compile Include="GameEvent.cs" />
     <Compile Include="GameContent.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="Kid.cs" />
@@ -59,6 +60,7 @@
     <Compile Include="Tile.cs" />
     <Compile Include="TileMap.cs" />
     <Compile Include="Window.cs" />
+    <Compile Include="WindowButton.cs" />
     <Compile Include="WindowComponent.cs" />
     <Compile Include="Zombie.cs" />
   </ItemGroup>
