@@ -15,32 +15,42 @@ namespace Rage_of_Stickman
 		protected bool active;
 		protected bool visible;
 
-		public GameObject()
+		public GameObject(Vector2 position, Vector2 size, bool active = true, bool visible = true)
 		{
-			this.position = new Vector2(0, 0);
-			this.size = new Vector2(1, 1);
-			this.active = true;
-			this.visible = true;
+			this.position = position;
+			this.size = size;
+			this.active = active;
+			this.visible = visible;
 		}
 
 		public Vector2 Position()
 		{
-			return this.position;
+			return position;
+		}
+
+		public void MoveTo(Vector2 position)
+		{
+			this.position = position;
 		}
 
 		public Vector2 Size()
 		{
-			return this.size;
+			return size;
+		}
+
+		public void SizeTo(Vector2 size)
+		{
+			this.size = size;
 		}
 
 		public void toggleActive()
 		{
-			this.active = !this.active;
+			active = !active;
 		}
 
 		public bool Active()
 		{
-			return this.active;
+			return active;
 		}
 
 		public void Active(bool active)
@@ -50,12 +60,12 @@ namespace Rage_of_Stickman
 
 		public void toggleVisible()
 		{
-			this.visible = !this.visible;
+			visible = !visible;
 		}
 
 		public bool Visible()
 		{
-			return this.visible;
+			return visible;
 		}
 
 		public void Visible(bool visible)
@@ -63,9 +73,14 @@ namespace Rage_of_Stickman
 			this.visible = visible;
 		}
 
-		public void Update()
+		public virtual void Update()
 		{
 			// TODO GameObject.Update()
+		}
+
+		public virtual void Draw()
+		{
+			// TODO GameObject.Draw()
 		}
 	}
 }

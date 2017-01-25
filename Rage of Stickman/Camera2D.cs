@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +16,17 @@ namespace Rage_of_Stickman
 		public float rotation;
 		public float zoom;
 
-		public Camera2D(Viewport viewport)
+		public Camera2D(Vector2 origin, Vector2 position, float rotation = 0, float zoom = 1)
 		{
-			origin = new Vector2(viewport.Width / 2.0f, viewport.Height / 2.0f);
-			position = Vector2.Zero;
-			rotation = 0;
-			zoom = 1.0f; // TODO Camera2D.zoom : Greater zoom, maybe some zoom-effects while moving
+			this.origin = origin;
+			this.position = position;
+			this.rotation = rotation;
+			this.zoom = zoom;
+		}
+
+		public Vector2 Origin()
+		{
+			return origin;
 		}
 
 		public Matrix GetViewMatrix()
@@ -29,7 +35,13 @@ namespace Rage_of_Stickman
 				Matrix.CreateTranslation(new Vector3(-position, 0.0f)) *
 				Matrix.CreateTranslation(new Vector3(origin, 0.0f)) *
 				Matrix.CreateRotationZ(rotation) *
-				Matrix.CreateScale(zoom, zoom, 1);
+				Matrix.CreateScale(zoom, zoom, 1) *
+				1;
+		}
+
+		public void Update(Vector2 newPosition)
+		{
+			position = newPosition;
 		}
 	}
 }

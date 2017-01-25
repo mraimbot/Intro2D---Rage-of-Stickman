@@ -93,11 +93,14 @@ namespace Rage_of_Stickman
 
 		public new void Update()
 		{
+
 			if (this.active)
 			{
 				Input();
 				Logic();
 			}
+
+			CameraController();
 
 			base.Update();
 		}
@@ -147,6 +150,30 @@ namespace Rage_of_Stickman
 		private void Logic()
 		{
 			// TODO Player.Logic()
+		}
+
+		private void CameraController()
+		{
+			Vector2 position_camera = position;
+			if (position_camera.X - Game.Content.camera.Origin().X < 0)
+			{
+				position_camera.X = Game.Content.camera.Origin().X;
+			}
+			else if (position_camera.X + Game.Content.camera.Origin().X > Game.Content.tileMap.Size().X * Game.Content.tileSize)
+			{
+				position_camera.X = Game.Content.tileMap.Size().X * Game.Content.tileSize - Game.Content.camera.Origin().X;
+			}
+
+			if (position_camera.Y - Game.Content.camera.Origin().Y < 0)
+			{
+				position_camera.Y = Game.Content.camera.Origin().Y;
+			}
+			else if (position_camera.Y + Game.Content.camera.Origin().Y > Game.Content.tileMap.Size().Y * Game.Content.tileSize)
+			{
+				position_camera.Y = Game.Content.tileMap.Size().Y * Game.Content.tileSize - Game.Content.camera.Origin().Y;
+			}
+
+			Game.Content.camera.Update(position_camera);
 		}
 
 		public new void Draw()

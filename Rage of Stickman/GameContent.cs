@@ -12,13 +12,16 @@ namespace Rage_of_Stickman
 {
 	enum ETexture
 	{
-		// Tiles
+		// ----- Background Textures -----
+		background_mainmenu,
+
+		// ----- Tiles in 32x32 Formate -----
 		grass,
 		stone,
 		asphalt,
 		brick,
 
-		// Player
+		// ----- Player Textures -----
 		player_idle_0,
 		player_move_0,
 		player_move_1,
@@ -55,6 +58,9 @@ namespace Rage_of_Stickman
 
 	enum EAnimation
 	{
+		// ----- Background-Animations -----
+		background_mainmenu,
+
 		// Tiles
 		grass,
 		stone,
@@ -85,11 +91,15 @@ namespace Rage_of_Stickman
 		no_font
 	}
 
-	enum EGameWindowState
+	enum EScenes
 	{
-		MainWindow,
-		GameWindow,
-		PauseWindow
+		Mainmenu,
+
+		Level1,
+		Level2,
+		Level3,
+
+		Exit
 	}
 
 	enum EGameState
@@ -113,7 +123,6 @@ namespace Rage_of_Stickman
 
 		public Viewport viewport;
 		public Camera2D camera;
-		// public Camera2D camera;
 
 		public SpriteBatch spriteBatch;
 
@@ -127,8 +136,14 @@ namespace Rage_of_Stickman
 		public TileMap tileMap;
 		public int tileSize = 32;
 
+		// TODO Main.gameWindowState : Start with MainWindow
+		public EScenes sceneState = EScenes.Level1;
+
 		public int gameLevel_max = 3;
-		public int gameLevel_first = 0;
+		public int gameLevel_first = 1;
+		public int gameLevel;
+
+		public bool flag_newScene;
 
 		public Vector2 force_gravity = new Vector2(0.0f, 0.1f);
 

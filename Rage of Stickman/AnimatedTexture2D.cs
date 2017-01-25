@@ -22,11 +22,27 @@ namespace Rage_of_Stickman
 
 		private bool active;
 
-		public AnimatedTexture2D(Texture2D[] textures, int width, int height, float frameTime)
+		public AnimatedTexture2D(Texture2D[] textures, int width = 0, int height = 0, float frameTime = 100.0f)
 		{
 			this.textures = textures;
-			this.height = height;
-			this.width = width;
+			if (width == 0)
+			{
+				this.width = this.textures[0].Width;
+			}
+			else
+			{
+				this.width = width;
+			}
+
+			if (height == 0)
+			{
+				this.height = this.textures[0].Height;
+			}
+			else
+			{
+				this.height = height;
+			}
+
 			this.frameTime = frameTime;
 
 			active = true;
@@ -64,14 +80,9 @@ namespace Rage_of_Stickman
 			}
 		}
 
-		public void Draw(Vector2 position)
+		public void Draw(Vector2 position, SpriteEffects s = SpriteEffects.None)
 		{
-			Game.Content.spriteBatch.Draw(textures[frameIndex], position, Color.White);
+			Game.Content.spriteBatch.Draw(textures[frameIndex], position, null, null, null, 0, Vector2.One, Color.White, s, 0);
 		}
-
-        public void Draw(Vector2 position, SpriteEffects s)
-        {
-            Game.Content.spriteBatch.Draw(textures[frameIndex], position, null, null, null, 0, Vector2.One, Color.White, s, 0);
-        }
 	}
 }

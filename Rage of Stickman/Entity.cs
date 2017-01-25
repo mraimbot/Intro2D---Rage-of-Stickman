@@ -31,7 +31,7 @@ namespace Rage_of_Stickman
 
 		protected Vector2 force_jump = new Vector2(0.0f, -1.5f);
 
-		protected float minGroundDistance = Game.Content.tileSize / 10;
+		protected float minGroundDistance = 1.0f;
 		protected bool isGrounded;
 
 		protected int health;
@@ -45,12 +45,10 @@ namespace Rage_of_Stickman
 		protected bool move_attack1;
 		protected bool move_attack2;
 
-		public Entity(Vector2 startPosition, Vector2 size, EDirection lookAtDirection, float mass, float speed, bool enableGravity, int health)
-			: base()
+		public Entity(Vector2 position_start, Vector2 size, EDirection lookAtDirection, float mass, float speed, bool enableGravity, int health)
+			: base(position_start, size)
 		{
-			this.position_start = startPosition;
-			this.position = this.position_start;
-			this.size = size;
+			this.position_start = position_start;
 			this.lookAtDirection = EDirection.right;
 			this.mass = mass;
 			this.speed = speed;
@@ -253,7 +251,7 @@ namespace Rage_of_Stickman
 			return distance;
 		}
 
-		public void Draw()
+		public new void Draw()
 		{
 			if (!(animations == null) && !(animations.Length == 0))
 			{

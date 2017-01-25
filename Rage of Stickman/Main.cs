@@ -8,8 +8,7 @@ namespace Rage_of_Stickman
 	{
 		private GraphicsDeviceManager graphics;
 
-		private int gameLevel;
-		private Level[] gameLevels;
+		private Scene scene;
 
 		public Main()
 		{
@@ -26,10 +25,10 @@ namespace Rage_of_Stickman
 			Game.Content.contentManager = Content;
 			Game.Content.spriteBatch = new SpriteBatch(GraphicsDevice);
 			Game.Content.viewport = GraphicsDevice.Viewport;
-			Game.Content.camera = new Camera2D(GraphicsDevice.Viewport);
 
-			gameLevel = Game.Content.gameLevel_first;
-			gameLevels = new Level[Game.Content.gameLevel_max];
+			Game.Content.gameLevel = Game.Content.gameLevel_first;
+
+			Game.Content.flag_newScene = true;
 
 			base.Initialize();
 		}
@@ -39,20 +38,20 @@ namespace Rage_of_Stickman
 
 		protected override void Update(GameTime gameTime)
 		{
-			Game.Content.gameTime = gameTime; // TODO Main.Update => Do I need this?
+			Game.Content.gameTime = gameTime;
 
-			Input();
-			UpdateLevel();
-			UpdateCamera();
+			InputHandler();
+			SceneHandler();
 
 			base.Update(gameTime);
 		}
 
-		private void Input()
+		private void InputHandler()
 		{
+			// ----- Main-Inputs -----
 			if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
 			{
-				Exit();
+				Game.Content.sceneState = EScenes.Exit;
 			}
 
 			if (Keyboard.GetState().IsKeyDown(Keys.F4) && !Game.Content.previousKeyState.IsKeyDown(Keys.F4))
@@ -62,53 +61,69 @@ namespace Rage_of_Stickman
 			}
 		}
 
-		private void UpdateLevel()
+		private void SceneHandler()
 		{
-			if (gameLevels[gameLevel] == null)
+			switch (Game.Content.sceneState)
 			{
-				gameLevels[gameLevel] = new Level();
-				switch (gameLevel)
-				{
-					case 0:
-						gameLevels[gameLevel].InitializeLevel0(Content.Load<Texture2D>("Graphics/RageMap"), Content.Load<Texture2D>("Graphics/Background"), new Vector2(9, 20), new Vector2(248, 27));
-						break;
-				}
+				case EScenes.Mainmenu:
+					MenuHandler();
+					break;
+
+				case EScenes.Exit:
+					Exit();
+					break;
+
+				default:
+					GameHandler();
+					break;
 			}
-			gameLevels[gameLevel].Update();
 		}
 
-		protected void UpdateCamera()
+		private void MenuHandler()
 		{
-			Game.Content.camera.position = Game.Content.player.Position();
-
-			if (Game.Content.camera.position.X - Game.Content.camera.origin.X < 0)
+			if (scene == null || Game.Content.flag_newScene)
 			{
-				Game.Content.camera.position.X = Game.Content.camera.origin.X;
-			}
-			else if (Game.Content.camera.position.X + Game.Content.camera.origin.X > Game.Content.tileMap.Size().X * Game.Content.tileSize)
-			{
-				Game.Content.camera.position.X = Game.Content.tileMap.Size().X * Game.Content.tileSize - Game.Content.camera.origin.X;
+				scene = Scene.CreateMainmenu();
 			}
 
-			if (Game.Content.camera.position.Y - Game.Content.camera.origin.Y < 0)
+			scene.Update();
+		}
+
+		private void GameHandler()
+		{
+			if (scene == null || Game.Content.flag_newScene)
 			{
-				Game.Content.camera.position.Y = Game.Content.camera.origin.Y;
+				switch (Game.Content.gameLevel)
+				{
+					case 1:
+						scene = Scene.CreateLevel1();
+						break;
+
+					case 2:
+						scene = Scene.CreateLevel2();
+						break;
+
+					case 3:
+						scene = Scene.CreateLevel3();
+						break;
+				}
+
+				Game.Content.flag_newScene = false;
 			}
-			else if (Game.Content.camera.position.Y + Game.Content.camera.origin.Y > Game.Content.tileMap.Size().Y * Game.Content.tileSize)
-			{
-				Game.Content.camera.position.Y = Game.Content.tileMap.Size().Y * Game.Content.tileSize - Game.Content.camera.origin.Y;
-			}
-            
-			Game.Content.previousKeyState = Keyboard.GetState();
+
+			scene.Update();
 		}
 
 		protected override void Draw(GameTime gameTime)
 		{
 			GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            Game.Content.spriteBatch.Begin(transformMatrix: Game.Content.camera.GetViewMatrix());
+			Game.Content.spriteBatch.Begin(transformMatrix: Game.Content.camera.GetViewMatrix());
 			{
-				gameLevels[gameLevel].Draw();
+				if (scene != null)
+				{
+					scene.Draw();
+				}
 			}
 			Game.Content.spriteBatch.End();
 
