@@ -57,9 +57,6 @@ namespace Rage_of_Stickman
 			}
 
 			base.Update();
-
-			// TODO DEBUG A
-			Console.WriteLine("index_max = " + index_max + "; index = " + index);
 		}
 
 		private void Input()
