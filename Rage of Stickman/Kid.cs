@@ -11,8 +11,9 @@ namespace Rage_of_Stickman
 	class Kid : Enemy
 	{
 		public Kid(Vector2 startPosition)
-			: base(startPosition, new Vector2(1, 1), 1, 0.6f, 5)
+			: base(startPosition, new Vector2(1, 1), 1, 0.4f, 5)
 		{
+			// ----- Load Textures & Animations -----
 			if (Game.Content.animations[(int)EAnimation.enemie_kid_move] == null)
 			{
 				Game.Content.textures[(int)ETexture.enemy_kid_move_0] = Game.Content.contentManager.Load<Texture2D>("Graphics/Enemies/Kid/Kid1");
@@ -26,11 +27,15 @@ namespace Rage_of_Stickman
 			}
 
 			this.LoadAnimations(Game.Content.animations[(int)EAnimation.enemie_kid_move]);
+
+			// ----- Initialize start settings -----
+			force_jump = new Vector2(0.0f, -0.6f);
+			Initialize();
 		}
 
-		public new void Update()
+		public override void Update()
 		{
-			if (this.active)
+			if (active)
 			{
 				Logic();
 			}
@@ -40,10 +45,33 @@ namespace Rage_of_Stickman
 
 		private void Logic()
 		{
-			// TODO Kid.Logic()
+			move_right = false;
+			move_left = false;
+			move_jump = false;
+			move_attack1 = false;
+			move_attack2 = false;
+
+			if (!isDead())
+			{
+
+				if (Game.Content.player.Position().X + 0.1 < this.position.X)
+				{
+					move_left = true;
+					move_jump = true;
+					lookAtDirection = EDirection.left;
+				}
+				else if (Game.Content.player.Position().X - 0.1 > this.position.X)
+				{
+					move_right = true;
+					move_jump = true;
+					lookAtDirection = EDirection.right;
+				}
+
+				// TODO Kid.Logic : Add attack
+			}
 		}
 
-		public new void Draw()
+		public override void Draw()
 		{
 			base.Draw();
 		}

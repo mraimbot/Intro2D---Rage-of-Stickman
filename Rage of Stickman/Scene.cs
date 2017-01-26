@@ -96,7 +96,10 @@ namespace Rage_of_Stickman
 			Game.Content.enemies.Clear();
 			Game.Content.enemies.Add(new Kid(new Vector2(11 * Game.Content.tileSize, 27 * Game.Content.tileSize)));
 			Game.Content.enemies.Add(new Oma(new Vector2(26 * Game.Content.tileSize, 25 * Game.Content.tileSize)));
-			Game.Content.enemies.Add(new Zombie(new Vector2(33 * Game.Content.tileSize, 25 * Game.Content.tileSize)));
+			Game.Content.enemies.Add(new Zombie(new Vector2(33 * Game.Content.tileSize, 26 * Game.Content.tileSize)));
+			Game.Content.enemies.Add(new Zombie(new Vector2(48 * Game.Content.tileSize, 26 * Game.Content.tileSize)));
+			Game.Content.enemies.Add(new Zombie(new Vector2(38 * Game.Content.tileSize, 26 * Game.Content.tileSize)));
+			Game.Content.enemies.Add(new Zombie(new Vector2(43 * Game.Content.tileSize, 26 * Game.Content.tileSize)));
 
 			return scene;
 		}

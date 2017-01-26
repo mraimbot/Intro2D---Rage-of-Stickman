@@ -29,7 +29,7 @@ namespace Rage_of_Stickman
 		protected List<Vector2> impulses;
 		protected Vector2 force_input;
 
-		protected Vector2 force_jump = new Vector2(0.0f, -1.5f);
+		protected Vector2 force_jump;
 
 		protected float minGroundDistance = 1.0f;
 		protected bool isGrounded;
@@ -89,12 +89,20 @@ namespace Rage_of_Stickman
 			size.Y = (int)animations[0].Size().Y;
 		}
 
+		public void Initialize()
+		{
+			// ----- Start settings -----
+			position = position_start;
+			lookAtDirection = EDirection.right;
+			health = health_start;
+		}
+
 		public void addDamage(int damage)
 		{
 			damages.Add(damage);
 		}
 
-		public new void Update()
+		public override void Update()
 		{
 			if (active)
 			{
@@ -113,10 +121,10 @@ namespace Rage_of_Stickman
 				damage += damage_input;
 
 			// ----- Health -----
-			if (health > 0)
+			if (health_start > 0)
 			{
 				health -= damage;
-				if (health < 0) // <healt := -1> is for immortality
+				if (health < 0)
 				{
 					health = 0;
 				}
@@ -124,39 +132,39 @@ namespace Rage_of_Stickman
 
 			if (health == 0)
 			{
-				this.visible = false;
-				this.active = false;
+				// TODO Entity.Logic : Make Dead-Animation
+				visible = false;
+				active = false;
 			}
 
 			// ----- Movement -----
-			// TODO Entity.Logic : Add movement here!
-			if (!this.isDead())
+			if (!isDead())
 			{
-				if (this.move_jump && this.isGrounded)
+				if (move_jump && isGrounded)
 				{
-					this.impulses.Add(force_jump);
+					impulses.Add(force_jump);
 				}
 
-				if (this.move_left && this.isGrounded)
+				if (move_left && isGrounded)
 				{
-					this.impulses.Add(new Vector2(-speed, 0.0f));
-					this.lookAtDirection = EDirection.left;
+					impulses.Add(new Vector2(-speed, 0.0f));
+					lookAtDirection = EDirection.left;
 				}
 
-				if (this.move_right && this.isGrounded)
+				if (move_right && isGrounded)
 				{
-					this.impulses.Add(new Vector2(speed, 0.0f));
-					this.lookAtDirection = EDirection.right;
+					impulses.Add(new Vector2(speed, 0.0f));
+					lookAtDirection = EDirection.right;
 				}
 
-				if (this.move_attack1)
+				if (move_attack1)
 				{
-					// TODO Player.move_punch
+					// TODO move_attack1
 				}
 
-				if (this.move_attack2)
+				if (move_attack2)
 				{
-					// TODO Player.move_kick
+					// TODO move_attack2
 				}
 			}
 		}
@@ -174,6 +182,7 @@ namespace Rage_of_Stickman
 				force_input.Y = 0.0f;
 			}
 
+			// ----- Forces -----
 			foreach (Vector2 force in forces)
 				force_input += force;
 
@@ -187,12 +196,14 @@ namespace Rage_of_Stickman
 				Vector2 accel = force_input / mass;
 				Vector2 velocity = accel * Game.Content.gameTime.ElapsedGameTime.Milliseconds;
 
+				// ----- Translation -----
 				HandleTransformation(velocity);
 			}
 		}
 
 		private void HandleTransformation(Vector2 velocity)
 		{
+			// ----- Vertically -----
 			if (!(isGrounded && velocity.Y > 0))
 			{
 				if (!Game.Content.tileMap.CheckCollisionYRay(new Vector2(position.X, position.Y), new Vector2(position.X, position.Y + velocity.Y))
@@ -211,6 +222,7 @@ namespace Rage_of_Stickman
 				}
 			}
 
+			// ----- Horizontally -----
 			if (!Game.Content.tileMap.CheckCollision(new Vector2(position.X + velocity.X, position.Y))
 				&& !Game.Content.tileMap.CheckCollision(new Vector2(position.X + size.X + velocity.X, position.Y))
 				&& !Game.Content.tileMap.CheckCollision(new Vector2(position.X + velocity.X, position.Y + size.Y))
@@ -219,6 +231,7 @@ namespace Rage_of_Stickman
 				position.X += velocity.X;
 			}
 
+			// ----- Position correction -----
 			if ((isGrounded || calcDistanceToGround() <= minGroundDistance) && velocity.Y >= 0)
 			{
 				if (calcDistanceToGround() < Game.Content.tileSize / 2)
@@ -251,7 +264,7 @@ namespace Rage_of_Stickman
 			return distance;
 		}
 
-		public new void Draw()
+		public override void Draw()
 		{
 			if (!(animations == null) && !(animations.Length == 0))
 			{

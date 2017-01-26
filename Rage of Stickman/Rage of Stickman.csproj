@@ -55,6 +55,7 @@
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RandomGenerator.cs" />
     <Compile Include="Scene.cs" />
     <Compile Include="SceneComponent.cs" />
     <Compile Include="Tile.cs" />

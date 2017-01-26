@@ -81,14 +81,8 @@ namespace Rage_of_Stickman
 			this.LoadAnimations(animationlist);
 
 			// ----- Initialize start settings -----
+			force_jump = new Vector2(0.0f, -1.5f);
 			Initialize();
-		}
-
-		public void Initialize()
-		{
-			// ----- Start settings -----
-			position = position_start;
-			health = health_start;
 		}
 
 		public new void Update()
@@ -107,9 +101,9 @@ namespace Rage_of_Stickman
 
 		private void Input()
 		{
-			move_jump = false;
 			move_left = false;
 			move_right = false;
+			move_jump = false;
 			move_attack1 = false;
 			move_attack2 = false;
 

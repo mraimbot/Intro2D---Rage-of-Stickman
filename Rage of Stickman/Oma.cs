@@ -11,8 +11,9 @@ namespace Rage_of_Stickman
 	class Oma : Enemy
 	{
 		public Oma(Vector2 startPosition)
-			: base(startPosition, new Vector2(1, 1), 2, 0.2f, 500)
+			: base(startPosition, new Vector2(1, 1), 2, 0.07f, 500)
 		{
+			// ----- Load Textures & Animations -----
 			if (Game.Content.animations[(int)EAnimation.enemie_oma_move] == null)
 			{
 				Game.Content.textures[(int)ETexture.enemy_oma_move_0] = Game.Content.contentManager.Load<Texture2D>("Graphics/Enemies/Oma/Oma0");
@@ -22,13 +23,18 @@ namespace Rage_of_Stickman
 
 				Texture2D[] oma_move = { Game.Content.textures[(int)ETexture.enemy_oma_move_0], Game.Content.textures[(int)ETexture.enemy_oma_move_1], Game.Content.textures[(int)ETexture.enemy_oma_move_2], Game.Content.textures[(int)ETexture.enemy_oma_move_3] };
 
-				Game.Content.animations[(int)EAnimation.enemie_oma_move] = new AnimatedTexture2D(oma_move, Game.Content.textures[(int)ETexture.enemy_oma_move_0].Width, Game.Content.textures[(int)ETexture.enemy_oma_move_0].Height, 300.0f);
+				Game.Content.animations[(int)EAnimation.enemie_oma_move] = new AnimatedTexture2D(oma_move, Game.Content.textures[(int)ETexture.enemy_oma_move_0].Width, Game.Content.textures[(int)ETexture.enemy_oma_move_0].Height, 350.0f);
 			}
 
 			this.LoadAnimations(Game.Content.animations[(int)EAnimation.enemie_oma_move]);
+
+
+			// ----- Initialize start settings -----
+			force_jump = new Vector2(0.0f, 0.0f);
+			Initialize();
 		}
 
-		public new void Update()
+		public override void Update()
 		{
 			if (this.active)
 			{
@@ -41,9 +47,31 @@ namespace Rage_of_Stickman
 		private void Logic()
 		{
 			// TODO Oma.Logic()
+			move_right = false;
+			move_left = false;
+			move_jump = false;
+			move_attack1 = false;
+			move_attack2 = false;
+
+			if (!isDead())
+			{
+
+				if (Game.Content.player.Position().X + 0.1 < this.position.X)
+				{
+					move_left = true;
+					lookAtDirection = EDirection.left;
+				}
+				else if (Game.Content.player.Position().X - 0.1 > this.position.X)
+				{
+					move_right = true;
+					lookAtDirection = EDirection.right;
+				}
+
+				// TODO Oma.Logic : Add attack
+			}
 		}
 
-		public new void Draw()
+		public override void Draw()
 		{
 			base.Draw();
 		}

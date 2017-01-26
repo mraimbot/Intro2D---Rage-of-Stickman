@@ -16,15 +16,9 @@ namespace Rage_of_Stickman
 			Initialize();
 		}
 
-		public void Initialize()
+		public override void Update()
 		{
-			this.position = this.position_start;
-			this.health = this.health_start;
-		}
-
-		public new void Update()
-		{
-			if (this.active)
+			if (active)
 			{
 				Logic();
 			}
@@ -34,22 +28,10 @@ namespace Rage_of_Stickman
 
 		private void Logic()
 		{
-			if (!this.isDead())
-			{
-				if (Game.Content.player.Position().X + 0.1 < this.position.X)
-				{
-					impulses.Add(new Vector2(-speed, 0.0f));
-					lookAtDirection = EDirection.left;
-				}
-				else if (Game.Content.player.Position().X - 0.1 > this.position.X)
-				{
-					impulses.Add(new Vector2(speed, 0.0f));
-					lookAtDirection = EDirection.right;
-				}
-			}
+			// TODO Enemy.Logic()
 		}
 
-		public new void Draw()
+		public override void Draw()
 		{
 			SpriteEffects s = SpriteEffects.None;
 
