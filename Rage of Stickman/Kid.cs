@@ -37,6 +37,8 @@ namespace Rage_of_Stickman
 			claims.Add("Play with me!");
 			claims.Add("Are you poor?");
 			claims.Add("You look like you are single.");
+			claims.Add("Why are you so big?");
+			claims.Add("You look very ugly.");
 		}
 
 		public override void Update()
