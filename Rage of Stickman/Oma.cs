@@ -31,6 +31,7 @@ namespace Rage_of_Stickman
 
 			// ----- Initialize start settings -----
 			force_jump = new Vector2(0.0f, 0.0f);
+			speed += RandomGenerator.NextFloat(min: -0.01f, max: 0.02f);
 			Initialize();
 		}
 

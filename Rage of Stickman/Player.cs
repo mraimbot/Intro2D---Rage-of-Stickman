@@ -81,6 +81,7 @@ namespace Rage_of_Stickman
 			this.LoadAnimations(animationlist);
 
 			// ----- Initialize start settings -----
+			size.X *= 0.8f;
 			force_jump = new Vector2(0.0f, -1.5f);
 			Initialize();
 		}

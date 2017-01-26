@@ -206,10 +206,10 @@ namespace Rage_of_Stickman
 			// ----- Vertically -----
 			if (!(isGrounded && velocity.Y > 0))
 			{
-				if (!Game.Content.tileMap.CheckCollisionYRay(new Vector2(position.X, position.Y), new Vector2(position.X, position.Y + velocity.Y))
-					&& !Game.Content.tileMap.CheckCollisionYRay(new Vector2(position.X, position.Y + size.Y), new Vector2(position.X, position.Y + size.Y + velocity.Y))
-					&& !Game.Content.tileMap.CheckCollisionYRay(new Vector2(position.X + size.X, position.Y), new Vector2(position.X + size.X, position.Y + velocity.Y))
-					&& !Game.Content.tileMap.CheckCollisionYRay(new Vector2(position.X + size.X, position.Y + size.Y), new Vector2(position.X + size.X, position.Y + size.Y + velocity.Y)))
+				if (!Game.Content.tileMap.CheckCollisionYRay(new Vector2(position.X, position.Y), new Vector2(position.X, position.Y + velocity.Y)) // Point UpperLeft
+					&& !Game.Content.tileMap.CheckCollisionYRay(new Vector2(position.X, position.Y + size.Y), new Vector2(position.X, position.Y + size.Y + velocity.Y)) // Point UpperRight
+					&& !Game.Content.tileMap.CheckCollisionYRay(new Vector2(position.X + size.X, position.Y), new Vector2(position.X + size.X, position.Y + velocity.Y)) // Point BottomLeft
+					&& !Game.Content.tileMap.CheckCollisionYRay(new Vector2(position.X + size.X, position.Y + size.Y), new Vector2(position.X + size.X, position.Y + size.Y + velocity.Y))) // Point BottomRight
 				{
 					position.Y += velocity.Y;
 				}
@@ -223,10 +223,12 @@ namespace Rage_of_Stickman
 			}
 
 			// ----- Horizontally -----
-			if (!Game.Content.tileMap.CheckCollision(new Vector2(position.X + velocity.X, position.Y))
-				&& !Game.Content.tileMap.CheckCollision(new Vector2(position.X + size.X + velocity.X, position.Y))
-				&& !Game.Content.tileMap.CheckCollision(new Vector2(position.X + velocity.X, position.Y + size.Y))
-				&& !Game.Content.tileMap.CheckCollision(new Vector2(position.X + size.X + velocity.X, position.Y + size.Y)))
+			if (!Game.Content.tileMap.CheckCollision(new Vector2(position.X + velocity.X, position.Y)) // Point UpperLeft
+				&& !Game.Content.tileMap.CheckCollision(new Vector2(position.X + size.X + velocity.X, position.Y)) // Point BottomLeft
+				&& !Game.Content.tileMap.CheckCollision(new Vector2(position.X + velocity.X, position.Y + size.Y)) // Point UpperRight
+				&& !Game.Content.tileMap.CheckCollision(new Vector2(position.X + size.X + velocity.X, position.Y + size.Y)) // point BottomRight
+				&& !Game.Content.tileMap.CheckCollision(new Vector2(position.X + velocity.X, position.Y + size.Y / 2)) // Point MiddleLeft
+				&& !Game.Content.tileMap.CheckCollision(new Vector2(position.X + size.X + velocity.X, position.Y + size.Y / 2))) // Point MiddleRight
 			{
 				position.X += velocity.X;
 			}
@@ -234,7 +236,7 @@ namespace Rage_of_Stickman
 			// ----- Position correction -----
 			if ((isGrounded || calcDistanceToGround() <= minGroundDistance) && velocity.Y >= 0)
 			{
-				if (calcDistanceToGround() < Game.Content.tileSize / 2)
+				if (calcDistanceToGround() < Game.Content.tileSize)
 				{
 					position.Y = position.Y + calcDistanceToGround() - minGroundDistance;
 				}
