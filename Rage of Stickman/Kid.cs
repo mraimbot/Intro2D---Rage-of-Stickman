@@ -11,7 +11,7 @@ namespace Rage_of_Stickman
 	class Kid : Enemy
 	{
 		public Kid(Vector2 startPosition)
-			: base(startPosition, new Vector2(1, 1), 1, 0.4f, 5)
+			: base(startPosition, new Vector2(1, 1), 35, 10, 5)
 		{
 			// ----- Load Textures & Animations -----
 			if (Game.Content.animations[(int)EAnimation.enemie_kid_move] == null)
@@ -29,9 +29,14 @@ namespace Rage_of_Stickman
 			this.LoadAnimations(Game.Content.animations[(int)EAnimation.enemie_kid_move]);
 
 			// ----- Initialize start settings -----
-			force_jump = new Vector2(0.0f, -0.6f);
-			speed += RandomGenerator.NextFloat(min: -0.02f, max: 0.01f);
 			Initialize();
+			jump_timer.Reset(0.5f);
+			force_jump = new Vector2(0.0f, -60);
+			speed += RandomGenerator.NextFloat(min: -2, max: 1);
+			claim_color = Color.Pink;
+			claims.Add("Play with me!");
+			claims.Add("Are you poor?");
+			claims.Add("You look like you are single.");
 		}
 
 		public override void Update()

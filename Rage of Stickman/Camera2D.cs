@@ -21,7 +21,7 @@ namespace Rage_of_Stickman
 			this.origin = origin;
 			this.position = position;
 			this.rotation = rotation;
-			this.zoom = zoom;
+			this.zoom = 1; // zoom;
 		}
 
 		public Vector2 Origin()

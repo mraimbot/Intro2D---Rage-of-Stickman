@@ -10,10 +10,21 @@ namespace Rage_of_Stickman
 {
 	class Enemy : Entity
 	{
+		protected Timer claim_timer;
+		protected bool isClaiming;
+		protected List<string> claims;
+		protected int claim_ID;
+		protected Color claim_color;
+
 		public Enemy(Vector2 startPosition, Vector2 size, float mass, float speed, int health)
 			: base(startPosition, size, EDirection.left, mass, speed, true, health)
 		{
 			Initialize();
+			claim_timer = new Timer(RandomGenerator.NextInt(min: 3, max: 20));
+			claims = new List<string>();
+			isClaiming = false;
+			claim_color = Color.White;
+			useWind = false;
 		}
 
 		public override void Update()
@@ -28,7 +39,21 @@ namespace Rage_of_Stickman
 
 		private void Logic()
 		{
-			// TODO Enemy.Logic()
+			claim_timer.Update();
+
+			if (claim_timer.IsTimeUp())
+			{
+				isClaiming = !isClaiming;
+				if (isClaiming)
+				{
+					claim_ID = RandomGenerator.NextInt(min: 0, max: claims.Count);
+					claim_timer.Reset(claims.ElementAt(claim_ID).Length / 2);
+				}
+				else
+				{
+					claim_timer.Reset(RandomGenerator.NextInt(min: 3, max: 20));
+				}
+			}
 		}
 
 		public override void Draw()
@@ -52,6 +77,11 @@ namespace Rage_of_Stickman
 			{
 				this.animations[0].Update();
 				this.animations[0].Draw(position, s);
+			}
+
+			if (isClaiming && claims.Count > 0)
+			{
+				ShowText.Text(new Vector2(position.X + size.X / 2, position.Y - 32), claims.ElementAt(claim_ID), claim_color, ETextFormate.Center);
 			}
 		}
 	}

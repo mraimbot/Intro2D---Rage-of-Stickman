@@ -56,21 +56,16 @@ namespace Rage_of_Stickman
 
 		public static Scene CreateMainmenu()
 		{
-			// TODO Scene.CreateMainmenu()
 			// ----- Create mainmenu -----
 			// ----- Camera -----
 			Game.Content.camera = new Camera2D(Vector2.Zero, Vector2.Zero);
 			// ----- Scene -----
-			
-
-
 			WindowButton play = new WindowButton(true, new GameEvent(ETarget.Main, EGameEvent.Open_Level1), new AnimatedTexture2D[] { new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Window/Button/Button_Play_notMarked") }), new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Window/Button/Button_Play_marked") }) }, new Vector2(180, 375), Vector2.Zero);
 			WindowButton exit = new WindowButton(true, new GameEvent(ETarget.Main, EGameEvent.Game_Exit), new AnimatedTexture2D[] { new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Window/Button/Button_Exit_notMarked") }), new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Window/Button/Button_Exit_marked") }) }, new Vector2(870, 670), Vector2.Zero);
 			List<WindowComponent> windowComponents = new List<WindowComponent>();
 			windowComponents.Add(play);
 			windowComponents.Add(exit);
 			Window window = new Window(windowComponents, new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Background_Mainmenu") }), new Vector2(0, 0), new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));
-
 			List<SceneComponent> components = new List<SceneComponent>();
 			components.Add(window);
 			Scene scene = new Scene(components);
@@ -83,15 +78,19 @@ namespace Rage_of_Stickman
 			// ----- Create level one -----
 			// ----- Camera -----
 			Game.Content.camera = new Camera2D(new Vector2(Game.Content.viewport.Width / 2.0f, Game.Content.viewport.Height / 2.0f), Vector2.Zero);
-			// ----- Scene -----
-			Level level = new Level(new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Background") }), null, new Vector2(0, 0), new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));
-			List<SceneComponent> components = new List<SceneComponent>();
-			components.Add(level);
-			Scene scene = new Scene(components);
+			// ----- Player -----
+			Game.Content.player = new Player(new Vector2(9 * Game.Content.tileSize, 20 * Game.Content.tileSize), EDirection.right);
 			// ----- Map -----
 			Game.Content.tileMap = new TileMap(Game.Content.contentManager.Load<Texture2D>("Graphics/RageMap"));
-			// ----- Player -----
-			Game.Content.player = new Player(new Vector2(9 * Game.Content.tileSize, 20 * Game.Content.tileSize), EDirection.right, 1.5f, 0.7f, 100);
+			Level level = new Level(new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Background") }), null, new Vector2(0, 0), new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));
+			RainSimulation rain = new RainSimulation(1000, 50, new Vector2(0, 0), new Vector2(Game.Content.viewport.Width * 2, 1), Game.Content.player);
+			List<SceneComponent> components = new List<SceneComponent>();
+			components.Add(level);
+			components.Add(rain);
+			Scene scene = new Scene(components);
+			// ----- Physics -----
+			Game.Content.force_gravity = new Vector2(0, 9.807f);
+			Game.Content.force_wind = new Vector2(-2f, 0);
 			// ----- Enemies -----
 			Game.Content.enemies.Clear();
 			Game.Content.enemies.Add(new Kid(new Vector2(11 * Game.Content.tileSize, 27 * Game.Content.tileSize)));

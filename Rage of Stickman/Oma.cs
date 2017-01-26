@@ -11,7 +11,7 @@ namespace Rage_of_Stickman
 	class Oma : Enemy
 	{
 		public Oma(Vector2 startPosition)
-			: base(startPosition, new Vector2(1, 1), 2, 0.07f, 500)
+			: base(startPosition, new Vector2(1, 1), 60, 5, 500)
 		{
 			// ----- Load Textures & Animations -----
 			if (Game.Content.animations[(int)EAnimation.enemie_oma_move] == null)
@@ -30,9 +30,13 @@ namespace Rage_of_Stickman
 
 
 			// ----- Initialize start settings -----
-			force_jump = new Vector2(0.0f, 0.0f);
-			speed += RandomGenerator.NextFloat(min: -0.01f, max: 0.02f);
 			Initialize();
+			force_jump = new Vector2(0, 0);
+			speed += RandomGenerator.NextFloat(min: -1, max: 0.5f);
+			claim_color = Color.Gray;
+			claims.Add("Oh, my back!");
+			claims.Add("Don't just run around!");
+			claims.Add("Can you help me?");
 		}
 
 		public override void Update()

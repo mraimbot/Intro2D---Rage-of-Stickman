@@ -25,11 +25,14 @@ namespace Rage_of_Stickman
 		protected float mass;
 		protected float speed;
 
-		protected List<Vector2> forces;
+		protected bool useGravity;
+		protected bool useWind;
 		protected List<Vector2> impulses;
 		protected Vector2 force_input;
 
 		protected Vector2 force_jump;
+		protected Timer jump_timer;
+
 
 		protected float minGroundDistance = 1.0f;
 		protected bool isGrounded;
@@ -45,22 +48,20 @@ namespace Rage_of_Stickman
 		protected bool move_attack1;
 		protected bool move_attack2;
 
-		public Entity(Vector2 position_start, Vector2 size, EDirection lookAtDirection, float mass, float speed, bool enableGravity, int health)
+		public Entity(Vector2 position_start, Vector2 size, EDirection lookAtDirection, float mass, float speed, bool enablePhysics, int health)
 			: base(position_start, size)
 		{
 			this.position_start = position_start;
 			this.lookAtDirection = EDirection.right;
 			this.mass = mass;
 			this.speed = speed;
-			this.forces = new List<Vector2>();
 			this.impulses = new List<Vector2>();
+			jump_timer = new Timer(0.2f);
 
 			this.isGrounded = false;
 
-			if (enableGravity)
-			{
-				this.forces.Add(Game.Content.force_gravity);
-			}
+			useGravity = enablePhysics;
+			useWind = enablePhysics;
 
 			this.health_start = health;
 			this.health = this.health_start;
@@ -102,6 +103,11 @@ namespace Rage_of_Stickman
 			damages.Add(damage);
 		}
 
+		public bool isDead()
+		{
+			return (health == 0) ? true : false;
+		}
+
 		public override void Update()
 		{
 			if (active)
@@ -140,9 +146,12 @@ namespace Rage_of_Stickman
 			// ----- Movement -----
 			if (!isDead())
 			{
-				if (move_jump && isGrounded)
+				jump_timer.Update();
+
+				if (move_jump && jump_timer.IsTimeUp() && isGrounded)
 				{
 					impulses.Add(force_jump);
+					jump_timer.Reset();
 				}
 
 				if (move_left && isGrounded)
@@ -169,11 +178,6 @@ namespace Rage_of_Stickman
 			}
 		}
 
-		public bool isDead()
-		{
-			return (health == 0) ? true : false;
-		}
-
 		private void Physic()
 		{
 			if (isGrounded)
@@ -183,8 +187,15 @@ namespace Rage_of_Stickman
 			}
 
 			// ----- Forces -----
-			foreach (Vector2 force in forces)
-				force_input += force;
+			if (useGravity)
+			{
+				force_input += Game.Content.force_gravity;
+			}
+
+			if (useWind)
+			{
+				force_input += Game.Content.force_wind;
+			}
 
 			foreach (Vector2 impulse in impulses)
 				force_input += impulse;
@@ -218,6 +229,10 @@ namespace Rage_of_Stickman
 					if (velocity.Y > 0) // falling down
 					{
 						isGrounded = true;
+					}
+					else if (velocity.Y < 0) // collided with something above
+					{
+						force_input.Y = 0;
 					}
 				}
 			}

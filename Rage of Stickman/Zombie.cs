@@ -11,7 +11,7 @@ namespace Rage_of_Stickman
 	class Zombie : Enemy
 	{
 		public Zombie(Vector2 startPosition)
-			: base(startPosition, new Vector2(1, 1), 2, 0.05f, 20)
+			: base(startPosition, new Vector2(1, 1), 70, 1, 20)
 		{
 			// ----- Load Textures & Animations -----
 			if (Game.Content.animations[(int)EAnimation.enemie_zombie_move] == null)
@@ -29,9 +29,14 @@ namespace Rage_of_Stickman
 
 
 			// ----- Initialize start settings -----
-			force_jump = new Vector2(0.0f, 0.2f);
-			speed += RandomGenerator.NextFloat(min: -0.02f, max: 0.02f);
 			Initialize();
+			jump_timer.Reset(5);
+			force_jump = new Vector2(0.0f, 0.2f);
+			speed += RandomGenerator.NextFloat(min: -0.2f, max: 0.2f);
+			claim_color = Color.Green;
+			claims.Add("Brain... ");
+			claims.Add("I am hungry!");
+			claims.Add("Do you have some money?");
 		}
 
 		public override void Update()
@@ -55,7 +60,6 @@ namespace Rage_of_Stickman
 
 			if (!isDead())
 			{
-
 				if (Game.Content.player.Position().X + 0.1 < this.position.X)
 				{
 					move_left = true;

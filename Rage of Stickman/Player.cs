@@ -15,8 +15,8 @@ namespace Rage_of_Stickman
 {
 	class Player : Entity
 	{
-		public Player(Vector2 startPosition, EDirection lookAtDirection, float mass, float speed, int health)
-			: base(startPosition, new Vector2(1, 1), lookAtDirection, mass, speed, true, health)
+		public Player(Vector2 startPosition, EDirection lookAtDirection)
+			: base(startPosition, new Vector2(1, 1), lookAtDirection, 75, 30, true, 100)
 		{
 			// ----- Load Textures & Animations -----
 			if (Game.Content.animations[(int)EAnimation.player_idle] == null)
@@ -81,12 +81,14 @@ namespace Rage_of_Stickman
 			this.LoadAnimations(animationlist);
 
 			// ----- Initialize start settings -----
-			size.X *= 0.8f;
-			force_jump = new Vector2(0.0f, -1.5f);
 			Initialize();
+			size.X *= 0.8f;
+			jump_timer.Reset(0.2f);
+			force_jump = new Vector2(0.0f, -100f);
+			useWind = false;
 		}
 
-		public new void Update()
+		public override void Update()
 		{
 
 			if (active)
@@ -171,7 +173,7 @@ namespace Rage_of_Stickman
 			Game.Content.camera.Update(position_camera);
 		}
 
-		public new void Draw()
+		public override void Draw()
 		{
 			SpriteEffects s = SpriteEffects.None;
 

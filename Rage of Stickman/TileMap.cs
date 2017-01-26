@@ -97,7 +97,7 @@ namespace Rage_of_Stickman
 
 		public ECollision getCollisionTypeAtID(int ID)
 		{
-			if (ID < width * height)
+			if (ID < width * height && ID > 0)
 			{
 				return tileMap[ID].getCollisionType();
 			}

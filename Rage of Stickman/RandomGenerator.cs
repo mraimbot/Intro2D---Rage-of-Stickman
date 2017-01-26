@@ -10,7 +10,7 @@ namespace Rage_of_Stickman
 	{
 		private static Random random;
 
-		public static float NextFloat(int seed = 1337, float min = 0, float max = 1)
+		public static float NextFloat(int seed = 47238, float min = 0, float max = 1)
 		{
 			if (random == null)
 			{
@@ -26,7 +26,7 @@ namespace Rage_of_Stickman
 			{
 				random = new Random(seed);
 			}
-			return (int)random.Next() * (max - min) + min;
+			return random.Next(min, max);
 		}
 	}
 }

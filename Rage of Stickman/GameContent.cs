@@ -12,6 +12,8 @@ namespace Rage_of_Stickman
 {
 	enum ETexture
 	{
+		Pixel, // For drawing simple stuff like polygons and lines.
+
 		// ----- Tiles in 32x32 Formate -----
 		grass,
 		stone,
@@ -82,6 +84,8 @@ namespace Rage_of_Stickman
 
 	enum EFont
 	{
+		Anarchy,
+
 		no_font
 	}
 
@@ -156,7 +160,8 @@ namespace Rage_of_Stickman
 
 		public bool flag_newScene;
 
-		public Vector2 force_gravity = new Vector2(0.0f, 0.1f);
+		public Vector2 force_gravity = new Vector2(0, 0);
+		public Vector2 force_wind = new Vector2(0, 0);
 
 		public Player player;
 
