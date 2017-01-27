@@ -33,7 +33,6 @@ namespace Rage_of_Stickman
 		protected Vector2 force_jump;
 		protected Timer jump_timer;
 
-
 		protected float minGroundDistance = 1.0f;
 		protected bool isGrounded;
 
@@ -41,6 +40,8 @@ namespace Rage_of_Stickman
 		protected int health_start;
 
 		protected List<int> damages;
+
+		protected Timer can_attack;
 
 		protected bool move_left;
 		protected bool move_right;
@@ -67,18 +68,19 @@ namespace Rage_of_Stickman
 			this.health = this.health_start;
 
 			this.damages = new List<int>();
+			can_attack = new Timer(1);
 		}
 
 		public void LoadAnimations(AnimatedTexture2D[] animationList)
 		{
-			this.animations = new AnimatedTexture2D[animationList.Length];
+			animations = new AnimatedTexture2D[animationList.Length];
 			for (int ID = 0; ID < animations.Length; ID++)
 			{
-				this.animations[ID] = animationList[ID];
+				animations[ID] = animationList[ID];
 			}
 
-			this.size.X = (int)animations[0].Size().X;
-			this.size.Y = (int)animations[0].Size().Y;
+			size.X = (int)animations[0].Size().X;
+			size.Y = (int)animations[0].Size().Y;
 		}
 
 		public void LoadAnimations(AnimatedTexture2D animation)
@@ -98,7 +100,24 @@ namespace Rage_of_Stickman
 			health = health_start;
 		}
 
-		public void addDamage(int damage)
+		public bool TargetInRange(Entity target, Rectangle attack_range)
+		{
+			return attack_range.Intersects(new Rectangle((int)target.Position().X, (int)target.Position().Y, (int)target.Size().X, (int)target.Size().Y));
+		}
+
+		public void Attack(List<Entity> targets, Rectangle attack_range, int damage, float attack_time)
+		{
+			can_attack.Reset(attack_time);
+			foreach (Entity target in targets)
+			{
+				if (attack_range.Intersects(new Rectangle((int)target.Position().X, (int)target.Position().Y, (int)target.Size().X, (int)target.Size().Y)))
+				{
+					target.addDamage(this, damage);
+				}
+			}
+		}
+
+		public virtual void addDamage(Entity attacker, int damage)
 		{
 			damages.Add(damage);
 		}
@@ -126,6 +145,8 @@ namespace Rage_of_Stickman
 			foreach (int damage_input in damages)
 				damage += damage_input;
 
+			damages.Clear();
+
 			// ----- Health -----
 			if (health_start > 0)
 			{
@@ -147,6 +168,7 @@ namespace Rage_of_Stickman
 			if (!isDead())
 			{
 				jump_timer.Update();
+				can_attack.Update();
 
 				if (move_jump && jump_timer.IsTimeUp() && isGrounded)
 				{

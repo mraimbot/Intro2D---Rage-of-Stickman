@@ -11,7 +11,7 @@ namespace Rage_of_Stickman
 	class Oma : Enemy
 	{
 		public Oma(Vector2 startPosition)
-			: base(startPosition, new Vector2(1, 1), 60, 5, 500)
+			: base(Game.Content.player, startPosition, new Vector2(1, 1), 60, 2, 500)
 		{
 			// ----- Load Textures & Animations -----
 			if (Game.Content.animations[(int)EAnimation.enemie_oma_move] == null)
@@ -32,7 +32,7 @@ namespace Rage_of_Stickman
 			// ----- Initialize start settings -----
 			Initialize();
 			force_jump = new Vector2(0, 0);
-			speed += RandomGenerator.NextFloat(min: -1, max: 0.5f);
+			speed += RandomGenerator.NextFloat(min: -1, max: 0);
 			claim_color = Color.Gray;
 			claims.Add("Oh, my back!");
 			claims.Add("Don't just run around!");
@@ -60,16 +60,18 @@ namespace Rage_of_Stickman
 
 			if (!isDead())
 			{
-
-				if (Game.Content.player.Position().X + 0.1 < this.position.X)
+				if (target != null)
 				{
-					move_left = true;
-					lookAtDirection = EDirection.left;
-				}
-				else if (Game.Content.player.Position().X - 0.1 > this.position.X)
-				{
-					move_right = true;
-					lookAtDirection = EDirection.right;
+					if (target.Position().X + 0.1 < this.position.X)
+					{
+						move_left = true;
+						lookAtDirection = EDirection.left;
+					}
+					else if (target.Position().X - 0.1 > this.position.X)
+					{
+						move_right = true;
+						lookAtDirection = EDirection.right;
+					}
 				}
 
 				// TODO Oma.Logic : Add attack

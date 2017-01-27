@@ -15,8 +15,10 @@ namespace Rage_of_Stickman
 		protected List<string> claims;
 		protected int claim_ID;
 		protected Color claim_color;
+		protected Entity target;
+		protected float range; // The Enemy is only moving to his target, if the target is in this range
 
-		public Enemy(Vector2 startPosition, Vector2 size, float mass, float speed, int health)
+		public Enemy(Entity target, Vector2 startPosition, Vector2 size, float mass, float speed, int health)
 			: base(startPosition, size, EDirection.left, mass, speed, true, health)
 		{
 			Initialize();
@@ -25,6 +27,20 @@ namespace Rage_of_Stickman
 			isClaiming = false;
 			claim_color = Color.White;
 			useWind = false;
+			this.target = target;
+		}
+
+		public override void addDamage(Entity attacker, int damage)
+		{
+			base.addDamage(attacker, damage);
+			if (attacker.Position().X <= position.X)
+			{
+				impulses.Add(new Vector2(25, -100));
+			}
+			else
+			{
+				impulses.Add(new Vector2(-25, -100));
+			}
 		}
 
 		public override void Update()

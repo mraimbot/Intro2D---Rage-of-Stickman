@@ -9,11 +9,14 @@ namespace Rage_of_Stickman
 {
 	class RainSimulation : SceneComponent
 	{
+		// TODO RainSimulation : Make clear zone
+		// TODO RainSimulation : Y-Position of rain zone (save distance to target)
+		// TODO RainSimulation : position of Rain that middle raindrop hits target
 		private List<Raindrop> raindrops;
 		private int raindrops_max;
 		private Timer spawn_next;
 		private int density;
-		private int counter;
+		private int max_falldepth;
 
 		private Entity target;
 
@@ -22,10 +25,10 @@ namespace Rage_of_Stickman
 		{
 			raindrops = new List<Raindrop>();
 			this.raindrops_max = raindrops_max;
-			spawn_next = new Timer(0.2f);
+			spawn_next = new Timer(0.05f);
 			this.density = density;
-			counter = this.density;
 			this.target = target;
+			max_falldepth = 1000;
 		}
 
 		public override void Update()
@@ -40,32 +43,23 @@ namespace Rage_of_Stickman
 			for (int ID = raindrops.Count - 1; ID >= 0; ID--)
 			{
 				raindrops.ElementAt(ID).Update();
-				if (raindrops.ElementAt(ID).isDead())
+				if (raindrops.ElementAt(ID).isDead() || raindrops.ElementAt(ID).Position().Y > position.Y + max_falldepth)
 				{
 					raindrops.RemoveAt(ID);
 				}
 			}
 
-			if (raindrops.Count < raindrops_max)
+			spawn_next.Update();
+			if (spawn_next.IsTimeUp())
 			{
-				if (counter > 0)
+				for (int ID = 0; ID < density; ID++)
 				{
-					raindrops.Add(new Raindrop(new Vector2(RandomGenerator.NextFloat(min: position.X, max: position.X + size.X), position.Y)));
-					counter--;
-
-					if (counter == 0)
+					if (raindrops.Count < raindrops_max)
 					{
-						spawn_next.Reset();
+						raindrops.Add(new Raindrop(new Vector2(RandomGenerator.NextFloat(min: position.X, max: position.X + size.X), position.Y)));
 					}
 				}
-				else
-				{
-					spawn_next.Update();
-					if (spawn_next.IsTimeUp())
-					{
-						counter = density;
-					}
-				}
+				spawn_next.Reset();
 			}
 		}
 

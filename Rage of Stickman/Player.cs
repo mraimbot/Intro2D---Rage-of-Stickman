@@ -110,7 +110,6 @@ namespace Rage_of_Stickman
 			move_attack1 = false;
 			move_attack2 = false;
 
-			// TODO Player.Input() : Change isDead to Logic()
 			foreach (Keys key in Keyboard.GetState().GetPressedKeys())
 			{
 				switch (key)
@@ -118,27 +117,27 @@ namespace Rage_of_Stickman
 					case Keys.W:
 					case Keys.Up:
 					case Keys.Space:
-						this.move_jump = true;
+						move_jump = true;
 						break;
 
 					case Keys.A:
 					case Keys.Left:
-						this.move_left = true;
+						move_left = true;
 						break;
 
 					case Keys.D:
 					case Keys.Right:
-						this.move_right = true;
+						move_right = true;
 						break;
 
 					case Keys.E:
 					case Keys.Y:
-						this.move_attack1 = true;
+						move_attack1 = true;
 						break;
 
 					case Keys.F:
 					case Keys.X:
-						this.move_attack2 = true;
+						move_attack2 = true;
 						break;
 				}
 			}
@@ -147,6 +146,21 @@ namespace Rage_of_Stickman
 		private void Logic()
 		{
 			// TODO Player.Logic()
+			if (!isDead())
+			{
+				if (can_attack.IsTimeUp())
+				{
+					if (move_attack1)
+					{
+
+					}
+
+					if (move_attack2)
+					{
+						Attack(Game.Content.enemies, new Rectangle((int)(position.X + size.X / 2), (int)(position.Y + size.Y / 2), (int)size.X, (int)size.Y / 2), 1, 0.5f);
+					}
+				}
+			}
 		}
 
 		private void CameraController()

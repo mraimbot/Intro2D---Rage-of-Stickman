@@ -101,7 +101,7 @@ namespace Rage_of_Stickman
 			{
 				return tileMap[ID].getCollisionType();
 			}
-			return ECollision.impassable;
+			return ECollision.passable;
 		}
 
 		public bool CheckCollision(Vector2 point)

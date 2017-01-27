@@ -11,7 +11,7 @@ namespace Rage_of_Stickman
 	class Kid : Enemy
 	{
 		public Kid(Vector2 startPosition)
-			: base(startPosition, new Vector2(1, 1), 35, 10, 5)
+			: base(Game.Content.player, startPosition, new Vector2(1, 1), 35, 10, 5)
 		{
 			// ----- Load Textures & Animations -----
 			if (Game.Content.animations[(int)EAnimation.enemie_kid_move] == null)
@@ -61,20 +61,21 @@ namespace Rage_of_Stickman
 
 			if (!isDead())
 			{
-
-				if (Game.Content.player.Position().X + 0.1 < this.position.X)
+				if (target != null)
 				{
-					move_left = true;
-					move_jump = true;
-					lookAtDirection = EDirection.left;
+					if (target.Position().X + 0.1 < position.X)
+					{
+						move_left = true;
+						move_jump = true;
+						lookAtDirection = EDirection.left;
+					}
+					else if (target.Position().X - 0.1 > position.X)
+					{
+						move_right = true;
+						move_jump = true;
+						lookAtDirection = EDirection.right;
+					}
 				}
-				else if (Game.Content.player.Position().X - 0.1 > this.position.X)
-				{
-					move_right = true;
-					move_jump = true;
-					lookAtDirection = EDirection.right;
-				}
-
 				// TODO Kid.Logic : Add attack
 			}
 		}

@@ -83,7 +83,7 @@ namespace Rage_of_Stickman
 			// ----- Map -----
 			Game.Content.tileMap = new TileMap(Game.Content.contentManager.Load<Texture2D>("Graphics/RageMap"));
 			Level level = new Level(new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Background") }), null, new Vector2(0, 0), new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));
-			RainSimulation rain = new RainSimulation(1000, 50, new Vector2(0, 0), new Vector2(Game.Content.viewport.Width * 2, 1), Game.Content.player);
+			RainSimulation rain = new RainSimulation(500, 20, new Vector2(0, 0), new Vector2(Game.Content.viewport.Width * 2, 1), Game.Content.player);
 			List<SceneComponent> components = new List<SceneComponent>();
 			components.Add(level);
 			components.Add(rain);

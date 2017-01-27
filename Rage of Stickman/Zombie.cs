@@ -11,7 +11,7 @@ namespace Rage_of_Stickman
 	class Zombie : Enemy
 	{
 		public Zombie(Vector2 startPosition)
-			: base(startPosition, new Vector2(1, 1), 70, 1, 20)
+			: base(Game.Content.player, startPosition, new Vector2(1, 1), 70, 1, 20)
 		{
 			// ----- Load Textures & Animations -----
 			if (Game.Content.animations[(int)EAnimation.enemie_zombie_move] == null)
@@ -60,15 +60,18 @@ namespace Rage_of_Stickman
 
 			if (!isDead())
 			{
-				if (Game.Content.player.Position().X + 0.1 < this.position.X)
+				if (target != null)
 				{
-					move_left = true;
-					lookAtDirection = EDirection.left;
-				}
-				else if (Game.Content.player.Position().X - 0.1 > this.position.X)
-				{
-					move_right = true;
-					lookAtDirection = EDirection.right;
+					if (target.Position().X + 0.1 < position.X)
+					{
+						move_left = true;
+						lookAtDirection = EDirection.left;
+					}
+					else if (target.Position().X - 0.1 > position.X)
+					{
+						move_right = true;
+						lookAtDirection = EDirection.right;
+					}
 				}
 
 				// TODO Zombie.Logic : Add attack

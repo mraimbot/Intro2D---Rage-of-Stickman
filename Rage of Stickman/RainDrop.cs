@@ -9,13 +9,17 @@ namespace Rage_of_Stickman
 {
 	class Raindrop : Entity
 	{
+		private Color color;
 		private float angle;
+		private Timer lifeTime;
 
 		public Raindrop(Vector2 position_start)
 			: base(position_start, new Vector2(1, 10), EDirection.right, 800, 1, true, 1)
 		{
 			Initialize();
+			color = Color.LightSlateGray;
 			size.Y += RandomGenerator.NextFloat(min: 1, max: 1);
+			lifeTime = new Timer(0.3f);
 		}
 
 		public override void Update()
@@ -29,9 +33,15 @@ namespace Rage_of_Stickman
 
 		private void Logic()
 		{
-			if (isGrounded)
+			if (lifeTime.IsTimeUp())
 			{
 				health = 0;
+			}
+
+			if (isGrounded)
+			{
+				lifeTime.Update();
+				size = Vector2.One;
 			}
 
 			if (!isDead())
@@ -48,7 +58,7 @@ namespace Rage_of_Stickman
 		{
 			base.Draw();
 
-			DrawPrimitive.Line(position, Color.LightSlateGray, (int)size.X, (int)size.Y, angle);
+			DrawPrimitive.Rectangle(position, color, (int)size.X, (int)size.Y, angle);
 		}
 	}
 }

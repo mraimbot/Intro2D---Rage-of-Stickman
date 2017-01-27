@@ -12,10 +12,10 @@ namespace Rage_of_Stickman
 	{
 		public static void Point(Vector2 position, Color color)
 		{
-			Line(position, color: color);
+			Rectangle(position, color: color);
 		}
 
-		public static void Line(Vector2 position, Color color, int width = 1, int height = 1, float angle = 0)
+		public static void Rectangle(Vector2 position, Color color, int width = 1, int height = 1, float angle = 0)
 		{
 			if (Game.Content.textures[(int)ETexture.Pixel] == null)
 			{
