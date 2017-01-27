@@ -30,17 +30,9 @@ namespace Rage_of_Stickman
 			this.target = target;
 		}
 
-		public override void addDamage(Entity attacker, int damage)
+		public override void addDamage(Entity attacker, Vector2 attack_force, int damage)
 		{
-			base.addDamage(attacker, damage);
-			if (attacker.Position().X <= position.X)
-			{
-				impulses.Add(new Vector2(25, -100));
-			}
-			else
-			{
-				impulses.Add(new Vector2(-25, -100));
-			}
+			base.addDamage(attacker, attack_force, damage);
 		}
 
 		public override void Update()

@@ -150,14 +150,16 @@ namespace Rage_of_Stickman
 			{
 				if (can_attack.IsTimeUp())
 				{
-					if (move_attack1)
+					if (move_attack1) // Punch
 					{
-
+						Vector2 attack_force = (lookAtDirection == EDirection.right) ? (new Vector2(50, -20)) : (new Vector2(-50, -20));
+						Attack(Game.Content.enemies, new Rectangle((int)(position.X + size.X / 2), (int)(position.Y), (int)size.X, (int)size.Y / 2), 1, attack_force, 0.2f);
 					}
 
-					if (move_attack2)
+					if (move_attack2) // Kick
 					{
-						Attack(Game.Content.enemies, new Rectangle((int)(position.X + size.X / 2), (int)(position.Y + size.Y / 2), (int)size.X, (int)size.Y / 2), 1, 0.5f);
+						Vector2 attack_force = (lookAtDirection == EDirection.right) ? (new Vector2(25, -80)) : (new Vector2(-25, -80));
+						Attack(Game.Content.enemies, new Rectangle((int)(position.X + size.X / 2), (int)(position.Y + size.Y / 2), (int)size.X, (int)size.Y / 2), 5, attack_force, 0.7f);
 					}
 				}
 			}

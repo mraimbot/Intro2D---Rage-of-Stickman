@@ -105,21 +105,30 @@ namespace Rage_of_Stickman
 			return attack_range.Intersects(new Rectangle((int)target.Position().X, (int)target.Position().Y, (int)target.Size().X, (int)target.Size().Y));
 		}
 
-		public void Attack(List<Entity> targets, Rectangle attack_range, int damage, float attack_time)
+		public void Attack(List<Entity> targets, Rectangle attack_range, int damage, Vector2 attack_force, float attack_time)
 		{
 			can_attack.Reset(attack_time);
 			foreach (Entity target in targets)
 			{
 				if (attack_range.Intersects(new Rectangle((int)target.Position().X, (int)target.Position().Y, (int)target.Size().X, (int)target.Size().Y)))
 				{
-					target.addDamage(this, damage);
+					target.addDamage(this, attack_force, damage);
 				}
 			}
 		}
 
-		public virtual void addDamage(Entity attacker, int damage)
+		public virtual void addDamage(Entity attacker, Vector2 attack_force, int damage)
 		{
 			damages.Add(damage);
+
+			if (attacker.Position().X <= position.X)
+			{
+				impulses.Add(attack_force);
+			}
+			else
+			{
+				impulses.Add(attack_force);
+			}
 		}
 
 		public bool isDead()
