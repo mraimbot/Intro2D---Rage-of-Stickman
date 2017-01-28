@@ -99,7 +99,9 @@ namespace Rage_of_Stickman
 			Game.Content.enemies.Add(new Zombie(new Vector2(48 * Game.Content.tileSize, 26 * Game.Content.tileSize)));
 			Game.Content.enemies.Add(new Zombie(new Vector2(38 * Game.Content.tileSize, 26 * Game.Content.tileSize)));
 			Game.Content.enemies.Add(new Zombie(new Vector2(43 * Game.Content.tileSize, 26 * Game.Content.tileSize)));
-
+			// ----- Trigger -----
+			Game.Content.triggers.Clear();
+			Game.Content.triggers.Add(new Trigger(new GameEvent(ETarget.Main, EGameEvent.Open_Level1), new Vector2(247 * Game.Content.tileSize, 26 * Game.Content.tileSize), new Vector2(1,1) * Game.Content.tileSize));
 			return scene;
 		}
 	}

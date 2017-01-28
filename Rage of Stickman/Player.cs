@@ -96,6 +96,7 @@ namespace Rage_of_Stickman
 			if (active)
 			{
 				Input();
+				Trigger();
 				Logic();
 			}
 
@@ -141,6 +142,17 @@ namespace Rage_of_Stickman
 					case Keys.X:
 						move_attack2 = true;
 						break;
+				}
+			}
+		}
+
+		private void Trigger()
+		{
+			foreach (Trigger trigger in Game.Content.triggers)
+			{
+				if (new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y).Intersects(new Rectangle((int)trigger.Position().X, (int)trigger.Position().Y, (int)trigger.Size().X, (int)trigger.Size().Y)))
+				{
+					trigger.Activate();
 				}
 			}
 		}

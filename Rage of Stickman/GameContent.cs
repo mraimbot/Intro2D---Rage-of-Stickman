@@ -166,6 +166,7 @@ namespace Rage_of_Stickman
 		public Player player;
 
 		public List<Entity> enemies;
+		public List<Trigger> triggers;
 
 		private static Game content;
 		public static Game Content
@@ -183,6 +184,8 @@ namespace Rage_of_Stickman
 					content.gameEvents = new List<GameEvent>();
 
 					content.enemies = new List<Entity>();
+
+					content.triggers = new List<Trigger>();
 				}
 				return content;
 			}
