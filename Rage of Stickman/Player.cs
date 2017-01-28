@@ -88,6 +88,7 @@ namespace Rage_of_Stickman
 			jump_timer.Reset(0.2f);
 			force_jump = new Vector2(0.0f, -100f);
 			useWind = false;
+			rage = 50;
 		}
 
 		public override void Update()
@@ -258,7 +259,9 @@ namespace Rage_of_Stickman
 		{
 			Vector2 origin = Game.Content.camera.Position() - Game.Content.camera.Origin();
 			// TODO Player.DrawGUI()
-			ShowText.Text(origin, "Lifepoints: " + health, Color.Red, ETextFormate.Left);
+			DrawPrimitive.Rectangle(origin, new Color (32, 16, 0, 32), 136, 72);
+			ShowText.Text(new Vector2(origin.X + 8, origin.Y + 16), "Lifepoints: " + health, Color.Green, ETextFormate.Left);
+			ShowText.Text(new Vector2(origin.X + 8, origin.Y + 48), "Rage: " + rage, Color.Red, ETextFormate.Left);
 		}
 	}
 }
