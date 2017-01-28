@@ -79,9 +79,9 @@ namespace Rage_of_Stickman
 			// ----- Camera -----
 			Game.Content.camera = new Camera2D(new Vector2(Game.Content.viewport.Width / 2.0f, Game.Content.viewport.Height / 2.0f), Vector2.Zero);
 			// ----- Player -----
-			Game.Content.player = new Player(new Vector2(9 * Game.Content.tileSize, 20 * Game.Content.tileSize), EDirection.right);
+			Game.Content.player = new Player(new Vector2(4, 25) * Game.Content.tileSize, EDirection.right);
 			// ----- Map -----
-			Game.Content.tileMap = new TileMap(Game.Content.contentManager.Load<Texture2D>("Graphics/RageMap"));
+			Game.Content.tileMap = new TileMap(Game.Content.contentManager.Load<Texture2D>("Graphics/TileMaps/Level1"));
 			Level level = new Level(new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Background") }), null, new Vector2(0, 0), new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));
 			RainSimulation rain = new RainSimulation(500, 20, new Vector2(0, 0), new Vector2(Game.Content.viewport.Width * 2, 1), Game.Content.player);
 			List<SceneComponent> components = new List<SceneComponent>();
@@ -101,7 +101,7 @@ namespace Rage_of_Stickman
 			Game.Content.enemies.Add(new Zombie(new Vector2(43 * Game.Content.tileSize, 26 * Game.Content.tileSize)));
 			// ----- Trigger -----
 			Game.Content.triggers.Clear();
-			Game.Content.triggers.Add(new Trigger(new GameEvent(ETarget.Main, EGameEvent.Open_Level1), new Vector2(247 * Game.Content.tileSize, 26 * Game.Content.tileSize), new Vector2(1,1) * Game.Content.tileSize));
+			Game.Content.triggers.Add(new Trigger(new GameEvent(ETarget.Main, EGameEvent.Open_Level2), new Vector2(251, 25) * Game.Content.tileSize, new Vector2(1,1) * Game.Content.tileSize));
 			return scene;
 		}
 	}
