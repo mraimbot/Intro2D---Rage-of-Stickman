@@ -26,7 +26,7 @@ namespace Rage_of_Stickman
 				Game.Content.animations[(int)EAnimation.enemie_kid_move] = new AnimatedTexture2D(kid_move, Game.Content.textures[(int)ETexture.enemy_kid_move_0].Width, Game.Content.textures[(int)ETexture.enemy_kid_move_0].Height, 100.0f);
 			}
 
-			this.LoadAnimations(Game.Content.animations[(int)EAnimation.enemie_kid_move]);
+			LoadAnimations(Game.Content.animations[(int)EAnimation.enemie_kid_move]);
 
 			// ----- Initialize start settings -----
 			Initialize();
@@ -39,6 +39,7 @@ namespace Rage_of_Stickman
 			claims.Add("You look like you are single.");
 			claims.Add("Why are you so big?");
 			claims.Add("You look very ugly.");
+			claims.Add("Why are you doing this?");
 		}
 
 		public override void Update()

@@ -90,7 +90,7 @@ namespace Rage_of_Stickman
 			Scene scene = new Scene(components);
 			// ----- Physics -----
 			Game.Content.force_gravity = new Vector2(0, 9.807f);
-			Game.Content.force_wind = new Vector2(-2f, 0);
+			Game.Content.force_wind = new Vector2(-5f, 0);
 			// ----- Enemies -----
 			Game.Content.enemies.Clear();
 			Game.Content.enemies.Add(new Kid(new Vector2(11 * Game.Content.tileSize, 27 * Game.Content.tileSize)));

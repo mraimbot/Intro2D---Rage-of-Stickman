@@ -15,6 +15,8 @@ namespace Rage_of_Stickman
 {
 	class Player : Entity
 	{
+		private int rage;
+
 		public Player(Vector2 startPosition, EDirection lookAtDirection)
 			: base(startPosition, new Vector2(1, 1), lookAtDirection, 75, 30, true, 100)
 		{
@@ -90,7 +92,6 @@ namespace Rage_of_Stickman
 
 		public override void Update()
 		{
-
 			if (active)
 			{
 				Input();
@@ -145,7 +146,6 @@ namespace Rage_of_Stickman
 
 		private void Logic()
 		{
-			// TODO Player.Logic()
 			if (!isDead())
 			{
 				if (can_attack.IsTimeUp())
@@ -250,7 +250,15 @@ namespace Rage_of_Stickman
 				}
 			}
 
+			DrawGUI();
 			// Game.Content.spriteBatch.Draw(Game.Content.textures[(int)ETexture.pixel], new Rectangle((int)this.position.X, (int)this.position.Y, (int)size.X, (int)size.Y), Color.Green); 
+		}
+
+		private void DrawGUI()
+		{
+			Vector2 origin = Game.Content.camera.Position() - Game.Content.camera.Origin();
+			// TODO Player.DrawGUI()
+			ShowText.Text(origin, "Lifepoints: " + health, Color.Red, ETextFormate.Left);
 		}
 	}
 }
