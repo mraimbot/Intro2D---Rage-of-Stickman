@@ -1,36 +1,35 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 namespace Rage_of_Stickman
 {
-	class WindowButton : WindowComponent
+	class WindowText : WindowComponent
 	{
-		private AnimatedTexture2D background_notMarked;
-		private AnimatedTexture2D background_marked;
 
-		private bool onClick;
-
+		private string text;
 		private GameEvent gameEvent;
+		private bool onClick;
+		private Color color_notMarked;
+		private Color color_marked;
+		private ETextFormate align;
 
 
-		public WindowButton(bool markable, GameEvent gameEvent, AnimatedTexture2D[] backgrounds, Vector2 position, Vector2 size, bool active = true, bool visible = true)
-			: base(markable, position, size, active, visible)
+		public WindowText(bool markable, GameEvent gameEvent, string text, Color color_notMarked, Color color_marked, Vector2 position, ETextFormate align, bool active = true, bool visible = true)
+			: base(markable, position, Vector2.One, active, visible)
 		{
 			marked = false;
 
 			this.gameEvent = gameEvent;
-			background_notMarked = backgrounds[0];
-			background_marked = backgrounds[1];
+			this.text = text;
 
-			if (size == Vector2.Zero)
-			{
-				size = background_notMarked.Size();
-			}
+			this.color_marked = color_marked;
+			this.color_notMarked = color_notMarked;
+			this.align = align;
 		}
 
 		public override void Update(int index)
@@ -82,17 +81,11 @@ namespace Rage_of_Stickman
 			{
 				if (marked)
 				{
-					if (background_marked != null)
-					{
-						background_marked.Draw(position);
-					}
+					ShowText.Text(position, text, color_marked, align);
 				}
 				else
 				{
-					if (background_notMarked != null)
-					{
-						background_notMarked.Draw(position);
-					}
+					ShowText.Text(position, text, color_notMarked, align);
 				}
 			}
 		}

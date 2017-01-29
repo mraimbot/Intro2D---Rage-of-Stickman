@@ -69,6 +69,7 @@
     <Compile Include="Window.cs" />
     <Compile Include="WindowButton.cs" />
     <Compile Include="WindowComponent.cs" />
+    <Compile Include="WindowText.cs" />
     <Compile Include="Zombie.cs" />
   </ItemGroup>
   <ItemGroup>

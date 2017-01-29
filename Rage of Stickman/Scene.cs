@@ -62,9 +62,11 @@ namespace Rage_of_Stickman
 			// ----- Scene -----
 			WindowButton play = new WindowButton(true, new GameEvent(ETarget.Main, EGameEvent.Open_Level1), new AnimatedTexture2D[] { new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Window/Button/Button_Play_notMarked") }), new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Window/Button/Button_Play_marked") }) }, new Vector2(180, 375), Vector2.Zero);
 			WindowButton exit = new WindowButton(true, new GameEvent(ETarget.Main, EGameEvent.Game_Exit), new AnimatedTexture2D[] { new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Window/Button/Button_Exit_notMarked") }), new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Window/Button/Button_Exit_marked") }) }, new Vector2(870, 670), Vector2.Zero);
+			WindowText text = new WindowText(false, null, "Press F4 to toggle fullscreen.", Color.Red, Color.Red, new Vector2(50, 50), ETextFormate.Left);
 			List<WindowComponent> windowComponents = new List<WindowComponent>();
 			windowComponents.Add(play);
 			windowComponents.Add(exit);
+			windowComponents.Add(text);
 			Window window = new Window(windowComponents, new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Background_Mainmenu") }), new Vector2(0, 0), new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));
 			List<SceneComponent> components = new List<SceneComponent>();
 			components.Add(window);
@@ -107,7 +109,7 @@ namespace Rage_of_Stickman
 
 		public static Scene CreateLevel2()
 		{
-			// ----- Create level one -----
+			// ----- Create level two -----
 			// ----- Camera -----
 			Game.Content.camera = new Camera2D(new Vector2(Game.Content.viewport.Width / 2.0f, Game.Content.viewport.Height / 2.0f), Vector2.Zero);
 			// ----- Player -----
@@ -139,7 +141,7 @@ namespace Rage_of_Stickman
 
 		public static Scene CreateLevel3()
 		{
-			// ----- Create level one -----
+			// ----- Create level three -----
 			// ----- Camera -----
 			Game.Content.camera = new Camera2D(new Vector2(Game.Content.viewport.Width / 2.0f, Game.Content.viewport.Height / 2.0f), Vector2.Zero);
 			// ----- Player -----
