@@ -93,15 +93,79 @@ namespace Rage_of_Stickman
 			Game.Content.force_wind = new Vector2(-5f, 0);
 			// ----- Enemies -----
 			Game.Content.enemies.Clear();
-			Game.Content.enemies.Add(new Kid(new Vector2(11 * Game.Content.tileSize, 27 * Game.Content.tileSize)));
-			Game.Content.enemies.Add(new Oma(new Vector2(26 * Game.Content.tileSize, 25 * Game.Content.tileSize)));
-			Game.Content.enemies.Add(new Zombie(new Vector2(33 * Game.Content.tileSize, 26 * Game.Content.tileSize)));
-			Game.Content.enemies.Add(new Zombie(new Vector2(48 * Game.Content.tileSize, 26 * Game.Content.tileSize)));
-			Game.Content.enemies.Add(new Zombie(new Vector2(38 * Game.Content.tileSize, 26 * Game.Content.tileSize)));
-			Game.Content.enemies.Add(new Zombie(new Vector2(43 * Game.Content.tileSize, 26 * Game.Content.tileSize)));
+			Game.Content.enemies.Add(new Kid(new Vector2(50, 20) * Game.Content.tileSize));
+			Game.Content.enemies.Add(new Oma(new Vector2(26, 20) * Game.Content.tileSize));
+			Game.Content.enemies.Add(new Zombie(new Vector2(33, 20) * Game.Content.tileSize));
+			Game.Content.enemies.Add(new Zombie(new Vector2(48, 20) * Game.Content.tileSize));
+			Game.Content.enemies.Add(new Zombie(new Vector2(38, 20) * Game.Content.tileSize));
+			Game.Content.enemies.Add(new Zombie(new Vector2(43, 20) * Game.Content.tileSize));
 			// ----- Trigger -----
 			Game.Content.triggers.Clear();
 			Game.Content.triggers.Add(new Trigger(new GameEvent(ETarget.Main, EGameEvent.Open_Level2), new Vector2(251, 25) * Game.Content.tileSize, new Vector2(1,1) * Game.Content.tileSize));
+			return scene;
+		}
+
+		public static Scene CreateLevel2()
+		{
+			// ----- Create level one -----
+			// ----- Camera -----
+			Game.Content.camera = new Camera2D(new Vector2(Game.Content.viewport.Width / 2.0f, Game.Content.viewport.Height / 2.0f), Vector2.Zero);
+			// ----- Player -----
+			Game.Content.player = new Player(new Vector2(4, 25) * Game.Content.tileSize, EDirection.right);
+			// ----- Map -----
+			Game.Content.tileMap = new TileMap(Game.Content.contentManager.Load<Texture2D>("Graphics/TileMaps/Level2"));
+			Level level = new Level(new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Background") }), null, new Vector2(0, 0), new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));
+			RainSimulation rain = new RainSimulation(500, 20, new Vector2(0, 0), new Vector2(Game.Content.viewport.Width * 2, 1), Game.Content.player);
+			List<SceneComponent> components = new List<SceneComponent>();
+			components.Add(level);
+			components.Add(rain);
+			Scene scene = new Scene(components);
+			// ----- Physics -----
+			Game.Content.force_gravity = new Vector2(0, 9.807f);
+			Game.Content.force_wind = new Vector2(-5f, 0);
+			// ----- Enemies -----
+			Game.Content.enemies.Clear();
+			Game.Content.enemies.Add(new Kid(new Vector2(50, 20) * Game.Content.tileSize));
+			Game.Content.enemies.Add(new Oma(new Vector2(26, 20) * Game.Content.tileSize));
+			Game.Content.enemies.Add(new Zombie(new Vector2(33, 20) * Game.Content.tileSize));
+			Game.Content.enemies.Add(new Zombie(new Vector2(48, 20) * Game.Content.tileSize));
+			Game.Content.enemies.Add(new Zombie(new Vector2(38, 20) * Game.Content.tileSize));
+			Game.Content.enemies.Add(new Zombie(new Vector2(43, 20) * Game.Content.tileSize));
+			// ----- Trigger -----
+			Game.Content.triggers.Clear();
+			Game.Content.triggers.Add(new Trigger(new GameEvent(ETarget.Main, EGameEvent.Open_Level3), new Vector2(251, 25) * Game.Content.tileSize, new Vector2(1, 1) * Game.Content.tileSize));
+			return scene;
+		}
+
+		public static Scene CreateLevel3()
+		{
+			// ----- Create level one -----
+			// ----- Camera -----
+			Game.Content.camera = new Camera2D(new Vector2(Game.Content.viewport.Width / 2.0f, Game.Content.viewport.Height / 2.0f), Vector2.Zero);
+			// ----- Player -----
+			Game.Content.player = new Player(new Vector2(4, 25) * Game.Content.tileSize, EDirection.right);
+			// ----- Map -----
+			Game.Content.tileMap = new TileMap(Game.Content.contentManager.Load<Texture2D>("Graphics/TileMaps/Level3"));
+			Level level = new Level(new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Background") }), null, new Vector2(0, 0), new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));
+			RainSimulation rain = new RainSimulation(500, 20, new Vector2(0, 0), new Vector2(Game.Content.viewport.Width * 2, 1), Game.Content.player);
+			List<SceneComponent> components = new List<SceneComponent>();
+			components.Add(level);
+			components.Add(rain);
+			Scene scene = new Scene(components);
+			// ----- Physics -----
+			Game.Content.force_gravity = new Vector2(0, 9.807f);
+			Game.Content.force_wind = new Vector2(-5f, 0);
+			// ----- Enemies -----
+			Game.Content.enemies.Clear();
+			Game.Content.enemies.Add(new Kid(new Vector2(50, 20) * Game.Content.tileSize));
+			Game.Content.enemies.Add(new Oma(new Vector2(26, 20) * Game.Content.tileSize));
+			Game.Content.enemies.Add(new Zombie(new Vector2(33, 20) * Game.Content.tileSize));
+			Game.Content.enemies.Add(new Zombie(new Vector2(48, 20) * Game.Content.tileSize));
+			Game.Content.enemies.Add(new Zombie(new Vector2(38, 20) * Game.Content.tileSize));
+			Game.Content.enemies.Add(new Zombie(new Vector2(43, 20) * Game.Content.tileSize));
+			// ----- Trigger -----
+			Game.Content.triggers.Clear();
+			Game.Content.triggers.Add(new Trigger(new GameEvent(ETarget.Main, EGameEvent.Open_Mainmenu), new Vector2(251, 25) * Game.Content.tileSize, new Vector2(1, 1) * Game.Content.tileSize));
 			return scene;
 		}
 	}

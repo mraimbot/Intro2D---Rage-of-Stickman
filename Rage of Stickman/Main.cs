@@ -27,7 +27,7 @@ namespace Rage_of_Stickman
 			Game.Content.spriteBatch = new SpriteBatch(GraphicsDevice);
 			Game.Content.viewport = GraphicsDevice.Viewport;
 
-			Game.Content.gameLevel = Game.Content.gameLevel_first;
+			Game.Content.sceneState = EScenes.Mainmenu;
 
 			Game.Content.flag_newScene = true;
 
@@ -99,6 +99,16 @@ namespace Rage_of_Stickman
 								Game.Content.sceneState = EScenes.Level1;
 								Game.Content.flag_newScene = true;
 								break;
+
+							case EGameEvent.Open_Level2:
+								Game.Content.sceneState = EScenes.Level2;
+								Game.Content.flag_newScene = true;
+								break;
+
+							case EGameEvent.Open_Level3:
+								Game.Content.sceneState = EScenes.Level3;
+								Game.Content.flag_newScene = true;
+								break;
 						}
 					}
 				}
@@ -121,10 +131,18 @@ namespace Rage_of_Stickman
 		{
 			if (scene == null || Game.Content.flag_newScene)
 			{
-				switch (Game.Content.gameLevel)
+				switch (Game.Content.sceneState)
 				{
-					case 1:
+					case EScenes.Level1:
 						scene = Scene.CreateLevel1();
+						break;
+
+					case EScenes.Level2:
+						scene = Scene.CreateLevel2();
+						break;
+
+					case EScenes.Level3:
+						scene = Scene.CreateLevel3();
 						break;
 				}
 

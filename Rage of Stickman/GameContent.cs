@@ -154,10 +154,6 @@ namespace Rage_of_Stickman
 
 		public List<GameEvent> gameEvents;
 
-		public int gameLevel_max = 3;
-		public int gameLevel_first = 1;
-		public int gameLevel;
-
 		public bool flag_newScene;
 
 		public Vector2 force_gravity = new Vector2(0, 0);
