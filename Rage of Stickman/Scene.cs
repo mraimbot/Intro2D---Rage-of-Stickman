@@ -104,6 +104,7 @@ namespace Rage_of_Stickman
 			WindowText text6 = new WindowText(false, null, "Soundeffects", Color.Red, Color.Red, new Vector2(100, 484), ETextFormate.Left, 0, 2);
 			WindowText text7 = new WindowText(false, null, "Player-Kick: http://freesound.org/people/newagesoup/sounds/348244/", Color.Green, Color.Green, new Vector2(132, 516), ETextFormate.Left, 0, 1);
 			WindowText text8 = new WindowText(false, null, "Player-Punch: http://freesound.org/people/RSilveira_88/sounds/216197/", Color.Green, Color.Green, new Vector2(132, 532), ETextFormate.Left, 0, 1);
+			WindowText text9 = new WindowText(false, null, "Player-Jump: http://freesound.org/people/jeremysykes/sounds/341247/", Color.Green, Color.Green, new Vector2(132, 548), ETextFormate.Left, 0, 1);
 
 			List<WindowComponent> windowComponents = new List<WindowComponent>();
 			windowComponents.Add(back);
@@ -115,6 +116,7 @@ namespace Rage_of_Stickman
 			windowComponents.Add(text6);
 			windowComponents.Add(text7);
 			windowComponents.Add(text8);
+			windowComponents.Add(text9);
 			Window window = new Window(windowComponents, new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Background_Mainmenu") }), new Vector2(0, 0), new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));
 			// ----- Music -----
 			SceneMusic background_music = new SceneMusic(Game.Content.contentManager.Load<Song>("Music/get-started-intro-loop-7414"));
