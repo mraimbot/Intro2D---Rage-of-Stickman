@@ -89,7 +89,7 @@ namespace Rage_of_Stickman
 
 			if (isClaiming && claims.Count > 0)
 			{
-				ShowText.Text(new Vector2(position.X + size.X / 2, position.Y - 32), claims.ElementAt(claim_ID), claim_color, ETextFormate.Center);
+				ShowText.Text(new Vector2(position.X + size.X / 2, position.Y - 32), claims.ElementAt(claim_ID), claim_color, 0, 1, ETextFormate.Center);
 			}
 		}
 	}

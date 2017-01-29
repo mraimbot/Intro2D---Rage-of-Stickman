@@ -46,6 +46,8 @@ namespace Rage_of_Stickman
 			GameEventHandler();
 
 			base.Update(gameTime);
+
+			Game.Content.previousKeyState = Keyboard.GetState();
 		}
 
 		private void InputHandler()
@@ -60,20 +62,39 @@ namespace Rage_of_Stickman
 
 		private void SceneHandler()
 		{
-			switch (Game.Content.sceneState)
+			if (scene == null || Game.Content.flag_newScene)
 			{
-				case EScenes.Mainmenu:
-					MenuHandler();
-					break;
+				switch (Game.Content.sceneState)
+				{
+					case EScenes.Exit:
+						Exit();
+						break;
 
-				case EScenes.Exit:
-					Exit();
-					break;
+					case EScenes.Mainmenu:
+						scene = Scene.CreateMainmenu();
+						break;
 
-				default:
-					GameHandler();
-					break;
+					case EScenes.Credits:
+						scene = Scene.CreateCredits();
+						break;
+
+					case EScenes.Level1:
+						scene = Scene.CreateLevel1();
+						break;
+
+					case EScenes.Level2:
+						scene = Scene.CreateLevel2();
+						break;
+
+					case EScenes.Level3:
+						scene = Scene.CreateLevel3();
+						break;
+				}
+
+				Game.Content.flag_newScene = false;
 			}
+
+			scene.Update();
 		}
 
 		private void GameEventHandler()
@@ -88,10 +109,16 @@ namespace Rage_of_Stickman
 						{
 							case EGameEvent.Game_Exit:
 								Game.Content.sceneState = EScenes.Exit;
+								Game.Content.flag_newScene = true;
 								break;
 
 							case EGameEvent.Open_Mainmenu:
 								Game.Content.sceneState = EScenes.Mainmenu;
+								Game.Content.flag_newScene = true;
+								break;
+
+							case EGameEvent.Open_Credits:
+								Game.Content.sceneState = EScenes.Credits;
 								Game.Content.flag_newScene = true;
 								break;
 
@@ -114,42 +141,6 @@ namespace Rage_of_Stickman
 				}
 				Game.Content.gameEvents.Clear();
 			}
-		}
-
-		private void MenuHandler()
-		{
-			if (scene == null || Game.Content.flag_newScene)
-			{
-				scene = Scene.CreateMainmenu();
-				Game.Content.flag_newScene = false;
-			}
-
-			scene.Update();
-		}
-
-		private void GameHandler()
-		{
-			if (scene == null || Game.Content.flag_newScene)
-			{
-				switch (Game.Content.sceneState)
-				{
-					case EScenes.Level1:
-						scene = Scene.CreateLevel1();
-						break;
-
-					case EScenes.Level2:
-						scene = Scene.CreateLevel2();
-						break;
-
-					case EScenes.Level3:
-						scene = Scene.CreateLevel3();
-						break;
-				}
-
-				Game.Content.flag_newScene = false;
-			}
-
-			scene.Update();
 		}
 
 		protected override void Draw(GameTime gameTime)

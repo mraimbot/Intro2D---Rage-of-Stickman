@@ -61,6 +61,7 @@
     <Compile Include="RandomGenerator.cs" />
     <Compile Include="Scene.cs" />
     <Compile Include="SceneComponent.cs" />
+    <Compile Include="SceneMusic.cs" />
     <Compile Include="ShowText.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="TileMap.cs" />

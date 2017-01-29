@@ -17,23 +17,23 @@ namespace Rage_of_Stickman
 
 	class ShowText
 	{
-		public static void Text(Vector2 position, string text, Color color, ETextFormate formate = ETextFormate.Left)
+		public static void Text(Vector2 position, string text, Color color, float rotation, float scale, ETextFormate align = ETextFormate.Left)
 		{
 			if (Game.Content.fonts[(int)EFont.Anarchy] == null)
 			{
 				Game.Content.fonts[(int)EFont.Anarchy] = Game.Content.contentManager.Load<SpriteFont>("Fonts/Anarchy");
 			}
 
-			if (formate == ETextFormate.Right)
+			if (align == ETextFormate.Right)
 			{
 				position.X -= Game.Content.fonts[(int)EFont.Anarchy].MeasureString(text).X;
 			}
-			else if (formate == ETextFormate.Center)
+			else if (align == ETextFormate.Center)
 			{
 				position.X -= Game.Content.fonts[(int)EFont.Anarchy].MeasureString(text).X / 2;
 			}
 
-			Game.Content.spriteBatch.DrawString(Game.Content.fonts[(int)EFont.Anarchy], text, position, color);
+			Game.Content.spriteBatch.DrawString(Game.Content.fonts[(int)EFont.Anarchy], text, position, color, rotation, Vector2.Zero, scale, SpriteEffects.None, 0);
 		}
 	}
 }

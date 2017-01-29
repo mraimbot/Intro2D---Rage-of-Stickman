@@ -511,3 +511,33 @@
 /processorParam:TextureFormat=Color
 /build:Graphics/TileMaps/Level3.png
 
+#begin Music/backbeat-db-110bpm-01-6414.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/backbeat-db-110bpm-01-6414.mp3
+
+#begin Music/get-started-intro-loop-7414.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:Music/get-started-intro-loop-7414.mp3
+
+#begin SoundEffects/216197__rsilveira-88__cartoon-punch-03.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/216197__rsilveira-88__cartoon-punch-03.wav
+
+#begin SoundEffects/348244__newagesoup__punch-boxing-01.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/348244__newagesoup__punch-boxing-01.wav
+
+#begin SoundEffects/341247__jeremysykes__jump01.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/341247__jeremysykes__jump01.wav
+

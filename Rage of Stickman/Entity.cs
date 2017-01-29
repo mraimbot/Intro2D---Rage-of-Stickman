@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -105,16 +106,21 @@ namespace Rage_of_Stickman
 			return attack_range.Intersects(new Rectangle((int)target.Position().X, (int)target.Position().Y, (int)target.Size().X, (int)target.Size().Y));
 		}
 
-		public void Attack(List<Entity> targets, Rectangle attack_range, int damage, Vector2 attack_force, float attack_time)
+		public bool Attack(List<Entity> targets, Rectangle attack_range, int damage, Vector2 attack_force, float attack_time)
 		{
+			bool hitTarget = false;
+
 			can_attack.Reset(attack_time);
 			foreach (Entity target in targets)
 			{
 				if (attack_range.Intersects(new Rectangle((int)target.Position().X, (int)target.Position().Y, (int)target.Size().X, (int)target.Size().Y)))
 				{
 					target.addDamage(this, attack_force, damage);
+					hitTarget = true;
 				}
 			}
+
+			return hitTarget;
 		}
 
 		public virtual void addDamage(Entity attacker, Vector2 attack_force, int damage)

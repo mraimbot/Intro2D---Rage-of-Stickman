@@ -17,9 +17,11 @@ namespace Rage_of_Stickman
 		private Color color_notMarked;
 		private Color color_marked;
 		private ETextFormate align;
+		private float rotation;
+		private float scale;
 
 
-		public WindowText(bool markable, GameEvent gameEvent, string text, Color color_notMarked, Color color_marked, Vector2 position, ETextFormate align, bool active = true, bool visible = true)
+		public WindowText(bool markable, GameEvent gameEvent, string text, Color color_notMarked, Color color_marked, Vector2 position, ETextFormate align, float rotation = 0, float scale = 1, bool active = true, bool visible = true)
 			: base(markable, position, Vector2.One, active, visible)
 		{
 			marked = false;
@@ -30,6 +32,8 @@ namespace Rage_of_Stickman
 			this.color_marked = color_marked;
 			this.color_notMarked = color_notMarked;
 			this.align = align;
+			this.rotation = rotation;
+			this.scale = scale;
 		}
 
 		public override void Update(int index)
@@ -81,11 +85,11 @@ namespace Rage_of_Stickman
 			{
 				if (marked)
 				{
-					ShowText.Text(position, text, color_marked, align);
+					ShowText.Text(position, text, color_marked, rotation, scale, align);
 				}
 				else
 				{
-					ShowText.Text(position, text, color_notMarked, align);
+					ShowText.Text(position, text, color_notMarked, rotation, scale, align);
 				}
 			}
 		}
