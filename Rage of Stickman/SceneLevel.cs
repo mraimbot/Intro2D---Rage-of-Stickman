@@ -14,18 +14,10 @@ namespace Rage_of_Stickman
     {
 		private AnimatedTexture2D foreground;
 
-		private bool onBackToMenu;
-
 		public SceneLevel(AnimatedTexture2D background, AnimatedTexture2D foreground, Vector2 position, Vector2 size, bool active = true, bool visible = true)
 			: base(background, position, size, active, visible)
 		{
 			this.foreground = foreground;
-			Initialize();
-		}
-
-		public void Initialize()
-		{
-			onBackToMenu = false;
 		}
 
 		public override void EventHandler()
@@ -50,9 +42,6 @@ namespace Rage_of_Stickman
 		{
 			if (active)
 			{
-				Input();
-				Logic();
-
 				Game.Content.tileMap.Update(isPaused);
 				Game.Content.player.Update(isPaused);
 
@@ -67,32 +56,6 @@ namespace Rage_of_Stickman
 			}
 
 			base.Update(isPaused);
-		}
-
-		private void Input()
-		{
-			onBackToMenu = false;
-
-			foreach (Keys key in Keyboard.GetState().GetPressedKeys())
-			{
-				if (!Game.Content.previousKeyState.IsKeyDown(key))
-				{
-					switch (key)
-					{
-						case Keys.Escape:
-							onBackToMenu = true;
-							break;
-					}
-				}
-			}
-		}
-
-		private void Logic()
-		{
-			if (onBackToMenu)
-			{
-				Game.Content.gameEvents.Add(new GameEvent(ETarget.Main, EGameEvent.Open_Mainmenu));
-			}
 		}
 
 		public override void Draw()

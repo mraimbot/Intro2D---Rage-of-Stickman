@@ -9,6 +9,7 @@ namespace Rage_of_Stickman
 {
 	class GameObject
 	{
+		protected Vector2 position_start;
 		protected Vector2 position;
 		protected Vector2 size;
 
@@ -17,6 +18,7 @@ namespace Rage_of_Stickman
 
 		public GameObject(Vector2 position, Vector2 size, bool active = true, bool visible = true)
 		{
+			this.position_start = position;
 			this.position = position;
 			this.size = size;
 			this.active = active;
@@ -28,7 +30,12 @@ namespace Rage_of_Stickman
 			return position;
 		}
 
-		public void MoveTo(Vector2 position)
+		public Vector2 StartPosition()
+		{
+			return position_start;
+		}
+
+		public virtual void MoveTo(Vector2 position)
 		{
 			this.position = position;
 		}

@@ -135,6 +135,7 @@ namespace Rage_of_Stickman
 		Open_Outro,
 
 		NewBackground,
+		TogglePause,
 
 		ShowMessagebox,
 

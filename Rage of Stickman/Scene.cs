@@ -20,6 +20,7 @@ namespace Rage_of_Stickman
 		private List<SceneComponent> components;
 
 		private Messagebox messagebox;
+		private Window window_paused;
 
 		private bool isPaused;
 		private bool ShowMessagebox;
@@ -51,6 +52,10 @@ namespace Rage_of_Stickman
 								ShowMessagebox = true;
 								messagebox = new Messagebox(new Vector2(Game.Content.camera.Position().X - Game.Content.camera.Origin().X, Game.Content.camera.Position().Y - Game.Content.camera.Origin().Y + Game.Content.viewport.Height - 150), new Vector2(Game.Content.viewport.Width, 150), new Color(0, 0, 0, 200), Game.Content.gameEvents[ID].Text(), Color.White);
 								break;
+
+							case EGameEvent.TogglePause:
+								isPaused = !isPaused;
+								break;
 						}
 						Game.Content.gameEvents.RemoveAt(ID);
 					}
@@ -79,6 +84,16 @@ namespace Rage_of_Stickman
 				}
 			}
 
+			if (isPaused && !ShowMessagebox)
+			{
+				if (window_paused == null)
+				{
+					window_paused = CreatePausedWindow();
+				}
+				window_paused.MoveTo(new Vector2(Game.Content.camera.Position().X - 100, Game.Content.camera.Position().Y - 200));
+				window_paused.Update(false);
+			}
+
 			if (components == null)
 			{
 				components = new List<SceneComponent>();
@@ -101,6 +116,7 @@ namespace Rage_of_Stickman
 				{
 					switch (key)
 					{
+						case Keys.Escape:
 						case Keys.P:
 							isPaused = !isPaused;
 							break;
@@ -131,8 +147,16 @@ namespace Rage_of_Stickman
 
 			if (isPaused && !ShowMessagebox)
 			{
-				ShowText.Text(new Vector2(Game.Content.camera.Position().X, Game.Content.camera.Position().Y), "Game Paused", new Color(255, 0, 0, 200), 0, 1, ETextAlign.Center);
+				window_paused.Draw();
 			}
+		}
+
+		public static Window CreatePausedWindow()
+		{
+			List<WindowComponent> window_components = new List<WindowComponent>();
+			window_components.Add(new WindowText(true, new GameEvent(ETarget.Scene, EGameEvent.TogglePause), "Continue", Color.Red, Color.Green, new Vector2(100, 32), ETextAlign.Center));
+			window_components.Add(new WindowText(true, new GameEvent(ETarget.Main, EGameEvent.Open_Mainmenu), "Back to Menu", Color.Red, Color.Green, new Vector2(100, 64), ETextAlign.Center));
+			return new Window(window_components, null, new Vector2(Game.Content.camera.Position().X - 100, Game.Content.camera.Position().Y - 100), new Vector2(200, 128));
 		}
 
 		public static Scene CreateMainmenu()
@@ -150,7 +174,7 @@ namespace Rage_of_Stickman
 			WindowText text2 = new WindowText(false, null, "Move: AD or Arrow-Keys.", Color.Green, Color.Green, new Vector2(344, 582), ETextAlign.Left, 0, 1);
 			WindowText text3 = new WindowText(false, null, "Jump: W, Space or Arrow-Keys.", Color.Green, Color.Green, new Vector2(356, 614), ETextAlign.Left, 0, 1);
 			WindowText text4 = new WindowText(false, null, "Attack: EF or XY.", Color.Green, Color.Green, new Vector2(368, 646), ETextAlign.Left, 0, 1);
-			WindowText text5 = new WindowText(false, null, "Pause: P.", Color.Green, Color.Green, new Vector2(380, 678), ETextAlign.Left, 0, 1);
+			WindowText text5 = new WindowText(false, null, "Pause: Escape, P.", Color.Green, Color.Green, new Vector2(380, 678), ETextAlign.Left, 0, 1);
 			List<WindowComponent> windowComponents = new List<WindowComponent>();
 			windowComponents.Add(title);
 			windowComponents.Add(play);

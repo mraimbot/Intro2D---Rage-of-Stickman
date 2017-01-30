@@ -72,6 +72,10 @@ namespace Rage_of_Stickman
 				{
 					background.Draw(position);
 				}
+				else
+				{
+					DrawPrimitive.Rectangle(position, new Color(32, 0, 0, 32), (int)size.X, (int)size.Y);
+				}
 			}
 		}
 	}

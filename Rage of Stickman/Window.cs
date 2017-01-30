@@ -27,6 +27,8 @@ namespace Rage_of_Stickman
 				index_max = -1;
 				foreach (WindowComponent component in components)
 				{
+					component.MoveTo(component.Position() + position);
+
 					if (component.Markable())
 					{
 						index_max++;
@@ -41,6 +43,16 @@ namespace Rage_of_Stickman
 		public override void EventHandler()
 		{
 			base.EventHandler();
+		}
+
+		public override void MoveTo(Vector2 position)
+		{
+			base.MoveTo(position);
+
+			foreach (WindowComponent component in components)
+			{
+				component.MoveTo(component.StartPosition() + position);
+			}
 		}
 
 		public override void Update(bool isPaused)
