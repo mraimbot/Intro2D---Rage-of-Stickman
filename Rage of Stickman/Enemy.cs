@@ -35,19 +35,22 @@ namespace Rage_of_Stickman
 			base.addDamage(attacker, attack_force, damage);
 		}
 
-		public override void Update()
+		public override void Update(bool isPaused)
 		{
 			if (active)
 			{
-				Logic();
+				if (!isPaused)
+				{
+					Logic(isPaused);
+				}
 			}
 
-			base.Update();
+			base.Update(isPaused);
 		}
 
-		private void Logic()
+		private void Logic(bool isPaused)
 		{
-			claim_timer.Update();
+			claim_timer.Update(isPaused);
 
 			if (claim_timer.IsTimeUp())
 			{
@@ -89,7 +92,7 @@ namespace Rage_of_Stickman
 
 			if (isClaiming && claims.Count > 0)
 			{
-				ShowText.Text(new Vector2(position.X + size.X / 2, position.Y - 32), claims.ElementAt(claim_ID), claim_color, 0, 1, ETextFormate.Center);
+				ShowText.Text(new Vector2(position.X + size.X / 2, position.Y - 32), claims.ElementAt(claim_ID), claim_color, 0, 1, ETextAlign.Center);
 			}
 		}
 	}

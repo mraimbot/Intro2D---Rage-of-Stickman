@@ -99,6 +99,9 @@ namespace Rage_of_Stickman
 		Level2,
 		Level3,
 
+		Intro,
+		Outro,
+
 		Exit
 	}
 
@@ -112,7 +115,10 @@ namespace Rage_of_Stickman
 
 	enum ETarget
 	{
-		Main
+		Main,
+		Scene,
+		Window,
+		Level
 	}
 
 	enum EGameEvent
@@ -122,6 +128,11 @@ namespace Rage_of_Stickman
 		Open_Level1,
 		Open_Level2,
 		Open_Level3,
+
+		Open_Intro,
+		Open_Outro,
+
+		ShowMessagebox,
 
 		Game_Exit
 	}

@@ -30,9 +30,9 @@ namespace Rage_of_Stickman
 			return markable;
 		}
 
-		public virtual void Update(int index)
+		public virtual void Update(int index, bool isPaused)
 		{
-			base.Update();
+			base.Update(isPaused);
 			if (active)
 			{
 				marked = (index == ID) ? (true) : (false);

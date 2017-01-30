@@ -16,12 +16,12 @@ namespace Rage_of_Stickman
 		private bool onClick;
 		private Color color_notMarked;
 		private Color color_marked;
-		private ETextFormate align;
+		private ETextAlign align;
 		private float rotation;
 		private float scale;
 
 
-		public WindowText(bool markable, GameEvent gameEvent, string text, Color color_notMarked, Color color_marked, Vector2 position, ETextFormate align, float rotation = 0, float scale = 1, bool active = true, bool visible = true)
+		public WindowText(bool markable, GameEvent gameEvent, string text, Color color_notMarked, Color color_marked, Vector2 position, ETextAlign align, float rotation = 0, float scale = 1, bool active = true, bool visible = true)
 			: base(markable, position, Vector2.One, active, visible)
 		{
 			marked = false;
@@ -36,9 +36,9 @@ namespace Rage_of_Stickman
 			this.scale = scale;
 		}
 
-		public override void Update(int index)
+		public override void Update(int index, bool isPaused)
 		{
-			base.Update(index);
+			base.Update(index, isPaused);
 
 			if (active)
 			{

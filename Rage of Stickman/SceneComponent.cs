@@ -24,9 +24,14 @@ namespace Rage_of_Stickman
 			this.background = background;
 		}
 
-		public override void Update()
+		public virtual void EventHandler()
 		{
-			base.Update();
+
+		}
+
+		public override void Update(bool isPaused)
+		{
+			base.Update(isPaused);
 			//if (active)
 			//{
 

@@ -32,14 +32,17 @@ namespace Rage_of_Stickman
 			return (time == 0) ? (true) : (false);
 		}
 
-		public override void Update()
+		public override void Update(bool isPaused)
 		{
 			if (active)
 			{
-				time -= (float)Game.Content.gameTime.ElapsedGameTime.Milliseconds;
-				if (time < 0)
+				if (!isPaused)
 				{
-					time = 0;
+					time -= (float)Game.Content.gameTime.ElapsedGameTime.Milliseconds;
+					if (time < 0)
+					{
+						time = 0;
+					}
 				}
 			}
 		}

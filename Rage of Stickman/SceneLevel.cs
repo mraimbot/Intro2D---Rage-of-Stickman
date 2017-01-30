@@ -10,33 +10,55 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Rage_of_Stickman
 {
-    class Level : SceneComponent
+    class SceneLevel : SceneComponent
     {
 		private AnimatedTexture2D foreground;
 
 		private bool onBackToMenu;
 
-		public Level(AnimatedTexture2D background, AnimatedTexture2D foreground, Vector2 position, Vector2 size, bool active = true, bool visible = true)
+		public SceneLevel(AnimatedTexture2D background, AnimatedTexture2D foreground, Vector2 position, Vector2 size, bool active = true, bool visible = true)
 			: base(background, position, size, active, visible)
 		{
 			this.foreground = foreground;
+			Initialize();
 		}
 
-		public override void Update()
+		public void Initialize()
+		{
+			onBackToMenu = false;
+		}
+
+		public override void EventHandler()
+		{
+			if (Game.Content.gameEvents.Count > 0)
+			{
+				for (int ID = Game.Content.gameEvents.Count - 1; ID >= 0; ID--)
+				{
+					if (Game.Content.gameEvents[ID].Target() == ETarget.Scene)
+					{
+						//switch (Game.Content.gameEvents[ID].Event())
+						//{
+							
+						//}
+						Game.Content.gameEvents.RemoveAt(ID);
+					}
+				}
+			}
+		}
+
+		public override void Update(bool isPaused)
 		{
 			if (active)
 			{
 				Input();
 				Logic();
 
-				Game.Content.tileMap.Update();
-				Game.Content.player.Update();
-
-				// TODO Level.Update : Check player for goal-position
+				Game.Content.tileMap.Update(isPaused);
+				Game.Content.player.Update(isPaused);
 
 				for (int i = Game.Content.enemies.Count - 1; i >= 0; i--)
 				{
-					Game.Content.enemies[i].Update();
+					Game.Content.enemies[i].Update(isPaused);
 					if (Game.Content.enemies[i].isDead())
 					{
 						Game.Content.enemies.RemoveAt(i);
@@ -44,7 +66,7 @@ namespace Rage_of_Stickman
 				}
 			}
 
-			base.Update();
+			base.Update(isPaused);
 		}
 
 		private void Input()

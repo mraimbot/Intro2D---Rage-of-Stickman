@@ -135,13 +135,13 @@ namespace Rage_of_Stickman
 			return false;
 		}
 
-		public void Update()
+		public void Update(bool isPaused)
 		{
 			for (int h = 0; h < this.height; h++)
 			{
 				for (int w = 0; w < this.width; w++)
 				{
-					tileMap[h * this.width + w].Update();
+					tileMap[h * this.width + w].Update(isPaused);
 				}
 			}
 		}

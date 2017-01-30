@@ -42,14 +42,17 @@ namespace Rage_of_Stickman
 			claims.Add("Why are you doing this?");
 		}
 
-		public override void Update()
+		public override void Update(bool isPaused)
 		{
 			if (active)
 			{
-				Logic();
+				if (!isPaused)
+				{
+					Logic();
+				}
 			}
 
-			base.Update();
+			base.Update(isPaused);
 		}
 
 		private void Logic()

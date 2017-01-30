@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace Rage_of_Stickman
 {
-	class RainSimulation : SceneComponent
+	class SceneRainSimulation : SceneComponent
 	{
 		// TODO RainSimulation : Make clear zone
 		// TODO RainSimulation : Y-Position of rain zone (save distance to target)
@@ -20,7 +20,7 @@ namespace Rage_of_Stickman
 
 		private Entity target;
 
-		public RainSimulation(int raindrops_max, int density, Vector2 position, Vector2 size, Entity target = null, bool active = true, bool visible = true)
+		public SceneRainSimulation(int raindrops_max, int density, Vector2 position, Vector2 size, Entity target = null, bool active = true, bool visible = true)
 			: base(null, position, size, active, visible)
 		{
 			raindrops = new List<Raindrop>();
@@ -31,9 +31,9 @@ namespace Rage_of_Stickman
 			max_falldepth = 1000;
 		}
 
-		public override void Update()
+		public override void Update(bool isPaused)
 		{
-			base.Update();
+			base.Update(false);
 
 			if (target != null)
 			{
@@ -42,14 +42,14 @@ namespace Rage_of_Stickman
 
 			for (int ID = raindrops.Count - 1; ID >= 0; ID--)
 			{
-				raindrops.ElementAt(ID).Update();
+				raindrops.ElementAt(ID).Update(false);
 				if (raindrops.ElementAt(ID).isDead() || raindrops.ElementAt(ID).Position().Y > position.Y + max_falldepth)
 				{
 					raindrops.RemoveAt(ID);
 				}
 			}
 
-			spawn_next.Update();
+			spawn_next.Update(false);
 			if (spawn_next.IsTimeUp())
 			{
 				for (int ID = 0; ID < density; ID++)

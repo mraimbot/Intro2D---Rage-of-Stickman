@@ -34,13 +34,17 @@ namespace Rage_of_Stickman
 			return this.collision_type;
 		}
 
-		public new void Update()
+		public override void Update(bool isPaused)
 		{
 			if (active)
 			{
-				this.Logic();
+				if (!isPaused)
+				{
+					Logic();
+				}
 			}
-			base.Update();
+
+			base.Update(isPaused);
 		}
 
 		private void Logic()
@@ -54,7 +58,7 @@ namespace Rage_of_Stickman
 			{
 				base.Draw();
 			}
-			else
+			else if (visible)
 			{
 				this.animations[0].Update();
 				this.animations[0].Draw(this.position);

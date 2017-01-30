@@ -78,6 +78,10 @@ namespace Rage_of_Stickman
 						scene = Scene.CreateCredits();
 						break;
 
+					case EScenes.Intro:
+						scene = Scene.CreateIntro();
+						break;
+
 					case EScenes.Level1:
 						scene = Scene.CreateLevel1();
 						break;
@@ -89,6 +93,10 @@ namespace Rage_of_Stickman
 					case EScenes.Level3:
 						scene = Scene.CreateLevel3();
 						break;
+
+					case EScenes.Outro:
+						scene = Scene.CreateOutro();
+						break;
 				}
 
 				Game.Content.flag_newScene = false;
@@ -97,15 +105,15 @@ namespace Rage_of_Stickman
 			scene.Update();
 		}
 
-		private void GameEventHandler()
+		public void GameEventHandler()
 		{
 			if (Game.Content.gameEvents.Count > 0)
 			{
-				foreach (GameEvent gameEvent in Game.Content.gameEvents)
+				for (int ID = Game.Content.gameEvents.Count - 1; ID >= 0; ID--)
 				{
-					if (gameEvent.Target() == ETarget.Main)
+					if (Game.Content.gameEvents[ID].Target() == ETarget.Main)
 					{
-						switch (gameEvent.Event())
+						switch (Game.Content.gameEvents[ID].Event())
 						{
 							case EGameEvent.Game_Exit:
 								Game.Content.sceneState = EScenes.Exit;
@@ -119,6 +127,11 @@ namespace Rage_of_Stickman
 
 							case EGameEvent.Open_Credits:
 								Game.Content.sceneState = EScenes.Credits;
+								Game.Content.flag_newScene = true;
+								break;
+
+							case EGameEvent.Open_Intro:
+								Game.Content.sceneState = EScenes.Intro;
 								Game.Content.flag_newScene = true;
 								break;
 
@@ -136,10 +149,19 @@ namespace Rage_of_Stickman
 								Game.Content.sceneState = EScenes.Level3;
 								Game.Content.flag_newScene = true;
 								break;
+
+							case EGameEvent.Open_Outro:
+								Game.Content.sceneState = EScenes.Outro;
+								Game.Content.flag_newScene = true;
+								break;
 						}
+						Game.Content.gameEvents.RemoveAt(ID);
 					}
 				}
-				Game.Content.gameEvents.Clear();
+				if (scene != null)
+				{
+					scene.SceneEventHandler();
+				}
 			}
 		}
 

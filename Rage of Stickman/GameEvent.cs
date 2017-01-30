@@ -11,12 +11,14 @@ namespace Rage_of_Stickman
 		private ETarget target;
 		private EGameEvent gameEvent;
 		private float value;
+		private string text;
 
-		public GameEvent(ETarget target, EGameEvent gameEvent, float value = 0.0f)
+		public GameEvent(ETarget target, EGameEvent gameEvent, float value = 0.0f, string text = "")
 		{
 			this.target = target;
 			this.gameEvent = gameEvent;
 			this.value = value;
+			this.text = text;
 		}
 
 		public ETarget Target()
@@ -32,6 +34,11 @@ namespace Rage_of_Stickman
 		public float Value()
 		{
 			return value;
+		}
+
+		public string Text()
+		{
+			return text;
 		}
 	}
 }

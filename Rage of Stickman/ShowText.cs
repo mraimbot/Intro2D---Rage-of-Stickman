@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Rage_of_Stickman
 {
-	enum ETextFormate
+	enum ETextAlign
 	{
 		Left,
 		Right,
@@ -17,18 +17,18 @@ namespace Rage_of_Stickman
 
 	class ShowText
 	{
-		public static void Text(Vector2 position, string text, Color color, float rotation, float scale, ETextFormate align = ETextFormate.Left)
+		public static void Text(Vector2 position, string text, Color color, float rotation, float scale, ETextAlign align = ETextAlign.Left)
 		{
 			if (Game.Content.fonts[(int)EFont.Anarchy] == null)
 			{
 				Game.Content.fonts[(int)EFont.Anarchy] = Game.Content.contentManager.Load<SpriteFont>("Fonts/Anarchy");
 			}
 
-			if (align == ETextFormate.Right)
+			if (align == ETextAlign.Right)
 			{
 				position.X -= Game.Content.fonts[(int)EFont.Anarchy].MeasureString(text).X;
 			}
-			else if (align == ETextFormate.Center)
+			else if (align == ETextAlign.Center)
 			{
 				position.X -= Game.Content.fonts[(int)EFont.Anarchy].MeasureString(text).X / 2;
 			}

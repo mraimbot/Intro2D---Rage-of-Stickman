@@ -22,9 +22,9 @@ namespace Rage_of_Stickman
 			lifeTime = new Timer(0.3f);
 		}
 
-		public override void Update()
+		public override void Update(bool isPaused)
 		{
-			base.Update();
+			base.Update(isPaused);
 			if (active)
 			{
 				Logic();
@@ -40,7 +40,7 @@ namespace Rage_of_Stickman
 
 			if (isGrounded)
 			{
-				lifeTime.Update();
+				lifeTime.Update(false);
 				size = Vector2.One;
 			}
 

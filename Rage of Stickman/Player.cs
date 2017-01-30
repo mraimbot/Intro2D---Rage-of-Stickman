@@ -95,22 +95,25 @@ namespace Rage_of_Stickman
 			rage = 50;
 
 			sound_kick = Game.Content.contentManager.Load<SoundEffect>("SoundEffects/348244__newagesoup__punch-boxing-01");
-			sound_punch = Game.Content.contentManager.Load<SoundEffect>("SoundEffects/216197__rsilveira-88__cartoon-punch-03");
+			sound_punch = Game.Content.contentManager.Load<SoundEffect>("SoundEffects/Punch");
 			sound_jump = Game.Content.contentManager.Load<SoundEffect>("SoundEffects/341247__jeremysykes__jump01");
 		}
 
-		public override void Update()
+		public override void Update(bool isPaused)
 		{
 			if (active)
 			{
-				Input();
-				Trigger();
-				Logic();
+				if (!isPaused)
+				{
+					Input();
+					Trigger();
+					Logic();
+				}
 			}
 
 			CameraController();
 
-			base.Update();
+			base.Update(isPaused);
 		}
 
 		private void Input()
@@ -150,6 +153,10 @@ namespace Rage_of_Stickman
 					case Keys.X:
 						move_attack2 = true;
 						break;
+
+					case Keys.T:
+						Game.Content.gameEvents.Add(new GameEvent(ETarget.Scene, EGameEvent.ShowMessagebox, text: "Test"));
+						break;
 				}
 			}
 		}
@@ -176,7 +183,7 @@ namespace Rage_of_Stickman
 						Vector2 attack_force = (lookAtDirection == EDirection.right) ? (new Vector2(50, -20)) : (new Vector2(-50, -20));
 						if (Attack(Game.Content.enemies, new Rectangle((int)(position.X + size.X / 2), (int)(position.Y), (int)size.X, (int)size.Y / 2), 1, attack_force, 0.2f))
 						{
-							sound_punch.Play();
+							sound_punch.Play(1.0f, RandomGenerator.NextFloat(min:-0.2f, max: 0.2f), 0);
 						}
 					}
 
@@ -185,14 +192,14 @@ namespace Rage_of_Stickman
 						Vector2 attack_force = (lookAtDirection == EDirection.right) ? (new Vector2(25, -80)) : (new Vector2(-25, -80));
 						if (Attack(Game.Content.enemies, new Rectangle((int)(position.X + size.X / 2), (int)(position.Y + size.Y / 2), (int)size.X, (int)size.Y / 2), 5, attack_force, 0.7f))
 						{
-							sound_kick.Play();
+							sound_kick.Play(1.0f, RandomGenerator.NextFloat(min: -0.2f, max: 0.2f), 0);
 						}
 					}
 				}
 
 				if (move_jump && jump_timer.IsTimeUp())
 				{
-					sound_jump.Play(0.05f, -1f, 1f);
+					sound_jump.Play(0.05f, RandomGenerator.NextFloat(min: -1, max: -0.5f), 0);
 				}
 			}
 		}
@@ -291,8 +298,8 @@ namespace Rage_of_Stickman
 			Vector2 origin = Game.Content.camera.Position() - Game.Content.camera.Origin();
 			// TODO Player.DrawGUI()
 			DrawPrimitive.Rectangle(origin, new Color (32, 16, 0, 32), 136, 72);
-			ShowText.Text(new Vector2(origin.X + 8, origin.Y + 16), "Lifepoints: " + health, Color.Green, 0, 1, ETextFormate.Left);
-			ShowText.Text(new Vector2(origin.X + 8, origin.Y + 48), "Rage: " + rage, Color.Red, 0, 1, ETextFormate.Left);
+			ShowText.Text(new Vector2(origin.X + 8, origin.Y + 16), "Lifepoints: " + health, Color.Green, 0, 1, ETextAlign.Left);
+			ShowText.Text(new Vector2(origin.X + 8, origin.Y + 48), "Rage: " + rage, Color.Red, 0, 1, ETextAlign.Left);
 		}
 	}
 }

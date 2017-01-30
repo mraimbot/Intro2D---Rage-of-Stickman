@@ -39,14 +39,17 @@ namespace Rage_of_Stickman
 			claims.Add("Can you help me?");
 		}
 
-		public override void Update()
+		public override void Update(bool isPaused)
 		{
-			if (this.active)
+			if (active)
 			{
-				Logic();
+				if (!isPaused)
+				{
+					Logic();
+				}
 			}
 
-			base.Update();
+			base.Update(isPaused);
 		}
 
 		private void Logic()

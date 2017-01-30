@@ -35,28 +35,31 @@ namespace Rage_of_Stickman
 			index = (index_max >= 0) ? (0) : (-1);
 		}
 
-		public override void Update()
+		public override void Update(bool isPaused)
 		{
 			if (active)
 			{
-				Input();
-				Logic();
-
-				if (components == null)
+				if (!isPaused)
 				{
-					components = new List<WindowComponent>();
-				}
+					Input();
+					Logic();
 
-				if (components.Count > 0)
-				{
-					foreach (WindowComponent component in components)
+					if (components == null)
 					{
-						component.Update(index);
+						components = new List<WindowComponent>();
+					}
+
+					if (components.Count > 0)
+					{
+						foreach (WindowComponent component in components)
+						{
+							component.Update(index, isPaused);
+						}
 					}
 				}
 			}
 
-			base.Update();
+			base.Update(isPaused);
 		}
 
 		private void Input()

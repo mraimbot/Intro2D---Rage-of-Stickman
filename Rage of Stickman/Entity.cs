@@ -142,18 +142,21 @@ namespace Rage_of_Stickman
 			return (health == 0) ? true : false;
 		}
 
-		public override void Update()
+		public override void Update(bool isPaused)
 		{
 			if (active)
 			{
-				Logic();
-				Physic();
+				if (!isPaused)
+				{
+					Logic(isPaused);
+					Physic();
+				}
 			}
 
-			base.Update();
+			base.Update(isPaused);
 		}
 
-		private void Logic()
+		private void Logic(bool isPaused)
 		{
 			// ----- Damage -----
 			int damage = 0;
@@ -182,8 +185,8 @@ namespace Rage_of_Stickman
 			// ----- Movement -----
 			if (!isDead())
 			{
-				jump_timer.Update();
-				can_attack.Update();
+				jump_timer.Update(isPaused);
+				can_attack.Update(isPaused);
 
 				if (move_jump && jump_timer.IsTimeUp() && isGrounded)
 				{

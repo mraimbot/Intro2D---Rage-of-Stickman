@@ -33,9 +33,9 @@ namespace Rage_of_Stickman
 			}
 		}
 
-		public override void Update(int index)
+		public override void Update(int index, bool isPaused)
 		{
-			base.Update(index);
+			base.Update(index, isPaused);
 
 			if (active)
 			{
@@ -84,6 +84,7 @@ namespace Rage_of_Stickman
 				{
 					if (background_marked != null)
 					{
+						background_marked.Update();
 						background_marked.Draw(position);
 					}
 				}
@@ -91,6 +92,7 @@ namespace Rage_of_Stickman
 				{
 					if (background_notMarked != null)
 					{
+						background_notMarked.Update();
 						background_notMarked.Draw(position);
 					}
 				}

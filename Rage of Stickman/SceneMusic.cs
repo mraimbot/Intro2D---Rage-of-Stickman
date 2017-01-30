@@ -22,9 +22,9 @@ namespace Rage_of_Stickman
 			isPlaying = false;
 		}
 
-		public override void Update()
+		public override void Update(bool isPaused)
 		{
-			base.Update();
+			base.Update(isPaused);
 
 			if (active)
 			{

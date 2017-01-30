@@ -73,11 +73,14 @@ namespace Rage_of_Stickman
 			this.visible = visible;
 		}
 
-		public virtual void Update()
+		public virtual void Update(bool isPaused)
 		{
 			//if (active)
 			//{
+				//if (!isPaused)
+				//{
 
+				//}
 			//}
 		}
 
