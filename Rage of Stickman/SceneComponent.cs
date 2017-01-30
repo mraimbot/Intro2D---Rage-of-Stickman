@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,7 +27,30 @@ namespace Rage_of_Stickman
 
 		public virtual void EventHandler()
 		{
+			if (Game.Content.gameEvents.Count > 0)
+			{
+				for (int ID = Game.Content.gameEvents.Count - 1; ID >= 0; ID--)
+				{
+					if (Game.Content.gameEvents[ID].Target() == ETarget.SceneComponent)
+					{
+						switch (Game.Content.gameEvents[ID].Event())
+						{
+							case EGameEvent.NewBackground:
+								Background(Game.Content.gameEvents.ElementAt(ID).Text());
+								break;
+						}
+						Game.Content.gameEvents.RemoveAt(ID);
+					}
+				}
+			}
+		}
 
+		public void Background(string source)
+		{
+			if (source != "")
+			{
+				background = new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>(source) });
+			}
 		}
 
 		public override void Update(bool isPaused)

@@ -35,7 +35,7 @@ namespace Rage_of_Stickman
 			ShowMessagebox = false;
 		}
 
-		public void SceneEventHandler()
+		public void EventHandler()
 		{
 			if (Game.Content.gameEvents.Count > 0)
 			{
@@ -154,18 +154,18 @@ namespace Rage_of_Stickman
 			// ----- Scene -----
 			// ----- Windows -----
 			WindowButton title = new WindowButton(false, null, new AnimatedTexture2D[] { new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Images/RageOfStickman_red"), Game.Content.contentManager.Load<Texture2D>("Graphics/Images/RageOfStickman_red_100") }, frameTime: 1000), new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Pixel") }) }, new Vector2(200, 50), Vector2.Zero);
-			WindowText back = new WindowText(true, new GameEvent(ETarget.Main, EGameEvent.Open_Mainmenu), "BACK", Color.Red, Color.Green, new Vector2(870, 670), ETextAlign.Left, 0.5f, 3);
-			WindowButton credits = new WindowButton(false, null, new AnimatedTexture2D[] { new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Window/Button/Credits_red") }), new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Pixel") }) }, new Vector2(560, 220), Vector2.Zero);
-			WindowText text = new WindowText(false, null, "Fonts", Color.Red, Color.Red, new Vector2(100, 300), ETextAlign.Left, 0, 2);
-			WindowText text2 = new WindowText(false, null, "Anarchy: http://www.dafont.com/de/anarchy2.font", Color.Green, Color.Green, new Vector2(132, 332), ETextAlign.Left, 0, 1);
-			WindowText text10 = new WindowText(false, null, "Algerian: Microsoft", Color.Green, Color.Green, new Vector2(132, 348), ETextAlign.Left, 0, 1);
-			WindowText text3 = new WindowText(false, null, "Music", Color.Red, Color.Red, new Vector2(100, 404), ETextAlign.Left, 0, 2);
-			WindowText text4 = new WindowText(false, null, "Title-Music: http://www.audiyou.de/beitrag/get-started-intro-loop-7414.html", Color.Green, Color.Green, new Vector2(132, 436), ETextAlign.Left, 0, 1);
-			WindowText text5 = new WindowText(false, null, "Background-Music: http://www.audiyou.de/beitrag/backbeat-db-110bpm-01-6414.html", Color.Green, Color.Green, new Vector2(132, 452), ETextAlign.Left, 0, 1);
-			WindowText text6 = new WindowText(false, null, "Soundeffects", Color.Red, Color.Red, new Vector2(100, 500), ETextAlign.Left, 0, 2);
-			WindowText text7 = new WindowText(false, null, "Player-Kick: http://freesound.org/people/newagesoup/sounds/348244/", Color.Green, Color.Green, new Vector2(132, 532), ETextAlign.Left, 0, 1);
-			WindowText text8 = new WindowText(false, null, "Player-Punch: http://freesound.org/people/RSilveira_88/sounds/216197/", Color.Green, Color.Green, new Vector2(132, 548), ETextAlign.Left, 0, 1);
-			WindowText text9 = new WindowText(false, null, "Player-Jump: http://freesound.org/people/jeremysykes/sounds/341247/", Color.Green, Color.Green, new Vector2(132, 564), ETextAlign.Left, 0, 1);
+			WindowButton back = new WindowButton(true, new GameEvent(ETarget.Main, EGameEvent.Open_Mainmenu), new AnimatedTexture2D[] { new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Window/Button/Back_red") }), new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Window/Button/Back_green") }) }, new Vector2(475, 680), Vector2.Zero);
+			WindowButton credits = new WindowButton(false, null, new AnimatedTexture2D[] { new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Window/Button/Credits_red") }), new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Pixel") }) }, new Vector2(310, 220), Vector2.Zero);
+			WindowText text = new WindowText(false, null, "Fonts", Color.Red, Color.Red, new Vector2(100, 280), ETextAlign.Left, 0, 2);
+			WindowText text2 = new WindowText(false, null, "Anarchy: http://www.dafont.com/de/anarchy2.font", Color.Green, Color.Green, new Vector2(132, 328), ETextAlign.Left, 0, 1);
+			WindowText text10 = new WindowText(false, null, "Algerian: Microsoft", Color.Green, Color.Green, new Vector2(132, 360), ETextAlign.Left, 0, 1);
+			WindowText text3 = new WindowText(false, null, "Music", Color.Red, Color.Red, new Vector2(100, 392), ETextAlign.Left, 0, 2);
+			WindowText text4 = new WindowText(false, null, "Title-Music: http://www.audiyou.de/beitrag/get-started-intro-loop-7414.html", Color.Green, Color.Green, new Vector2(132, 440), ETextAlign.Left, 0, 1);
+			WindowText text5 = new WindowText(false, null, "Background-Music: http://www.audiyou.de/beitrag/backbeat-db-110bpm-01-6414.html", Color.Green, Color.Green, new Vector2(132, 472), ETextAlign.Left, 0, 1);
+			WindowText text6 = new WindowText(false, null, "Soundeffects", Color.Red, Color.Red, new Vector2(100, 520), ETextAlign.Left, 0, 2);
+			WindowText text7 = new WindowText(false, null, "Player-Kick: http://freesound.org/people/newagesoup/sounds/348244/", Color.Green, Color.Green, new Vector2(132, 568), ETextAlign.Left, 0, 1);
+			WindowText text8 = new WindowText(false, null, "Player-Punch: http://freesound.org/people/RSilveira_88/sounds/216197/", Color.Green, Color.Green, new Vector2(132, 600), ETextAlign.Left, 0, 1);
+			WindowText text9 = new WindowText(false, null, "Player-Jump: http://freesound.org/people/jeremysykes/sounds/341247/", Color.Green, Color.Green, new Vector2(132, 632), ETextAlign.Left, 0, 1);
 			List<WindowComponent> windowComponents = new List<WindowComponent>();
 			windowComponents.Add(title);
 			windowComponents.Add(back);
@@ -196,15 +196,21 @@ namespace Rage_of_Stickman
 			// ----- Create intro -----
 			// ----- Camera -----
 			Game.Content.camera = new Camera2D(Vector2.Zero, Vector2.Zero);
+			// ----- Window -----
+			Window window = new Window(null, new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Backgrounds/Background_Boss") }), new Vector2(0, 0), new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));
 			// ----- Eventlist -----
 			List<GameEvent> gameevents = new List<GameEvent>();
 			gameevents.Add(new GameEvent(ETarget.Scene, EGameEvent.ShowMessagebox, text: "Boss: You are fired!"));
+			gameevents.Add(new GameEvent(ETarget.Scene, EGameEvent.ShowMessagebox, text: "Nooooo!!!"));
+			gameevents.Add(new GameEvent(ETarget.SceneComponent, EGameEvent.NewBackground, text: "Graphics/Backgrounds/Background_Girlfriend"));
+			gameevents.Add(new GameEvent(ETarget.Scene, EGameEvent.ShowMessagebox, text: "Phone: I break up with you!"));
 			gameevents.Add(new GameEvent(ETarget.Scene, EGameEvent.ShowMessagebox, text: "Nooooo!!!"));
 			gameevents.Add(new GameEvent(ETarget.Main, EGameEvent.Open_Level1));
 			SceneEventbox eventbox = new SceneEventbox(gameevents);
 			// ----- Music -----
 			SceneMusic background_music = new SceneMusic(Game.Content.contentManager.Load<Song>("Music/backbeat-db-110bpm-01-6414"));
 			List<SceneComponent> components = new List<SceneComponent>();
+			components.Add(window);
 			components.Add(eventbox);
 			components.Add(background_music);
 			Scene scene = new Scene(components);

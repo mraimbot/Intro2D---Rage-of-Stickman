@@ -118,7 +118,9 @@ namespace Rage_of_Stickman
 		Main,
 		Scene,
 		Window,
-		Level
+		Level,
+
+		SceneComponent
 	}
 
 	enum EGameEvent
@@ -131,6 +133,8 @@ namespace Rage_of_Stickman
 
 		Open_Intro,
 		Open_Outro,
+
+		NewBackground,
 
 		ShowMessagebox,
 

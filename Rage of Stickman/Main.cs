@@ -160,7 +160,7 @@ namespace Rage_of_Stickman
 				}
 				if (scene != null)
 				{
-					scene.SceneEventHandler();
+					scene.EventHandler();
 				}
 			}
 		}

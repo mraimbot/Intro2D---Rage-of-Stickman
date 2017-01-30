@@ -10,7 +10,7 @@ namespace Rage_of_Stickman
 {
 	class AnimatedTexture2D
 	{
-		private readonly Texture2D[] textures;
+		private Texture2D[] textures;
 
 		private int height;
 		private int width;

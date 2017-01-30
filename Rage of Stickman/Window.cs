@@ -20,19 +20,27 @@ namespace Rage_of_Stickman
 		public Window(List<WindowComponent> components, AnimatedTexture2D background, Vector2 position, Vector2 size, bool active = true, bool visible = true)
 			: base(background, position, size, active, visible)
 		{
-			this.components = components;
-
-			index_max = -1;
-			foreach (WindowComponent component in this.components)
+			if (components != null)
 			{
-				if (component.Markable())
-				{
-					index_max++;
-					component.SetID(index_max);
-				}
-			}
+				this.components = components;
 
-			index = (index_max >= 0) ? (0) : (-1);
+				index_max = -1;
+				foreach (WindowComponent component in components)
+				{
+					if (component.Markable())
+					{
+						index_max++;
+						component.SetID(index_max);
+					}
+				}
+
+				index = (index_max >= 0) ? (0) : (-1);
+			}
+		}
+
+		public override void EventHandler()
+		{
+			base.EventHandler();
 		}
 
 		public override void Update(bool isPaused)
