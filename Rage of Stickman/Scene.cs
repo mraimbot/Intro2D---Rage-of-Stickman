@@ -329,6 +329,9 @@ namespace Rage_of_Stickman
 			Game.Content.camera = new Camera2D(Vector2.Zero, Vector2.Zero);
 			// ----- Eventlist -----
 			List<GameEvent> gameevents = new List<GameEvent>();
+			gameevents.Add(new GameEvent(ETarget.Scene, EGameEvent.ShowMessagebox, text: "And so he could fall into his sweet bed."));
+			gameevents.Add(new GameEvent(ETarget.Scene, EGameEvent.ShowMessagebox, text: "In the next morning, there were people from the road construction company."));
+			gameevents.Add(new GameEvent(ETarget.Scene, EGameEvent.ShowMessagebox, text: "But this is another story ..."));
 			gameevents.Add(new GameEvent(ETarget.Scene, EGameEvent.ShowMessagebox, text: "FIN"));
 			gameevents.Add(new GameEvent(ETarget.Main, EGameEvent.Open_Mainmenu));
 			SceneEventbox eventbox = new SceneEventbox(gameevents);
