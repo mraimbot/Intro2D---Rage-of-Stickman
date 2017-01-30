@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
@@ -67,6 +68,8 @@ namespace Rage_of_Stickman
 
 		public void Update()
 		{
+			Input();
+
 			if (ShowMessagebox)
 			{
 				if (messagebox.Update())
@@ -90,6 +93,22 @@ namespace Rage_of_Stickman
 			}
 		}
 
+		private void Input()
+		{
+			foreach (Keys key in Keyboard.GetState().GetPressedKeys())
+			{
+				if (!Game.Content.previousKeyState.IsKeyDown(key))
+				{
+					switch (key)
+					{
+						case Keys.P:
+							isPaused = !isPaused;
+							break;
+					}
+				}
+			}
+		}
+
 		public void Draw()
 		{
 			if (components == null)
@@ -109,6 +128,11 @@ namespace Rage_of_Stickman
 			{
 				messagebox.Draw();
 			}
+
+			if (isPaused && !ShowMessagebox)
+			{
+				ShowText.Text(new Vector2(Game.Content.camera.Position().X, Game.Content.camera.Position().Y), "Game Paused", new Color(255, 0, 0, 200), 0, 1, ETextAlign.Center);
+			}
 		}
 
 		public static Scene CreateMainmenu()
@@ -122,10 +146,11 @@ namespace Rage_of_Stickman
 			WindowButton play = new WindowButton(true, new GameEvent(ETarget.Main, EGameEvent.Open_Intro), new AnimatedTexture2D[] { new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Window/Button/Button_Play_notMarked") }), new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Window/Button/Button_Play_marked") }) }, new Vector2(180, 260), Vector2.Zero);
 			WindowButton credits = new WindowButton(true, new GameEvent(ETarget.Main, EGameEvent.Open_Credits), new AnimatedTexture2D[] { new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Window/Button/Credits_red") }), new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Window/Button/Credits_green") }) }, new Vector2(225, 395), Vector2.Zero);
 			WindowButton exit = new WindowButton(true, new GameEvent(ETarget.Main, EGameEvent.Game_Exit), new AnimatedTexture2D[] { new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Window/Button/Exit_red") }), new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Window/Button/Exit_green") }) }, new Vector2(263, 465), Vector2.Zero);
-			WindowText text = new WindowText(false, null, "Press F4 to toggle fullscreen.", Color.Red, Color.Red, new Vector2(332, 600), ETextAlign.Left, 0, 1);
-			WindowText text2 = new WindowText(false, null, "Move: AD or Arrow-Keys.", Color.Green, Color.Green, new Vector2(344, 632), ETextAlign.Left, 0, 1);
-			WindowText text3 = new WindowText(false, null, "Jump: W, Space or Arrow-Keys.", Color.Green, Color.Green, new Vector2(356, 664), ETextAlign.Left, 0, 1);
-			WindowText text4 = new WindowText(false, null, "Attack: EF or XY.", Color.Green, Color.Green, new Vector2(368, 696), ETextAlign.Left, 0, 1);
+			WindowText text = new WindowText(false, null, "Press F4 to toggle fullscreen.", Color.Red, Color.Red, new Vector2(332, 550), ETextAlign.Left, 0, 1);
+			WindowText text2 = new WindowText(false, null, "Move: AD or Arrow-Keys.", Color.Green, Color.Green, new Vector2(344, 582), ETextAlign.Left, 0, 1);
+			WindowText text3 = new WindowText(false, null, "Jump: W, Space or Arrow-Keys.", Color.Green, Color.Green, new Vector2(356, 614), ETextAlign.Left, 0, 1);
+			WindowText text4 = new WindowText(false, null, "Attack: EF or XY.", Color.Green, Color.Green, new Vector2(368, 646), ETextAlign.Left, 0, 1);
+			WindowText text5 = new WindowText(false, null, "Pause: P.", Color.Green, Color.Green, new Vector2(380, 678), ETextAlign.Left, 0, 1);
 			List<WindowComponent> windowComponents = new List<WindowComponent>();
 			windowComponents.Add(title);
 			windowComponents.Add(play);
@@ -135,6 +160,7 @@ namespace Rage_of_Stickman
 			windowComponents.Add(text2);
 			windowComponents.Add(text3);
 			windowComponents.Add(text4);
+			windowComponents.Add(text5);
 			Window window = new Window(windowComponents, new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Backgrounds/Background_Title") }), new Vector2(0, 0), new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));
 			// ----- Music -----
 			SceneMusic background_music = new SceneMusic(Game.Content.contentManager.Load<Song>("Music/get-started-intro-loop-7414"));
