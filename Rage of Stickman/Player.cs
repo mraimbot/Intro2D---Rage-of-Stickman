@@ -364,8 +364,11 @@ namespace Rage_of_Stickman
 							Vector2 attack_force = (direction == EPlayerDirection.Right) ? (new Vector2(50, -20)) : (new Vector2(-50, -20));
 							Rectangle attack_range = (direction == EPlayerDirection.Right) ? (new Rectangle((int)(position.X + size.X / 2), (int)(position.Y), (int)size.X, (int)size.Y / 2)) : (new Rectangle((int)(position.X + size.X / 2), (int)(position.Y), -(int)size.X, -(int)size.Y / 2));
 							punched = Attack(Game.Content.enemies, attack_range, 1, attack_force);
+							if (punched)
+							{
+								rage--;
+							}
 							can_Attack.Reset(0.5f);
-							rage--;
 						}
 						else
 						{
@@ -379,9 +382,12 @@ namespace Rage_of_Stickman
 						{
 							Vector2 attack_force = (direction == EPlayerDirection.Right) ? (new Vector2(25, -40)) : (new Vector2(-25, -40));
 							Rectangle attack_range = (direction == EPlayerDirection.Right) ? (new Rectangle((int)(position.X + size.X / 2), (int)(position.Y + size.Y / 2), (int)size.X, (int)size.Y / 2)) : (new Rectangle((int)(position.X + size.X / 2), (int)(position.Y + size.Y / 2), -(int)size.X, -(int)size.Y / 2));
-							punched = Attack(Game.Content.enemies, attack_range, 5, attack_force);
+							kicked = Attack(Game.Content.enemies, attack_range, 5, attack_force);
+							if (kicked)
+							{
+								rage -= 5;
+							}
 							can_Attack.Reset(1);
-							rage -= 5;
 						}
 						else
 						{
