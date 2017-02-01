@@ -56,7 +56,7 @@ namespace Rage_of_Stickman
 		protected Color claim_color;
 
 		public Enemy(Entity target, Vector2 position, Vector2 size, float mass, float speed, int health, bool isImmortal = false)
-			: base(position, size, 0, health, mass, isImmortal, true, false, true, true, true)
+			: base(position, size, 0, health, mass, isImmortal, true, false, false, true, true, true, true)
 		{
 			position_start = position;
 			claim_timer = new Timer(RandomGenerator.NextInt(min: 3, max: 20));

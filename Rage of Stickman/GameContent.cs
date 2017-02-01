@@ -163,6 +163,7 @@ namespace Rage_of_Stickman
 		public SpriteFont[] fonts;
 
 		public GameTime gameTime;
+		public float timeScale;
 		public KeyboardState previousKeyState;
 
 		public TileMap tileMap;
@@ -197,6 +198,8 @@ namespace Rage_of_Stickman
 					content.textures = new Texture2D[(int)ETexture.no_texture];
 					content.animations = new AnimatedTexture2D[(int)EAnimation.no_animation];
 					content.fonts = new SpriteFont[(int)EFont.no_font];
+
+					content.timeScale = 0.001f; // Does not working yet
 
 					content.gameEvents = new List<GameEvent>();
 

@@ -21,16 +21,24 @@ namespace Rage_of_Stickman
 
 		protected bool useGravity;
 		protected bool useWind;
+		protected bool useBouncing;
+		protected bool useFriction;
 		protected bool useFallDamage;
 
+		protected bool hit_up;
+		protected bool hit_down;
+		protected bool hit_left;
+		protected bool hit_right;
+
 		protected List<Vector2> impulses;
-		protected Vector2 force_input;
+		protected Vector2 force;
 
 		protected bool isGrounded;
 
 		protected List<int> damages;
+		protected bool gotFallDamage;
 
-		public Entity(Vector2 position, Vector2 size, float rotation, int health = 1, float mass = 1, bool isImmortal = false, bool useGravity = false, bool useWind = false, bool useFallDamage = false, bool isActive = true, bool isVisible = true)
+		public Entity(Vector2 position, Vector2 size, float rotation, int health = 1, float mass = 1, bool isImmortal = false, bool useGravity = false, bool useWind = false, bool useBouncing = false, bool useFriction = false, bool useFallDamage = false, bool isActive = true, bool isVisible = true)
 			: base(position, size, rotation, Color.Pink, isActive, isVisible)
 		{
 			useDynamicSize = false;
@@ -51,6 +59,8 @@ namespace Rage_of_Stickman
 
 			this.useGravity = useGravity;
 			this.useWind = useWind;
+			this.useBouncing = useBouncing;
+			this.useFriction = useFriction;
 			this.useFallDamage = useFallDamage;
 
 			this.impulses = new List<Vector2>();
@@ -69,7 +79,7 @@ namespace Rage_of_Stickman
 			}
 		}
 
-		// TODO Entity.TargetInRange() : copy to another class
+		// TODO Entity.TargetInRange() : copy to another class (enemy-class)
 		//public bool TargetInRange(Entity target, Rectangle attack_range)
 		//{
 		//	return attack_range.Intersects(new Rectangle((int)target.Position().X, (int)target.Position().Y, (int)target.Size().X, (int)target.Size().Y));
@@ -84,9 +94,9 @@ namespace Rage_of_Stickman
 			return (health == 0) ? true : false;
 		}
 
-		public virtual void Force(Vector2 force)
+		public virtual void Impulse(Vector2 impulse)
 		{
-			impulses.Add(force);
+			impulses.Add(impulse);
 		}
 
 		public virtual void Damage(int damage)
@@ -127,43 +137,6 @@ namespace Rage_of_Stickman
 				}
 			}
 
-			// TODO Entity.Logic().Movement : copy to another class
-			// ----- Movement -----
-			//if (!isDead())
-			//{
-			//	jump_timer.Update(isPaused);
-			//	can_attack.Update(isPaused);
-
-			//	if (move_jump && jump_timer.IsTimeUp() && isGrounded)
-			//	{
-			//		impulses.Add(force_jump);
-			//		jump_timer.Reset();
-			//	}
-
-
-			//	if (move_left && isGrounded)
-			//	{
-			//		impulses.Add(new Vector2(move_speed, 0.0f));
-			//		lookAtDirection = EDirection.left;
-			//	}
-
-			//	if (move_right && isGrounded)
-			//	{
-			//		impulses.Add(new Vector2(move_speed, 0.0f));
-			//		lookAtDirection = EDirection.right;
-			//	}
-
-			//	if (move_attack1)
-			//	{
-			//		// TODO move_attack1
-			//	}
-
-			//	if (move_attack2)
-			//	{
-			//		// TODO move_attack2
-			//	}
-			//}
-
 			if (useDynamicSize)
 			{
 				size.X = animation.Size().X;
@@ -173,47 +146,69 @@ namespace Rage_of_Stickman
 
 		private void Physic()
 		{
-			if (isGrounded)
+			hit_up = false;
+			hit_down = false;
+			hit_left = false;
+			hit_right = false;
+
+			gotFallDamage = false;
+
+			// ----- simple friction -----
+			if (useFriction)
 			{
-				// ----- simple friction -----
-				if (force_input.X != 0)
+				if (isGrounded)
 				{
-					force_input.X -= (force_input.X * 0.25f);
-					if (force_input.X < 0.1f && force_input.X > -0.1f)
+					if (force.X != 0)
 					{
-						force_input.X = 0;
+						force.X -= (force.X * mass * 0.025f);
+						if (force.X < 0.1f && force.X > -0.1f)
+						{
+							force.X = 0;
+						}
+					}
+
+					if (force.Y > 0)
+					{
+						force.Y *= 0.5f;
+						if (force.Y < 1)
+						{
+							force.Y = 0;
+						}
 					}
 				}
-
-				if (force_input.Y > 0)
+				else
 				{
-					force_input.Y = 0;
+					if (force.X != 0)
+					{
+						force.X -= (force.X * mass * 0.025f);
+						if (force.X < 0.1f && force.X > -0.1f)
+						{
+							force.X = 0;
+						}
+					}
 				}
 			}
 
-			// ----- forces -----
+			// ----- forces & impulses -----
 			if (useGravity)
 			{
-				force_input += Game.Content.force_gravity;
+				force += (Game.Content.force_gravity * Game.Content.gameTime.ElapsedGameTime.Milliseconds * Game.Content.timeScale);
 			}
 
 			if (useWind)
 			{
-				force_input += Game.Content.force_wind;
+				force += (Game.Content.force_wind * Game.Content.gameTime.ElapsedGameTime.Milliseconds * Game.Content.timeScale);
 			}
 
 			foreach (Vector2 impulse in impulses)
-				force_input += impulse;
+				force += impulse / mass;
 
 			impulses.Clear();
 
-			if (force_input != Vector2.Zero)
+			// ----- Translation -----
+			if (force != Vector2.Zero)
 			{
-				Vector2 accel = force_input / mass;
-				Vector2 velocity = accel * Game.Content.gameTime.ElapsedGameTime.Milliseconds;
-
-				// ----- Translation -----
-				HandleTranslation(velocity);
+				HandleTranslation(force);
 			}
 		}
 
@@ -231,20 +226,11 @@ namespace Rage_of_Stickman
 				}
 				else
 				{
-					if (velocity.Y > 0) // collided with somthing below
+					if (velocity.Y < 0) // collided with something above
 					{
-						isGrounded = true;
-
-						// ----- fall damage -----
-						if (!isImmortal && velocity.Y > 20)
-						{
-							Damage((int)(velocity.Y * 0.5f));
-						}
+						hit_up = true;
 					}
-					else if (velocity.Y < 0) // collided with something above
-					{
-						force_input.Y = 0;
-					}
+					force.Y = 0;
 				}
 			}
 
@@ -260,30 +246,62 @@ namespace Rage_of_Stickman
 			}
 			else
 			{
-				force_input.X = 0; // collided with something left or right
+				if (force.X < 0) // collided with something left
+				{
+					hit_left = true;
+				}
+				else if (force.X > 0) // collided with something right
+				{
+					hit_right = true;
+				}
+
+				force.X = 0;
 			}
 
 			// ----- Position correction -----
 			float distanceToGround = calcDistanceToGround();
-			if ((isGrounded || distanceToGround <= Game.Content.minGroundDistance) && velocity.Y >= 0)
+			if ((distanceToGround <= Game.Content.minGroundDistance + velocity.Y) && velocity.Y >= 0)
 			{
 				position.Y = position.Y + distanceToGround - Game.Content.minGroundDistance;
 				isGrounded = true;
+
+				if (velocity.Y > 0) // collided with somthing below
+				{
+					hit_down = true;
+					isGrounded = true;
+
+					// ----- fall damage -----
+					if (useFallDamage)
+					{
+						if (!isImmortal && force.Y > 10)
+						{
+							Damage((int)(force.Y * 0.75f));
+							gotFallDamage = true;
+						}
+					}
+
+				}
 			}
 			else
 			{
 				isGrounded = false;
 			}
 
-			// TODO Entity.Physics() : Do I need this?
-			//if (distanceToGround > Game.Content.minGroundDistance)
-			//{
-			//	isGrounded = false;
-			//}
-			//else
-			//{
-			//	isGrounded = true;
-			//}
+			// ----- simple bouncing -----
+			if (useBouncing)
+			{
+				if ((hit_up || hit_down) && force.Y != 0)
+				{
+					impulses.Add(new Vector2(0, -force.Y * 5));
+					isGrounded = false;
+				}
+
+				if (hit_left || hit_right)
+				{
+					// TODO Tweek bouncing!!!
+					impulses.Add(new Vector2(-force.X * 20, 0));
+				}
+			}
 		}
 
 		protected float calcDistanceToGround()

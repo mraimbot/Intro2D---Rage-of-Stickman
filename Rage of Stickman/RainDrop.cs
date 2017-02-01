@@ -12,12 +12,16 @@ namespace Rage_of_Stickman
 		private float angle;
 		private Timer lifeTime;
 
+		private bool onLifeTime;
+
 		public Raindrop(Vector2 position_start)
-			: base(position_start, new Vector2(1, 7), 0, 1, 800, false, true, true, false, true, true)
+			: base(position_start, new Vector2(1, 7), 0, 1, 8, false, true, true, true, false, false, true, true)
 		{
 			color = Color.LightSlateGray;
 			size.Y += RandomGenerator.NextFloat(min: -3, max: 3);
+			mass = size.Y + RandomGenerator.NextFloat(min: -1, max: 1);
 			lifeTime = new Timer(0.5f);
+			onLifeTime = false;
 		}
 
 		public override void Update(bool isPaused)
@@ -37,10 +41,15 @@ namespace Rage_of_Stickman
 				health = 0;
 			}
 
-			if (isGrounded)
+			if (hit_down)
+			{
+				onLifeTime = true;
+				size = Vector2.One;
+			}
+
+			if (onLifeTime)
 			{
 				lifeTime.Update(false);
-				size = Vector2.One;
 			}
 
 			if (!isDead())

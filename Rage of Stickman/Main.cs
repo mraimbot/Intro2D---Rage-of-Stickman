@@ -38,7 +38,7 @@ namespace Rage_of_Stickman
 
 		protected override void Update(GameTime gameTime)
 		{
-			Game.Content.gameTime = gameTime;
+			Game.Content.gameTime = gameTime; // Updates all 16ms
 
 			InputHandler();
 			SceneHandler();
@@ -47,6 +47,7 @@ namespace Rage_of_Stickman
 			base.Update(gameTime);
 
 			Game.Content.previousKeyState = Keyboard.GetState();
+
 		}
 
 		private void InputHandler()

@@ -52,13 +52,13 @@ namespace Rage_of_Stickman
 		private int rage;
 
 		private float speed_max;
-		private float speed;
-		private Timer speed_next_boost;
+		private float speed_force_input;
+		private float speed_force;
 
 		private float jump_force_max;
+		private float jump_force_input;
 		private float jump_force;
 		private Timer can_Jump;
-		private Timer can_Jump_next_boost;
 
 		private Timer can_Attack;
 
@@ -66,7 +66,7 @@ namespace Rage_of_Stickman
 		protected bool isClaiming;
 
 		public Player(Vector2 position)
-			: base(position, Vector2.One, 0, 100, 75, false, true, false, true)
+			: base(position, Vector2.One, 0, 100, 75, false, true, false, false, true, true)
 		{
 			// ----- Load Textures & Animations -----
 			if (Game.Content.animations[(int)EAnimation.player_idle] == null)
@@ -143,11 +143,11 @@ namespace Rage_of_Stickman
 			position_start = position;
 			size = animation_idle.Size();
 			health_max = health;
-			speed_max = 30;
-			speed_next_boost = new Timer(0.05f);
-			jump_force_max = 75;
+			speed_max = 1200;
+			speed_force_input = 1000;
+			jump_force_max = 56;
+			jump_force_input = 50;
 			can_Jump = new Timer(0.3f);
-			can_Jump_next_boost = new Timer(0.05f);
 			can_Attack = new Timer(1);
 			claim_timer = new Timer(1);
 			Initialize();
@@ -161,7 +161,7 @@ namespace Rage_of_Stickman
 			position = position_start;
 			health = health_max;
 			rage = 50;
-			speed = 0;
+			speed_force = 0;
 			jump_force = 0;
 			can_Jump.Reset();
 
@@ -234,50 +234,72 @@ namespace Rage_of_Stickman
 
 			if (!isDead())
 			{
-				speed_next_boost.Update(false);
 				can_Jump.Update(false);
-				can_Jump_next_boost.Update(false);
 				can_Attack.Update(false);
+
+				if (hit_left || hit_right)
+				{
+					speed_force *= 0.25f;
+				}
+
+				if (hit_up || hit_down)
+				{
+					jump_force *= 0.25f;
+				}
 
 				// ----- Movement -----
 				if (!move_left && !move_right)
 				{
-					speed = 0;
+					if (speed_force != 0)
+					{
+						speed_force += (-speed_force * 0.2f);
+					}
+
+					if (speed_force > -0.1f && speed_force < 0.1f)
+					{
+						speed_force = 0;
+					}
 				}
 
-				if (move_left && speed_next_boost.IsTimeUp() && isGrounded)
+				if (move_left)
 				{
-					speed -= (speed_max * 0.25f);
+					if (isGrounded)
+					{
+						speed_force -= (speed_force_input * Game.Content.gameTime.ElapsedGameTime.Milliseconds * Game.Content.timeScale);
+					}
+					else
+					{
+						speed_force -= (speed_force_input * Game.Content.gameTime.ElapsedGameTime.Milliseconds * Game.Content.timeScale) * 0.02f;
+					}
 					direction = EPlayerDirection.Left;
 				}
 
-				if (move_right && speed_next_boost.IsTimeUp() && isGrounded)
+				if (move_right)
 				{
-					speed += (speed_max * 0.25f);
+					if (isGrounded)
+					{
+						speed_force += (speed_force_input * Game.Content.gameTime.ElapsedGameTime.Milliseconds * Game.Content.timeScale);
+					}
+					else
+					{
+						speed_force += (speed_force_input * Game.Content.gameTime.ElapsedGameTime.Milliseconds * Game.Content.timeScale) * 0.02f;
+					}
 					direction = EPlayerDirection.Right;
 				}
 
-				if (speed > speed_max)
+				if (speed_force > speed_max)
 				{
-					speed = speed_max;
+					speed_force = speed_max;
 				}
-				else if (speed < -speed_max)
+				else if (speed_force < -speed_max)
 				{
-					speed = -speed_max;
+					speed_force = -speed_max;
 				}
 
-				if (speed_next_boost.IsTimeUp())
-				{
-					speed_next_boost.Reset();
-					Force(new Vector2(speed, 0));
-				}
+				Impulse(new Vector2(speed_force, 0));
 
 				// ----- Jump -----
 				// TODO Player.Logic() : Adjust playerjump
-
-				// TODO DEBUG
-				Console.WriteLine("speed = " + speed);
-
 				if (isGrounded)
 				{
 					jumping = false;
@@ -298,15 +320,16 @@ namespace Rage_of_Stickman
 					{
 						jumped = true;
 						jumping = true;
-						jump_force = (jump_force_max * 0.5f);
+						speed_force *= 0.75f;
+						jump_force = (jump_force_input);
 					}
-					else if (jumping && can_Jump_next_boost.IsTimeUp() && !isGrounded)
+					else if (jumping && !isGrounded)
 					{
-						jump_force += (jump_force_max * 0.5f);
+						jump_force += (jump_force_input * Game.Content.gameTime.ElapsedGameTime.Milliseconds * Game.Content.timeScale);
 						if (jump_force >= jump_force_max)
 						{
-							jump_force = 0;
-							can_Jump.Reset();
+							jump_force = jump_force_max;
+							jumping = false;
 						}
 					}
 				}
@@ -315,11 +338,7 @@ namespace Rage_of_Stickman
 					jumping = false;
 				}
 
-				if (can_Jump_next_boost.IsTimeUp())
-				{
-					can_Jump_next_boost.Reset();
-					Force(new Vector2(0, -jump_force));
-				}
+				Impulse(new Vector2(0, -jump_force));
 
 				// ----- Attacks -----
 				if (can_Attack.IsTimeUp())
@@ -414,7 +433,7 @@ namespace Rage_of_Stickman
 				if (attack_range.Intersects(new Rectangle((int)target.Position().X, (int)target.Position().Y, (int)target.Size().X, (int)target.Size().Y)))
 				{
 					target.Damage(damage);
-					target.Force(attack_force);
+					target.Impulse(attack_force);
 					hitTarget = true;
 				}
 			}
