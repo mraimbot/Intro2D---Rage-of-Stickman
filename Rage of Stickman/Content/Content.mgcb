@@ -475,18 +475,6 @@
 /processorParam:Quality=Best
 /build:Music/get-started-intro-loop-7414.mp3
 
-#begin SoundEffects/348244__newagesoup__punch-boxing-01.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:SoundEffects/348244__newagesoup__punch-boxing-01.wav
-
-#begin SoundEffects/341247__jeremysykes__jump01.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:SoundEffects/341247__jeremysykes__jump01.wav
-
 #begin Graphics/Window/Button/Credits_green.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -654,4 +642,16 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Graphics/Images/MediPack.png
+
+#begin SoundEffects/Jump.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Jump.wav
+
+#begin SoundEffects/Kick.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Kick.wav
 

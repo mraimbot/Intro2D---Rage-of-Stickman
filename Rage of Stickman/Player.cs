@@ -138,8 +138,8 @@ namespace Rage_of_Stickman
 
 			// ----- Load Soundeffects -----
 			sound_move = Game.Content.contentManager.Load<SoundEffect>("SoundEffects/Step");
-			sound_jump = Game.Content.contentManager.Load<SoundEffect>("SoundEffects/341247__jeremysykes__jump01");
-			sound_kick = Game.Content.contentManager.Load<SoundEffect>("SoundEffects/348244__newagesoup__punch-boxing-01");
+			sound_jump = Game.Content.contentManager.Load<SoundEffect>("SoundEffects/Jump");
+			sound_kick = Game.Content.contentManager.Load<SoundEffect>("SoundEffects/Kick");
 			sound_punch = Game.Content.contentManager.Load<SoundEffect>("SoundEffects/Punch");
 
 			// ----- Initialize start settings -----
@@ -515,20 +515,20 @@ namespace Rage_of_Stickman
 
 			if (jumped)
 			{
-				sound_jump.Play(0.05f, RandomGenerator.NextFloat(min: -1, max: -0.5f), 0);
+				sound_jump.Play(0.1f, -1 + RandomGenerator.NextFloat(min: 0, max: 0.2f), 0);
 			}
 			else if (moved && sound_move_timer.IsTimeUp())
 			{
 				sound_move_timer.Reset();
-				sound_move.Play(0.02f, -1 + RandomGenerator.NextFloat(min: 0, max: 0.2f), -0.01f);
+				sound_move.Play(0.1f, -1 + RandomGenerator.NextFloat(min: 0, max: 0.2f), 0);
 			}
 			else if (punched)
 			{
-				sound_punch.Play(1, RandomGenerator.NextFloat(min: -0.2f, max: 0.2f), 0);
+				sound_punch.Play(1, RandomGenerator.NextFloat(min: -0.1f, max: 0.3f), 0);
 			}
 			else if (kicked)
 			{
-				sound_kick.Play(1, RandomGenerator.NextFloat(min: -0.2f, max: 0.2f), 0);
+				sound_kick.Play(1, RandomGenerator.NextFloat(min: -0.5f, max: 0.1f), 0);
 			}
 
 			DrawGUI();

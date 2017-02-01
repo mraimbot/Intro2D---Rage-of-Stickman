@@ -34,11 +34,12 @@ namespace Rage_of_Stickman
 
 			// ----- Load Soundeffects -----
 			sound_move = Game.Content.contentManager.Load<SoundEffect>("SoundEffects/Step");
-			sound_jump = Game.Content.contentManager.Load<SoundEffect>("SoundEffects/341247__jeremysykes__jump01");
-			sound_attack = Game.Content.contentManager.Load<SoundEffect>("SoundEffects/348244__newagesoup__punch-boxing-01");
+			sound_jump = Game.Content.contentManager.Load<SoundEffect>("SoundEffects/Jump");
+			sound_attack = Game.Content.contentManager.Load<SoundEffect>("SoundEffects/Punch");
 
 
 			// ----- Initialize start settings -----
+			size = animation_idle.Size();
 			health_max = health;
 			speed += RandomGenerator.NextFloat(min: -0.2f, max: 0.2f);
 			jump_force = 10;
