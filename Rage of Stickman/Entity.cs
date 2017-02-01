@@ -246,16 +246,14 @@ namespace Rage_of_Stickman
 			}
 			else
 			{
-				if (force.X < 0) // collided with something left
+				if (velocity.X < 0) // collided with something left
 				{
 					hit_left = true;
 				}
-				else if (force.X > 0) // collided with something right
+				else if (velocity.X > 0) // collided with something right
 				{
 					hit_right = true;
 				}
-
-				force.X = 0;
 			}
 
 			// ----- Position correction -----
@@ -279,7 +277,6 @@ namespace Rage_of_Stickman
 							gotFallDamage = true;
 						}
 					}
-
 				}
 			}
 			else
@@ -292,14 +289,18 @@ namespace Rage_of_Stickman
 			{
 				if ((hit_up || hit_down) && force.Y != 0)
 				{
-					impulses.Add(new Vector2(0, -force.Y * 5));
+					impulses.Add(new Vector2(0, -force.Y * 3.5f));
 					isGrounded = false;
 				}
 
-				if (hit_left || hit_right)
+				if (hit_left)
 				{
-					// TODO Tweek bouncing!!!
-					impulses.Add(new Vector2(-force.X * 20, 0));
+					hit_left = true;
+				}
+
+				if ((hit_left || hit_right) && force.X != 0)
+				{
+					impulses.Add(new Vector2(-force.X * 7, 0));
 				}
 			}
 		}

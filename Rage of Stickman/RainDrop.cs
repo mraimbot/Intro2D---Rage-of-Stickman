@@ -20,7 +20,7 @@ namespace Rage_of_Stickman
 			color = Color.LightSlateGray;
 			size.Y += RandomGenerator.NextFloat(min: -3, max: 3);
 			mass = size.Y + RandomGenerator.NextFloat(min: -1, max: 1);
-			lifeTime = new Timer(0.5f);
+			lifeTime = new Timer(1.5f);
 			onLifeTime = false;
 		}
 
@@ -41,7 +41,12 @@ namespace Rage_of_Stickman
 				health = 0;
 			}
 
-			if (hit_down)
+			if (hit_down || hit_up)
+			{
+				force.X += -(force.X * Game.Content.gameTime.ElapsedGameTime.Milliseconds * Game.Content.timeScale * 10);
+			}
+
+			if (hit_down || hit_up || hit_left || hit_right)
 			{
 				onLifeTime = true;
 				size = Vector2.One;
