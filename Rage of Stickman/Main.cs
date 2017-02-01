@@ -20,7 +20,6 @@ namespace Rage_of_Stickman
 		{
 			graphics.PreferredBackBufferWidth = 1366;
 			graphics.PreferredBackBufferHeight = 768;
-			// graphics.ToggleFullScreen();
 			graphics.ApplyChanges();
 
 			Game.Content.contentManager = Content;

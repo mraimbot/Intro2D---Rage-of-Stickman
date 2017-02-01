@@ -40,7 +40,7 @@ namespace Rage_of_Stickman
 
 		public override void Update(bool isPaused)
 		{
-			if (active)
+			if (isActive)
 			{
 				Game.Content.tileMap.Update(isPaused);
 				Game.Content.player.Update(isPaused);
@@ -60,8 +60,6 @@ namespace Rage_of_Stickman
 
 		public override void Draw()
 		{
-			base.Draw();
-
 			if (background != null)
 			{
 				background.Draw(position);

@@ -85,18 +85,6 @@
 /processorParam:TextureFormat=Color
 /build:Graphics/Tiles/Wall.png
 
-#begin Graphics/PlayerAnimation/Stehen.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Graphics/PlayerAnimation/Stehen.png
-
 #begin Graphics/PlayerAnimation/Kick/Kick0.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -636,4 +624,22 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Graphics/Backgrounds/Background_Girlfriend.png
+
+#begin Graphics\PlayerAnimation\Player_Idle.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Graphics\PlayerAnimation\Player_Idle.png
+
+#begin SoundEffects/Step.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:SoundEffects/Step.wav
 

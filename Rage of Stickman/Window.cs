@@ -17,9 +17,11 @@ namespace Rage_of_Stickman
 		private bool onUp;
 		private bool onDown;
 
-		public Window(List<WindowComponent> components, AnimatedTexture2D background, Vector2 position, Vector2 size, bool active = true, bool visible = true)
+		public Window(List<WindowComponent> components, AnimatedTexture2D background, Color background_color, Vector2 position, Vector2 size, bool active = true, bool visible = true)
 			: base(background, position, size, active, visible)
 		{
+			color = background_color;
+
 			if (components != null)
 			{
 				this.components = components;
@@ -51,13 +53,13 @@ namespace Rage_of_Stickman
 
 			foreach (WindowComponent component in components)
 			{
-				component.MoveTo(component.StartPosition() + position);
+				component.MoveTo(component.Position_Start() + position);
 			}
 		}
 
 		public override void Update(bool isPaused)
 		{
-			if (active)
+			if (isActive)
 			{
 				if (!isPaused)
 				{
@@ -131,10 +133,10 @@ namespace Rage_of_Stickman
 
 		public override void Draw()
 		{
-			base.Draw();
-
-			if (visible)
+			if (isVisible)
 			{
+				base.Draw();
+
 				if (components == null)
 				{
 					components = new List<WindowComponent>();

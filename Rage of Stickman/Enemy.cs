@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -10,47 +11,87 @@ namespace Rage_of_Stickman
 {
 	class Enemy : Entity
 	{
+		protected enum EEnemyDirection
+		{
+			Left,
+			Right
+		}
+
+		protected AnimatedTexture2D animation_idle;
+		protected AnimatedTexture2D animation_move;
+		protected AnimatedTexture2D animation_jump;
+		protected AnimatedTexture2D animation_attack;
+
+		protected SoundEffect sound_move;
+		protected SoundEffect sound_jump;
+		protected SoundEffect sound_attack;
+
+		protected bool move_left;
+		protected bool move_right;
+		protected bool move_jump;
+		protected bool move_attack;
+
+		protected bool jumped;
+		protected bool attacked;
+
+		protected Vector2 position_start;
+		protected EEnemyDirection direction;
+
+		protected int health_max;
+
+		protected float speed;
+
+		protected float jump_force;
+		protected Timer can_Jump;
+
+		protected Timer can_Attack;
+
+		protected Entity target;
+		protected float range; // The Enemy is only moving to his target, if the target is in this range
+
 		protected Timer claim_timer;
 		protected bool isClaiming;
 		protected List<string> claims;
 		protected int claim_ID;
 		protected Color claim_color;
-		protected Entity target;
-		protected float range; // The Enemy is only moving to his target, if the target is in this range
 
-		public Enemy(Entity target, Vector2 startPosition, Vector2 size, float mass, float speed, int health)
-			: base(startPosition, size, EDirection.left, mass, speed, true, health)
+		public Enemy(Entity target, Vector2 position, Vector2 size, float mass, float speed, int health, bool isImmortal = false)
+			: base(position, size, 0, health, mass, isImmortal, true, false, true, true, true)
 		{
-			Initialize();
+			position_start = position;
 			claim_timer = new Timer(RandomGenerator.NextInt(min: 3, max: 20));
 			claims = new List<string>();
 			isClaiming = false;
 			claim_color = Color.White;
-			useWind = false;
 			this.target = target;
 		}
 
-		public override void addDamage(Entity attacker, Vector2 attack_force, int damage)
+		public void Initialize()
 		{
-			base.addDamage(attacker, attack_force, damage);
+			direction = EEnemyDirection.Left;
+			position = position_start;
+			health = health_max;
+			speed = 0;
+			jump_force = 0;
+			can_Jump.Reset();
 		}
 
 		public override void Update(bool isPaused)
 		{
-			if (active)
+			if (isActive)
 			{
 				if (!isPaused)
 				{
-					Logic(isPaused);
+					Logic();
 				}
 			}
 
 			base.Update(isPaused);
 		}
 
-		private void Logic(bool isPaused)
+		private void Logic()
 		{
-			claim_timer.Update(isPaused);
+			claim_timer.Update(false);
 
 			if (claim_timer.IsTimeUp())
 			{
@@ -69,30 +110,59 @@ namespace Rage_of_Stickman
 
 		public override void Draw()
 		{
-			SpriteEffects s = SpriteEffects.None;
+			if (isVisible)
+			{
+				SpriteEffects s = SpriteEffects.None;
 
-			if (lookAtDirection == EDirection.left)
-			{
-				s = SpriteEffects.FlipHorizontally;
-			}
-			else
-			{
-				s = SpriteEffects.None;
+				if (direction == EEnemyDirection.Left)
+				{
+					s = SpriteEffects.FlipHorizontally;
+				}
+				else
+				{
+					s = SpriteEffects.None;
+				}
+
+				if (!isGrounded)
+				{
+					animation_jump.Update();
+					animation_jump.Draw(position, s);
+				}
+				else if (move_left || move_right)
+				{
+					animation_move.Update();
+					animation_move.Draw(position, s);
+				}
+				else if (move_attack)
+				{
+					animation_attack.Update();
+					animation_attack.Draw(position, s);
+				}
+				else if (move_jump)
+				{
+					animation_jump.Update();
+					animation_jump.Draw(position, s);
+				}
+				else
+				{
+					animation_idle.Update();
+					animation_idle.Draw(position, s);
+				}
+
+				if (isClaiming)
+				{
+					ShowText.Text(new Vector2(position.X + size.X / 2, position.Y - 32), claims.ElementAt(claim_ID), claim_color, 0, 1, ETextAlign.Center);
+				}
 			}
 
-			if (animations == null || animations.Length == 0)
+			if (jumped)
 			{
-				base.Draw();
-			}
-			else
-			{
-				this.animations[0].Update();
-				this.animations[0].Draw(position, s);
+				sound_jump.Play(0.05f, RandomGenerator.NextFloat(min: -1, max: -0.5f), 0);
 			}
 
-			if (isClaiming && claims.Count > 0)
+			else if (attacked)
 			{
-				ShowText.Text(new Vector2(position.X + size.X / 2, position.Y - 32), claims.ElementAt(claim_ID), claim_color, 0, 1, ETextAlign.Center);
+				sound_attack.Play(1, RandomGenerator.NextFloat(min: -0.2f, max: 0.2f), 0);
 			}
 		}
 	}

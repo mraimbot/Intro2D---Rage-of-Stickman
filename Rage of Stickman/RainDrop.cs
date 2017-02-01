@@ -9,23 +9,22 @@ namespace Rage_of_Stickman
 {
 	class Raindrop : Entity
 	{
-		private Color color;
 		private float angle;
 		private Timer lifeTime;
 
 		public Raindrop(Vector2 position_start)
-			: base(position_start, new Vector2(1, 10), EDirection.right, 800, 1, true, 1)
+			: base(position_start, new Vector2(1, 7), 0, 1, 800, false, true, true, false, true, true)
 		{
-			Initialize();
 			color = Color.LightSlateGray;
-			size.Y += RandomGenerator.NextFloat(min: 1, max: 1);
-			lifeTime = new Timer(0.3f);
+			size.Y += RandomGenerator.NextFloat(min: -3, max: 3);
+			lifeTime = new Timer(0.5f);
 		}
 
 		public override void Update(bool isPaused)
 		{
-			base.Update(isPaused);
-			if (active)
+			base.Update(false);
+
+			if (isActive)
 			{
 				Logic();
 			}
@@ -49,15 +48,13 @@ namespace Rage_of_Stickman
 				angle = (float)Math.Acos(Vector2.Dot(Vector2.UnitY, Vector2.Normalize(Game.Content.force_wind + Game.Content.force_gravity)));
 				if (Game.Content.force_wind.X > 0)
 				{
-					angle = 0 - angle;
+					angle *= -1;
 				}
 			}
 		}
 
 		public override void Draw()
 		{
-			base.Draw();
-
 			DrawPrimitive.Rectangle(position, color, (int)size.X, (int)size.Y,angle: angle);
 		}
 	}

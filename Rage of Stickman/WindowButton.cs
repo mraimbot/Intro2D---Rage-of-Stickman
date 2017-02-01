@@ -18,8 +18,8 @@ namespace Rage_of_Stickman
 		private GameEvent gameEvent;
 
 
-		public WindowButton(bool markable, GameEvent gameEvent, AnimatedTexture2D[] backgrounds, Vector2 position, Vector2 size, bool active = true, bool visible = true)
-			: base(markable, position, size, active, visible)
+		public WindowButton(bool markable, GameEvent gameEvent, AnimatedTexture2D[] backgrounds, Vector2 position, Vector2 size, float rotation = 0, bool active = true, bool visible = true)
+			: base(markable, position, size, rotation, active, visible)
 		{
 			marked = false;
 
@@ -37,7 +37,7 @@ namespace Rage_of_Stickman
 		{
 			base.Update(index, isPaused);
 
-			if (active)
+			if (isActive)
 			{
 				Input();
 				Logic();
@@ -76,16 +76,14 @@ namespace Rage_of_Stickman
 
 		public override void Draw()
 		{
-			base.Draw();
-
-			if (visible)
+			if (isVisible)
 			{
 				if (marked)
 				{
 					if (background_marked != null)
 					{
 						background_marked.Update();
-						background_marked.Draw(position);
+						background_marked.Draw(position, rotation: rotation);
 					}
 				}
 				else
@@ -93,7 +91,7 @@ namespace Rage_of_Stickman
 					if (background_notMarked != null)
 					{
 						background_notMarked.Update();
-						background_notMarked.Draw(position);
+						background_notMarked.Draw(position, rotation: rotation);
 					}
 				}
 			}

@@ -20,7 +20,7 @@ namespace Rage_of_Stickman
 		{
 			base.Update(isPaused);
 
-			if (active)
+			if (isActive)
 			{
 				if (!isPaused)
 				{
@@ -32,5 +32,7 @@ namespace Rage_of_Stickman
 				}
 			}
 		}
+
+		public override void Draw() {}
 	}
 }

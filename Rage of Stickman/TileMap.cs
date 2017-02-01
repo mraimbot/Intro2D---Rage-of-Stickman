@@ -43,7 +43,7 @@ namespace Rage_of_Stickman
 						{
 							Game.Content.textures[(int)ETexture.grass] = Game.Content.contentManager.Load<Texture2D>("Graphics/Tiles/Gras");
 							Texture2D[] grass = { Game.Content.textures[(int)ETexture.grass] };
-							Game.Content.animations[(int)EAnimation.grass] = new AnimatedTexture2D(grass, Game.Content.tileSize, Game.Content.tileSize, 999.0f);
+							Game.Content.animations[(int)EAnimation.grass] = new AnimatedTexture2D(grass, 999, Game.Content.tileSize, Game.Content.tileSize);
 						}
 						tileMap[h * this.width + w] = new Tile(Game.Content.animations[(int)EAnimation.grass], ECollision.impassable, new Vector2(w * Game.Content.tileSize, h * Game.Content.tileSize), new Vector2(Game.Content.tileSize));
 					}
@@ -53,7 +53,7 @@ namespace Rage_of_Stickman
 						{
 							Game.Content.textures[(int)ETexture.stone] = Game.Content.contentManager.Load<Texture2D>("Graphics/Tiles/Stone");
 							Texture2D[] stone = { Game.Content.textures[(int)ETexture.stone] };
-							Game.Content.animations[(int)EAnimation.stone] = new AnimatedTexture2D(stone, Game.Content.tileSize, Game.Content.tileSize, 999.0f);
+							Game.Content.animations[(int)EAnimation.stone] = new AnimatedTexture2D(stone, 999, Game.Content.tileSize, Game.Content.tileSize);
 						}
 						tileMap[h * this.width + w] = new Tile(Game.Content.animations[(int)EAnimation.stone], ECollision.impassable, new Vector2(w * Game.Content.tileSize, h * Game.Content.tileSize), new Vector2(Game.Content.tileSize));
 					}
@@ -63,7 +63,7 @@ namespace Rage_of_Stickman
 						{
 							Game.Content.textures[(int)ETexture.asphalt] = Game.Content.contentManager.Load<Texture2D>("Graphics/Tiles/Asphalt");
 							Texture2D[] asphalt = { Game.Content.textures[(int)ETexture.asphalt] };
-							Game.Content.animations[(int)EAnimation.asphalt] = new AnimatedTexture2D(asphalt, Game.Content.tileSize, Game.Content.tileSize, 999.0f);
+							Game.Content.animations[(int)EAnimation.asphalt] = new AnimatedTexture2D(asphalt, 999, Game.Content.tileSize, Game.Content.tileSize);
 						}
 						tileMap[h * this.width + w] = new Tile(Game.Content.animations[(int)EAnimation.asphalt], ECollision.impassable, new Vector2(w * Game.Content.tileSize, h * Game.Content.tileSize), new Vector2(Game.Content.tileSize));
 					}
@@ -73,7 +73,7 @@ namespace Rage_of_Stickman
 						{
 							Game.Content.textures[(int)ETexture.brick] = Game.Content.contentManager.Load<Texture2D>("Graphics/Tiles/Wall");
 							Texture2D[] wall = { Game.Content.textures[(int)ETexture.brick] };
-							Game.Content.animations[(int)EAnimation.brick] = new AnimatedTexture2D(wall, Game.Content.tileSize, Game.Content.tileSize, 999.0f);
+							Game.Content.animations[(int)EAnimation.brick] = new AnimatedTexture2D(wall, 999, Game.Content.tileSize, Game.Content.tileSize);
 						}
 						tileMap[h * this.width + w] = new Tile(Game.Content.animations[(int)EAnimation.brick], ECollision.impassable, new Vector2(w * Game.Content.tileSize, h * Game.Content.tileSize), new Vector2(Game.Content.tileSize));
 					}

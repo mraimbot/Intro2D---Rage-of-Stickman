@@ -13,7 +13,7 @@ namespace Rage_of_Stickman
 		private float time;
 
 		public Timer(float timeInSeconds)
-			: base(Vector2.Zero, Vector2.One, true, false)
+			: base(Vector2.Zero, Vector2.One, 0, Color.Purple, true, false)
 		{
 			Reset(timeInSeconds);
 		}
@@ -34,11 +34,11 @@ namespace Rage_of_Stickman
 
 		public override void Update(bool isPaused)
 		{
-			if (active)
+			if (isActive)
 			{
 				if (!isPaused)
 				{
-					time -= (float)Game.Content.gameTime.ElapsedGameTime.Milliseconds;
+					time -= Game.Content.gameTime.ElapsedGameTime.Milliseconds;
 					if (time < 0)
 					{
 						time = 0;

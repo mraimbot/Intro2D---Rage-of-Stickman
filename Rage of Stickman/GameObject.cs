@@ -9,30 +9,35 @@ namespace Rage_of_Stickman
 {
 	class GameObject
 	{
-		protected Vector2 position_start;
 		protected Vector2 position;
 		protected Vector2 size;
+		protected float rotation;
 
-		protected bool active;
-		protected bool visible;
+		protected Color color;
 
-		public GameObject(Vector2 position, Vector2 size, bool active = true, bool visible = true)
+		protected bool isActive;
+		protected bool isVisible;
+		private Func<Color> color1;
+
+		public GameObject(Vector2 position, Vector2 size, float rotation, Color color, bool isActive = true, bool isVisible = true)
 		{
-			this.position_start = position;
 			this.position = position;
 			this.size = size;
-			this.active = active;
-			this.visible = visible;
+			this.rotation = rotation;
+			this.isActive = isActive;
+			this.isVisible = isVisible;
+			this.color = color;
+		}
+
+		public GameObject(Vector2 position_start, Vector2 size, Func<Color> color1)
+		{
+			this.size = size;
+			this.color1 = color1;
 		}
 
 		public Vector2 Position()
 		{
 			return position;
-		}
-
-		public Vector2 StartPosition()
-		{
-			return position_start;
 		}
 
 		public virtual void MoveTo(Vector2 position)
@@ -45,58 +50,78 @@ namespace Rage_of_Stickman
 			return size;
 		}
 
-		public void SizeTo(Vector2 size)
+		public void Size(Vector2 size)
 		{
 			this.size = size;
 		}
 
+		public void Rotation(float rotation)
+		{
+			this.rotation = rotation;
+		}
+
+		public float Rotation()
+		{
+			return rotation;
+		}
+
+		public Color getColor()
+		{
+			return color;
+		}
+
+		public void setColor(Color color)
+		{
+			this.color = color;
+		}
+
 		public void toggleActive()
 		{
-			active = !active;
+			isActive = !isActive;
 		}
 
 		public bool Active()
 		{
-			return active;
+			return isActive;
 		}
 
 		public void Active(bool active)
 		{
-			this.active = active;
+			this.isActive = active;
 		}
 
 		public void toggleVisible()
 		{
-			visible = !visible;
+			isVisible = !isVisible;
 		}
 
 		public bool Visible()
 		{
-			return visible;
+			return isVisible;
 		}
 
-		public void Visible(bool visible)
+		public void Visible(bool isVisible)
 		{
-			this.visible = visible;
+			this.isVisible = isVisible;
 		}
 
 		public virtual void Update(bool isPaused)
 		{
-			//if (active)
-			//{
-				//if (!isPaused)
-				//{
-
-				//}
-			//}
+			if (isActive)
+			{
+				if (!isPaused)
+				{
+					// TODO GameObject.Update()
+				}
+			}
 		}
 
 		public virtual void Draw()
 		{
-			//if (visible)
-			//{
-
-			//}
+			if (isVisible)
+			{
+				DrawPrimitive.Rectangle(position, color, (int)size.X, (int)size.Y, rotation);
+			}
 		}
 	}
 }

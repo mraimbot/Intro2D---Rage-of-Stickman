@@ -26,7 +26,7 @@ namespace Rage_of_Stickman
 		{
 			base.Update(isPaused);
 
-			if (active)
+			if (isActive)
 			{
 				if (!isPlaying && backgroundmusic != null)
 				{
@@ -40,5 +40,7 @@ namespace Rage_of_Stickman
 				isPlaying = false;
 			}
 		}
+
+		public override void Draw() {}
 	}
 }

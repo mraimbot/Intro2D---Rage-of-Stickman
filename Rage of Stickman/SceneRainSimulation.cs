@@ -65,8 +65,6 @@ namespace Rage_of_Stickman
 
 		public override void Draw()
 		{
-			base.Draw();
-
 			foreach(Raindrop raindrop in raindrops)
 			{
 				raindrop.Draw();

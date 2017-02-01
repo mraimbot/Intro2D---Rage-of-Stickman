@@ -10,10 +10,10 @@ namespace Rage_of_Stickman
 {
 	class AnimatedTexture2D
 	{
-		private Texture2D[] textures;
+		private Texture2D[] frames;
+		private bool useDynamicSize;
 
-		private int height;
-		private int width;
+		private Vector2 size;
 
 		private int frameIndex;
 
@@ -22,25 +22,20 @@ namespace Rage_of_Stickman
 
 		private bool active;
 
-		public AnimatedTexture2D(Texture2D[] textures, int width = 0, int height = 0, float frameTime = 100.0f)
+		public AnimatedTexture2D(Texture2D[] frames, float frameTime = 100.0f, int width = 0, int height = 0)
 		{
-			this.textures = textures;
-			if (width == 0)
+			this.frames = frames;
+			if (width == 0 || height == 0)
 			{
-				this.width = this.textures[0].Width;
+				useDynamicSize = true;
+				this.size.X = this.frames[0].Width;
+				this.size.Y = this.frames[0].Height;
 			}
 			else
 			{
-				this.width = width;
-			}
-
-			if (height == 0)
-			{
-				this.height = this.textures[0].Height;
-			}
-			else
-			{
-				this.height = height;
+				useDynamicSize = false;
+				this.size.X = width;
+				this.size.Y = height;
 			}
 
 			this.frameTime = frameTime;
@@ -60,7 +55,7 @@ namespace Rage_of_Stickman
 
 		public Vector2 Size()
 		{
-			return new Vector2(width, height);
+			return size;
 		}
 
 		public void Update()
@@ -71,18 +66,25 @@ namespace Rage_of_Stickman
 				if (time > frameTime)
 				{
 					frameIndex++;
-					if (frameIndex >= textures.Length)
+					if (frameIndex >= frames.Length)
 					{ 
 						frameIndex = 0;
 					}
+
+					if (useDynamicSize)
+					{
+						size.X = frames[frameIndex].Width;
+						size.Y = frames[frameIndex].Height;
+					}
+
 					time = 0.0f;
 				}
 			}
 		}
 
-		public void Draw(Vector2 position, SpriteEffects s = SpriteEffects.None)
+		public void Draw(Vector2 position, SpriteEffects s = SpriteEffects.None, float rotation = 0)
 		{
-			Game.Content.spriteBatch.Draw(textures[frameIndex], position, null, null, null, 0, Vector2.One, Color.White, s, 0);
+			Game.Content.spriteBatch.Draw(frames[frameIndex], position, null, null, null, rotation, Vector2.One, Color.White, s, 0);
 		}
 	}
 }

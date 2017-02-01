@@ -9,146 +9,98 @@ using System.Threading.Tasks;
 
 namespace Rage_of_Stickman
 {
-	enum EDirection
-	{
-		left,
-		right
-	}
-
 	class Entity : GameObject
 	{
-		protected AnimatedTexture2D[] animations;
+		protected AnimatedTexture2D animation;
+		protected bool useDynamicSize;
 
-		protected Vector2 position_start;
-
-		protected EDirection lookAtDirection;
-
+		protected int health;
 		protected float mass;
-		protected float speed;
+
+		protected bool isImmortal;
 
 		protected bool useGravity;
 		protected bool useWind;
+		protected bool useFallDamage;
+
 		protected List<Vector2> impulses;
 		protected Vector2 force_input;
 
-		protected Vector2 force_jump;
-		protected Timer jump_timer;
-
-		protected float minGroundDistance = 1.0f;
 		protected bool isGrounded;
-
-		protected int health;
-		protected int health_start;
 
 		protected List<int> damages;
 
-		protected Timer can_attack;
-
-		protected bool move_left;
-		protected bool move_right;
-		protected bool move_jump;
-		protected bool move_attack1;
-		protected bool move_attack2;
-
-		public Entity(Vector2 position_start, Vector2 size, EDirection lookAtDirection, float mass, float speed, bool enablePhysics, int health)
-			: base(position_start, size)
+		public Entity(Vector2 position, Vector2 size, float rotation, int health = 1, float mass = 1, bool isImmortal = false, bool useGravity = false, bool useWind = false, bool useFallDamage = false, bool isActive = true, bool isVisible = true)
+			: base(position, size, rotation, Color.Pink, isActive, isVisible)
 		{
-			this.position_start = position_start;
-			this.lookAtDirection = EDirection.right;
+			useDynamicSize = false;
+
+			if (health < 0)
+			{
+				health = 0;
+			}
+			this.health = health;
+
+			if (mass <= 0)
+			{
+				mass = 1;
+			}
 			this.mass = mass;
-			this.speed = speed;
+
+			this.isImmortal = isImmortal;
+
+			this.useGravity = useGravity;
+			this.useWind = useWind;
+			this.useFallDamage = useFallDamage;
+
 			this.impulses = new List<Vector2>();
-			jump_timer = new Timer(0.2f);
 
-			this.isGrounded = false;
-
-			useGravity = enablePhysics;
-			useWind = enablePhysics;
-
-			this.health_start = health;
-			this.health = this.health_start;
+			isGrounded = false;
 
 			this.damages = new List<int>();
-			can_attack = new Timer(1);
 		}
 
-		public void LoadAnimations(AnimatedTexture2D[] animationList)
+		public void LoadAnimations(AnimatedTexture2D animation, bool useDynamicSize)
 		{
-			animations = new AnimatedTexture2D[animationList.Length];
-			for (int ID = 0; ID < animations.Length; ID++)
+			if (animation != null)
 			{
-				animations[ID] = animationList[ID];
-			}
-
-			size.X = (int)animations[0].Size().X;
-			size.Y = (int)animations[0].Size().Y;
-		}
-
-		public void LoadAnimations(AnimatedTexture2D animation)
-		{
-			animations = new AnimatedTexture2D[1];
-			animations[0] = animation;
-
-			size.X = (int)animations[0].Size().X;
-			size.Y = (int)animations[0].Size().Y;
-		}
-
-		public void Initialize()
-		{
-			// ----- Start settings -----
-			position = position_start;
-			lookAtDirection = EDirection.right;
-			health = health_start;
-		}
-
-		public bool TargetInRange(Entity target, Rectangle attack_range)
-		{
-			return attack_range.Intersects(new Rectangle((int)target.Position().X, (int)target.Position().Y, (int)target.Size().X, (int)target.Size().Y));
-		}
-
-		public bool Attack(List<Entity> targets, Rectangle attack_range, int damage, Vector2 attack_force, float attack_time)
-		{
-			bool hitTarget = false;
-
-			can_attack.Reset(attack_time);
-			foreach (Entity target in targets)
-			{
-				if (attack_range.Intersects(new Rectangle((int)target.Position().X, (int)target.Position().Y, (int)target.Size().X, (int)target.Size().Y)))
-				{
-					target.addDamage(this, attack_force, damage);
-					hitTarget = true;
-				}
-			}
-
-			return hitTarget;
-		}
-
-		public virtual void addDamage(Entity attacker, Vector2 attack_force, int damage)
-		{
-			damages.Add(damage);
-
-			if (attacker.Position().X <= position.X)
-			{
-				impulses.Add(attack_force);
-			}
-			else
-			{
-				impulses.Add(attack_force);
+				this.animation = animation;
+				this.useDynamicSize = useDynamicSize;
 			}
 		}
+
+		// TODO Entity.TargetInRange() : copy to another class
+		//public bool TargetInRange(Entity target, Rectangle attack_range)
+		//{
+		//	return attack_range.Intersects(new Rectangle((int)target.Position().X, (int)target.Position().Y, (int)target.Size().X, (int)target.Size().Y));
+		//}
 
 		public bool isDead()
 		{
+			if (isImmortal)
+			{
+				return false;
+			}
 			return (health == 0) ? true : false;
+		}
+
+		public virtual void Force(Vector2 force)
+		{
+			impulses.Add(force);
+		}
+
+		public virtual void Damage(int damage)
+		{
+			damages.Add(damage);
 		}
 
 		public override void Update(bool isPaused)
 		{
-			if (active)
+			if (isActive)
 			{
 				if (!isPaused)
 				{
-					Logic(isPaused);
+					Logic();
 					Physic();
 				}
 			}
@@ -156,65 +108,66 @@ namespace Rage_of_Stickman
 			base.Update(isPaused);
 		}
 
-		private void Logic(bool isPaused)
+		private void Logic()
 		{
 			// ----- Damage -----
-			int damage = 0;
-			foreach (int damage_input in damages)
-				damage += damage_input;
+			int damage_taken = 0;
+			foreach (int damage in damages)
+				damage_taken += damage;
 
 			damages.Clear();
 
 			// ----- Health -----
-			if (health_start > 0)
+			if (!isImmortal)
 			{
-				health -= damage;
+				health -= damage_taken;
 				if (health < 0)
 				{
 					health = 0;
 				}
 			}
 
-			if (health == 0)
-			{
-				// TODO Entity.Logic : Make Dead-Animation
-				visible = false;
-				active = false;
-			}
-
+			// TODO Entity.Logic().Movement : copy to another class
 			// ----- Movement -----
-			if (!isDead())
+			//if (!isDead())
+			//{
+			//	jump_timer.Update(isPaused);
+			//	can_attack.Update(isPaused);
+
+			//	if (move_jump && jump_timer.IsTimeUp() && isGrounded)
+			//	{
+			//		impulses.Add(force_jump);
+			//		jump_timer.Reset();
+			//	}
+
+
+			//	if (move_left && isGrounded)
+			//	{
+			//		impulses.Add(new Vector2(move_speed, 0.0f));
+			//		lookAtDirection = EDirection.left;
+			//	}
+
+			//	if (move_right && isGrounded)
+			//	{
+			//		impulses.Add(new Vector2(move_speed, 0.0f));
+			//		lookAtDirection = EDirection.right;
+			//	}
+
+			//	if (move_attack1)
+			//	{
+			//		// TODO move_attack1
+			//	}
+
+			//	if (move_attack2)
+			//	{
+			//		// TODO move_attack2
+			//	}
+			//}
+
+			if (useDynamicSize)
 			{
-				jump_timer.Update(isPaused);
-				can_attack.Update(isPaused);
-
-				if (move_jump && jump_timer.IsTimeUp() && isGrounded)
-				{
-					impulses.Add(force_jump);
-					jump_timer.Reset();
-				}
-
-				if (move_left && isGrounded)
-				{
-					impulses.Add(new Vector2(-speed, 0.0f));
-					lookAtDirection = EDirection.left;
-				}
-
-				if (move_right && isGrounded)
-				{
-					impulses.Add(new Vector2(speed, 0.0f));
-					lookAtDirection = EDirection.right;
-				}
-
-				if (move_attack1)
-				{
-					// TODO move_attack1
-				}
-
-				if (move_attack2)
-				{
-					// TODO move_attack2
-				}
+				size.X = animation.Size().X;
+				size.Y = animation.Size().Y;
 			}
 		}
 
@@ -222,11 +175,23 @@ namespace Rage_of_Stickman
 		{
 			if (isGrounded)
 			{
-				force_input.X = 0.0f;
-				force_input.Y = 0.0f;
+				// ----- simple friction -----
+				if (force_input.X != 0)
+				{
+					force_input.X -= (force_input.X * 0.25f);
+					if (force_input.X < 0.1f && force_input.X > -0.1f)
+					{
+						force_input.X = 0;
+					}
+				}
+
+				if (force_input.Y > 0)
+				{
+					force_input.Y = 0;
+				}
 			}
 
-			// ----- Forces -----
+			// ----- forces -----
 			if (useGravity)
 			{
 				force_input += Game.Content.force_gravity;
@@ -248,11 +213,11 @@ namespace Rage_of_Stickman
 				Vector2 velocity = accel * Game.Content.gameTime.ElapsedGameTime.Milliseconds;
 
 				// ----- Translation -----
-				HandleTransformation(velocity);
+				HandleTranslation(velocity);
 			}
 		}
 
-		private void HandleTransformation(Vector2 velocity)
+		private void HandleTranslation(Vector2 velocity)
 		{
 			// ----- Vertically -----
 			if (!(isGrounded && velocity.Y > 0))
@@ -266,9 +231,15 @@ namespace Rage_of_Stickman
 				}
 				else
 				{
-					if (velocity.Y > 0) // falling down
+					if (velocity.Y > 0) // collided with somthing below
 					{
 						isGrounded = true;
+
+						// ----- fall damage -----
+						if (!isImmortal && velocity.Y > 20)
+						{
+							Damage((int)(velocity.Y * 0.5f));
+						}
 					}
 					else if (velocity.Y < 0) // collided with something above
 					{
@@ -287,28 +258,37 @@ namespace Rage_of_Stickman
 			{
 				position.X += velocity.X;
 			}
-
-			// ----- Position correction -----
-			if ((isGrounded || calcDistanceToGround() <= minGroundDistance) && velocity.Y >= 0)
+			else
 			{
-				if (calcDistanceToGround() < Game.Content.tileSize)
-				{
-					position.Y = position.Y + calcDistanceToGround() - minGroundDistance;
-				}
+				force_input.X = 0; // collided with something left or right
 			}
 
-			if (calcDistanceToGround() > minGroundDistance)
+			// ----- Position correction -----
+			float distanceToGround = calcDistanceToGround();
+			if ((isGrounded || distanceToGround <= Game.Content.minGroundDistance) && velocity.Y >= 0)
 			{
-				isGrounded = false;
+				position.Y = position.Y + distanceToGround - Game.Content.minGroundDistance;
+				isGrounded = true;
 			}
 			else
 			{
-				isGrounded = true;
+				isGrounded = false;
 			}
+
+			// TODO Entity.Physics() : Do I need this?
+			//if (distanceToGround > Game.Content.minGroundDistance)
+			//{
+			//	isGrounded = false;
+			//}
+			//else
+			//{
+			//	isGrounded = true;
+			//}
 		}
 
 		protected float calcDistanceToGround()
 		{
+			// TODO Entity.calcDistanceToGround() : Make better algorithm
 			float distance = ((int)((position.Y + size.Y) / Game.Content.tileSize) + 1) * Game.Content.tileSize - (position.Y + size.Y);
 			int tileBelow = (int)((position.Y + size.Y) / Game.Content.tileSize) + 1;
 
@@ -323,9 +303,16 @@ namespace Rage_of_Stickman
 
 		public override void Draw()
 		{
-			if (!(animations == null) && !(animations.Length == 0))
+			if (isVisible)
 			{
-				this.animations[0].Draw(position);
+				if (animation != null)
+				{
+					animation.Draw(position);
+				}
+				else
+				{
+					base.Draw();
+				}
 			}
 		}
 	}

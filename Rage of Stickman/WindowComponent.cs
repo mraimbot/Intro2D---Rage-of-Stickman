@@ -9,15 +9,23 @@ namespace Rage_of_Stickman
 {
 	class WindowComponent : GameObject
 	{
+		protected Vector2 position_start;
+
 		protected int ID;
 		protected bool markable;
 		protected bool marked;
 
-		public WindowComponent(bool markable, Vector2 position, Vector2 size, bool active = true, bool visible = true)
-			: base(position, size, active, visible)
+		public WindowComponent(bool markable, Vector2 position, Vector2 size, float rotation, bool active = true, bool visible = true)
+			: base(position, size, rotation, Color.CornflowerBlue, active, visible)
 		{
+			position_start = position;
 			ID = -1;
 			this.markable = markable;
+		}
+
+		public Vector2 Position_Start()
+		{
+			return position_start;
 		}
 
 		public void SetID(int ID)
@@ -33,20 +41,13 @@ namespace Rage_of_Stickman
 		public virtual void Update(int index, bool isPaused)
 		{
 			base.Update(isPaused);
-			if (active)
+
+			if (isActive)
 			{
 				marked = (index == ID) ? (true) : (false);
 			}
 		}
 
-		public override void Draw()
-		{
-			base.Draw();
-
-			//if (visible)
-			//{
-
-			//}
-		}
+		public override void Draw() {}
 	}
 }

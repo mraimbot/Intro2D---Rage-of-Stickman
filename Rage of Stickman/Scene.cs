@@ -156,7 +156,7 @@ namespace Rage_of_Stickman
 			List<WindowComponent> window_components = new List<WindowComponent>();
 			window_components.Add(new WindowText(true, new GameEvent(ETarget.Scene, EGameEvent.TogglePause), "Continue", Color.Red, Color.Green, new Vector2(100, 32), ETextAlign.Center));
 			window_components.Add(new WindowText(true, new GameEvent(ETarget.Main, EGameEvent.Open_Mainmenu), "Back to Menu", Color.Red, Color.Green, new Vector2(100, 64), ETextAlign.Center));
-			return new Window(window_components, null, new Vector2(Game.Content.camera.Position().X - 100, Game.Content.camera.Position().Y - 100), new Vector2(200, 128));
+			return new Window(window_components, null, new Color(16, 0, 0, 16), new Vector2(Game.Content.camera.Position().X - 100, Game.Content.camera.Position().Y - 100), new Vector2(200, 128));
 		}
 
 		public static Scene CreateMainmenu()
@@ -185,7 +185,7 @@ namespace Rage_of_Stickman
 			windowComponents.Add(text3);
 			windowComponents.Add(text4);
 			windowComponents.Add(text5);
-			Window window = new Window(windowComponents, new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Backgrounds/Background_Title") }), new Vector2(0, 0), new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));
+			Window window = new Window(windowComponents, new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Backgrounds/Background_Title") }), Color.White, new Vector2(0, 0), new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));
 			// ----- Music -----
 			SceneMusic background_music = new SceneMusic(Game.Content.contentManager.Load<Song>("Music/get-started-intro-loop-7414"));
 			List<SceneComponent> components = new List<SceneComponent>();
@@ -230,7 +230,7 @@ namespace Rage_of_Stickman
 			windowComponents.Add(text7);
 			windowComponents.Add(text8);
 			windowComponents.Add(text9);
-			Window window = new Window(windowComponents, new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Backgrounds/Background_Title") }), new Vector2(0, 0), new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));
+			Window window = new Window(windowComponents, new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Backgrounds/Background_Title") }), Color.White, new Vector2(0, 0), new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));
 			// ----- Music -----
 			SceneMusic background_music = new SceneMusic(Game.Content.contentManager.Load<Song>("Music/get-started-intro-loop-7414"));
 			List<SceneComponent> components = new List<SceneComponent>();
@@ -247,7 +247,7 @@ namespace Rage_of_Stickman
 			// ----- Camera -----
 			Game.Content.camera = new Camera2D(Vector2.Zero, Vector2.Zero);
 			// ----- Window -----
-			Window window = new Window(null, new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Backgrounds/Background_Boss") }), new Vector2(0, 0), new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));
+			Window window = new Window(null, new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Backgrounds/Background_Boss") }), Color.White, new Vector2(0, 0), new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));
 			// ----- Eventlist -----
 			List<GameEvent> gameevents = new List<GameEvent>();
 			gameevents.Add(new GameEvent(ETarget.Scene, EGameEvent.ShowMessagebox, text: "Boss: You are fired!"));
@@ -273,10 +273,10 @@ namespace Rage_of_Stickman
 			// ----- Camera -----
 			Game.Content.camera = new Camera2D(new Vector2(Game.Content.viewport.Width / 2.0f, Game.Content.viewport.Height / 2.0f), Vector2.Zero);
 			// ----- Player -----
-			Game.Content.player = new Player(new Vector2(4, 25) * Game.Content.tileSize, EDirection.right);
+			Game.Content.player = new Player(new Vector2(8, 25) * Game.Content.tileSize);
 			// ----- Map -----
 			Game.Content.tileMap = new TileMap(Game.Content.contentManager.Load<Texture2D>("Graphics/TileMaps/Level1"));
-			SceneLevel level = new SceneLevel(new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Background") }), null, new Vector2(0, 0), new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));
+			SceneLevel level = new SceneLevel(new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Background") }), null, Vector2.Zero, new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));
 			SceneRainSimulation rain = new SceneRainSimulation(500, 20, new Vector2(0, 0), new Vector2(Game.Content.viewport.Width * 2, 1), Game.Content.player);
 			// ----- Music -----
 			SceneMusic background_music = new SceneMusic(Game.Content.contentManager.Load<Song>("Music/backbeat-db-110bpm-01-6414"));
@@ -308,7 +308,7 @@ namespace Rage_of_Stickman
 			// ----- Camera -----
 			Game.Content.camera = new Camera2D(new Vector2(Game.Content.viewport.Width / 2.0f, Game.Content.viewport.Height / 2.0f), Vector2.Zero);
 			// ----- Player -----
-			Game.Content.player = new Player(new Vector2(4, 25) * Game.Content.tileSize, EDirection.right);
+			Game.Content.player = new Player(new Vector2(4, 25) * Game.Content.tileSize);
 			// ----- Map -----
 			Game.Content.tileMap = new TileMap(Game.Content.contentManager.Load<Texture2D>("Graphics/TileMaps/Level2"));
 			SceneLevel level = new SceneLevel(new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Background") }), null, new Vector2(0, 0), new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));
@@ -343,7 +343,7 @@ namespace Rage_of_Stickman
 			// ----- Camera -----
 			Game.Content.camera = new Camera2D(new Vector2(Game.Content.viewport.Width / 2.0f, Game.Content.viewport.Height / 2.0f), Vector2.Zero);
 			// ----- Player -----
-			Game.Content.player = new Player(new Vector2(4, 25) * Game.Content.tileSize, EDirection.right);
+			Game.Content.player = new Player(new Vector2(4, 25) * Game.Content.tileSize);
 			// ----- Map -----
 			Game.Content.tileMap = new TileMap(Game.Content.contentManager.Load<Texture2D>("Graphics/TileMaps/Level3"));
 			SceneLevel level = new SceneLevel(new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Background") }), null, new Vector2(0, 0), new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));

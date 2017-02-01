@@ -20,7 +20,7 @@ namespace Rage_of_Stickman
 		protected AnimatedTexture2D background;
 
 		public SceneComponent(AnimatedTexture2D background, Vector2 position, Vector2 size, bool active = true, bool visible = true)
-			: base(position, size, active, visible)
+			: base(position, size, 0, Color.CornflowerBlue, active, visible)
 		{
 			this.background = background;
 		}
@@ -66,7 +66,7 @@ namespace Rage_of_Stickman
 		{
 			base.Draw();
 
-			if (visible)
+			if (isVisible)
 			{
 				if (background != null)
 				{

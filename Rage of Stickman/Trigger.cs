@@ -12,7 +12,7 @@ namespace Rage_of_Stickman
 		private GameEvent gameEvent;
 
 		public Trigger(GameEvent gameEvent, Vector2 position, Vector2 size, bool active = true)
-			: base(position, size, active, false)
+			: base(position, size, 0, Color.Purple, active, false)
 		{
 			this.gameEvent = gameEvent;
 		}

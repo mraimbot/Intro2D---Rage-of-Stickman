@@ -18,12 +18,12 @@ namespace Rage_of_Stickman
 	{
 		private ECollision collision_type = ECollision.impassable;
 
-		public Tile(AnimatedTexture2D animatedTexture, ECollision collision_type, Vector2 startPosition, Vector2 size)
-			: base(startPosition, size, EDirection.right, 1, 0, false, -1)
+		public Tile(AnimatedTexture2D animatedTexture, ECollision collision_type, Vector2 position, Vector2 size)
+			: base(position, size, 0, isImmortal: true)
 		{
 			if (animatedTexture != null)
 			{
-				this.LoadAnimations(animatedTexture);
+				LoadAnimations(animatedTexture, false);
 			}
 
 			this.collision_type = collision_type;
@@ -36,7 +36,7 @@ namespace Rage_of_Stickman
 
 		public override void Update(bool isPaused)
 		{
-			if (active)
+			if (isActive)
 			{
 				if (!isPaused)
 				{
@@ -54,14 +54,13 @@ namespace Rage_of_Stickman
 
 		public new void Draw()
 		{
-			if (animations == null || animations.Length == 0)
+			if (isVisible)
 			{
-				base.Draw();
-			}
-			else if (visible)
-			{
-				this.animations[0].Update();
-				this.animations[0].Draw(this.position);
+				if (animation != null)
+				{
+					animation.Update();
+					animation.Draw(position, rotation: rotation);
+				}
 			}
 		}
 	}

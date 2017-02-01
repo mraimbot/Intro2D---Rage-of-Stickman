@@ -177,6 +177,8 @@ namespace Rage_of_Stickman
 
 		public Vector2 force_gravity = new Vector2(0, 0);
 		public Vector2 force_wind = new Vector2(0, 0);
+		public float minGroundDistance;
+
 
 		public Player player;
 
@@ -201,6 +203,8 @@ namespace Rage_of_Stickman
 					content.enemies = new List<Entity>();
 
 					content.triggers = new List<Trigger>();
+
+					content.minGroundDistance = 0.1f;
 				}
 				return content;
 			}
