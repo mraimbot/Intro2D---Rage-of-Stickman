@@ -27,7 +27,7 @@ namespace Rage_of_Stickman
 				Game.Content.animations[(int)EAnimation.enemie_kid_move] = new AnimatedTexture2D(kid_move, 100);
 			}
 
-			// TODO Oma.Oma() : load animations
+			// TODO Kid.Kid() : load animations
 			animation_idle = Game.Content.animations[(int)EAnimation.enemie_kid_move];
 			animation_move = Game.Content.animations[(int)EAnimation.enemie_kid_move];
 			animation_jump = Game.Content.animations[(int)EAnimation.enemie_kid_move];
@@ -38,14 +38,17 @@ namespace Rage_of_Stickman
 			sound_jump = Game.Content.contentManager.Load<SoundEffect>("SoundEffects/Jump");
 			sound_attack = Game.Content.contentManager.Load<SoundEffect>("SoundEffects/Punch");
 
-
 			// ----- Initialize start settings -----
+			position_start = position;
 			size = animation_idle.Size();
 			health_max = health;
-			speed += RandomGenerator.NextFloat(min: -0.5f, max: 0.5f);
-			jump_force = 20;
-			can_Jump = new Timer(1);
-			can_Attack = new Timer(3);
+			speed = 10000; // RandomGenerator.NextFloat(min: 50000, max: 55000);
+			attack_range = Game.Content.tileSize * 2;
+			KI_range = 50 * Game.Content.tileSize;
+			follow_range = 20 * Game.Content.tileSize;
+			can_Jump = new Timer(10);
+			jump_force = 100;
+			can_Attack = new Timer(1);
 			claim_color = Color.Pink;
 			claims.Add("Play with me!");
 			claims.Add("Are you poor?");
@@ -53,6 +56,7 @@ namespace Rage_of_Stickman
 			claims.Add("Why are you so big?");
 			claims.Add("You look very ugly.");
 			claims.Add("Why are you doing this?");
+			move_timer = new Timer(0.01f);
 			Initialize();
 		}
 
@@ -71,29 +75,170 @@ namespace Rage_of_Stickman
 
 		private void Logic()
 		{
-			// TODO Kid.Logic()
-			move_right = false;
+			moved = false;
+			jumped = false;
+			attacked = false;
+
+			move_random = false;
 			move_left = false;
+			move_right = false;
 			move_jump = false;
 			move_attack = false;
 
 			if (!isDead())
 			{
+				move_timer.Update(false);
+				RandomMovement_Timer.Update(false);
+				can_Attack.Update(false);
+
+				// ----- Health -----
+				if (health > health_max)
+				{
+					health = health_max;
+				}
+
+				// ----- Input -----
 				if (target != null)
 				{
-					if (target.Position().X + 0.1 < this.position.X)
+					distanceToTarget = TargetDistance(target);
+
+					if (distanceToTarget <= KI_range)
+					{
+						if (distanceToTarget <= follow_range)
+						{
+							if (distanceToTarget > attack_range)
+							{
+								if (position.X > target.Position().X)
+								{
+									move_left = true;
+								}
+								else
+								{
+									move_right = true;
+								}
+							}
+							else
+							{
+								if (can_Attack.IsTimeUp())
+								{
+									move_attack = true;
+									move_jump = true;
+								}
+							}
+						}
+						else
+						{
+							move_random = true;
+						}
+					}
+				}
+				else
+				{
+					move_random = true;
+				}
+
+				if (move_random)
+				{
+					if (RandomMovement_Timer.IsTimeUp())
+					{
+						if (RandomGenerator.NextInt(min: 0, max: 1) == 0)
+						{
+							randomDirectionMove = EEnemyDirection.Left;
+						}
+						else
+						{
+							randomDirectionMove = EEnemyDirection.Right;
+						}
+						RandomMovement_Timer.Reset(RandomGenerator.NextFloat(min: 3, max: 10));
+					}
+
+					if (randomDirectionMove == EEnemyDirection.Left)
 					{
 						move_left = true;
-						direction = EEnemyDirection.Left;
 					}
-					else if (target.Position().X - 0.1 > this.position.X)
+					else
 					{
 						move_right = true;
-						direction = EEnemyDirection.Right;
 					}
 				}
 
-				// TODO Kid.Logic() : Add attack
+				// ----- Movement -----
+				// TODO Kid.Logic() : take it into KI
+				//if (hit_left || hit_right)
+				//{
+				//	speed_force *= 0.25f;
+				//}
+
+				//if (hit_up || hit_down)
+				//{
+				//	jump_force *= 0.25f;
+				//}
+
+				if (move_timer.IsTimeUp())
+				{
+					move_timer.Reset();
+					if (move_left)
+					{
+						if (isGrounded)
+						{
+							moved = true;
+							Impulse(new Vector2(-speed, 0) * Game.Content.gameTime.ElapsedGameTime.Milliseconds * Game.Content.timeScale);
+						}
+						direction = EEnemyDirection.Left;
+					}
+
+					if (move_right)
+					{
+						if (isGrounded)
+						{
+							moved = true;
+							Impulse(new Vector2(speed, 0) * Game.Content.gameTime.ElapsedGameTime.Milliseconds * Game.Content.timeScale);
+						}
+						direction = EEnemyDirection.Right;
+					}
+
+					if (move_jump)
+					{
+						if (isGrounded)
+						{
+							jumped = true;
+							Impulse(new Vector2(0, -jump_force));
+						}
+
+						if (direction == EEnemyDirection.Left)
+						{
+							Impulse(new Vector2(-100, 0));
+						}
+						else
+						{
+							Impulse(new Vector2(100, 0));
+						}
+					}
+				}
+
+				// ----- Attacks -----
+				// TODO Kid.Logic() : Play with me!!!
+				//if (can_Attack.IsTimeUp())
+				//{
+				//	if (move_attack)
+				//	{
+				//		if (rage > 0)
+				//		{
+				//			Vector2 attack_force = (direction == EPlayerDirection.Right) ? (new Vector2(50, -20)) : (new Vector2(-50, -20));
+				//			Rectangle attack_range = (direction == EPlayerDirection.Right) ? (new Rectangle((int)(position.X + size.X / 2), (int)(position.Y), (int)size.X, (int)size.Y / 2)) : (new Rectangle((int)(position.X - size.X / 2), (int)(position.Y), (int)size.X, (int)(size.Y / 2)));
+				//			punched = Attack(Game.Content.enemies, attack_range, 1, attack_force);
+				//			if (punched)
+				//			{
+				//				rage--;
+				//			}
+				//			can_Attack.Reset(0.5f);
+				//		}
+				//		else
+				//		{
+				//			isClaiming = true;
+				//		}
+				//	}
+				//}
 			}
 		}
 

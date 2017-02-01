@@ -81,12 +81,6 @@ namespace Rage_of_Stickman
 			}
 		}
 
-		// TODO Entity.TargetInRange() : copy to another class (enemy-class)
-		//public bool TargetInRange(Entity target, Rectangle attack_range)
-		//{
-		//	return attack_range.Intersects(new Rectangle((int)target.Position().X, (int)target.Position().Y, (int)target.Size().X, (int)target.Size().Y));
-		//}
-
 		public bool isDead()
 		{
 			if (isImmortal)

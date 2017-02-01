@@ -26,16 +26,24 @@ namespace Rage_of_Stickman
 		protected SoundEffect sound_jump;
 		protected SoundEffect sound_attack;
 
+		protected bool move_random;
 		protected bool move_left;
 		protected bool move_right;
 		protected bool move_jump;
 		protected bool move_attack;
 
+		protected Timer move_timer;
+
+		protected bool moved;
 		protected bool jumped;
 		protected bool attacked;
 
 		protected Vector2 position_start;
+		protected EEnemyDirection randomDirectionMove;
 		protected EEnemyDirection direction;
+		protected Timer RandomMovement_Timer;
+
+		protected float KI_range; // distance to the player. Outsite this range this enemy does nothing anymore.
 
 		protected int health_max;
 
@@ -44,10 +52,12 @@ namespace Rage_of_Stickman
 		protected float jump_force;
 		protected Timer can_Jump;
 
+		protected float attack_range;
 		protected Timer can_Attack;
 
 		protected Entity target;
-		protected float range; // The Enemy is only moving to his target, if the target is in this range
+		protected float distanceToTarget; // The Enemy is only moving to his target, if the target is in this range
+		protected float follow_range;
 
 		protected Timer claim_timer;
 		protected bool isClaiming;
@@ -56,7 +66,7 @@ namespace Rage_of_Stickman
 		protected Color claim_color;
 
 		public Enemy(Entity target, Vector2 position, Vector2 size, float mass, float speed, int health, bool isImmortal = false)
-			: base(position, size, 0, health, mass, isImmortal, true, false, false, true, true, true, true)
+			: base(position, size, 0, health, mass, isImmortal, true, false, false, true, false, true, true)
 		{
 			position_start = position;
 			claim_timer = new Timer(RandomGenerator.NextInt(min: 3, max: 20));
@@ -64,15 +74,14 @@ namespace Rage_of_Stickman
 			isClaiming = false;
 			claim_color = Color.White;
 			this.target = target;
+			RandomMovement_Timer = new Timer(1);
 		}
 
-		public void Initialize()
+		public virtual void Initialize()
 		{
 			direction = EEnemyDirection.Left;
 			position = position_start;
 			health = health_max;
-			speed = 0;
-			jump_force = 0;
 			can_Jump.Reset();
 		}
 
@@ -106,6 +115,12 @@ namespace Rage_of_Stickman
 					claim_timer.Reset(RandomGenerator.NextInt(min: 3, max: 20));
 				}
 			}
+		}
+
+		// TODO Entity.TargetInRange() : copy to another class (enemy-class)
+		public float TargetDistance(Entity target)
+		{
+			return Vector2.Distance(position, target.Position());
 		}
 
 		public override void Draw()
@@ -157,7 +172,7 @@ namespace Rage_of_Stickman
 
 			if (jumped)
 			{
-				sound_jump.Play(0.05f, RandomGenerator.NextFloat(min: -1, max: -0.5f), 0);
+				sound_jump.Play(0.001f, RandomGenerator.NextFloat(min: -1, max: -0.5f), 0);
 			}
 
 			else if (attacked)

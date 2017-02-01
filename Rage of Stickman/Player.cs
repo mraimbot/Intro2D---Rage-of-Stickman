@@ -159,8 +159,6 @@ namespace Rage_of_Stickman
 
 		public void Initialize()
 		{
-			// TODO Player.Initialize() : size.X *= 0.8f ?
-			// size.X *= 0.8f;
 			direction = EPlayerDirection.Right;
 			position = position_start;
 			health = health_max;
@@ -362,7 +360,7 @@ namespace Rage_of_Stickman
 						if (rage > 0)
 						{
 							Vector2 attack_force = (direction == EPlayerDirection.Right) ? (new Vector2(50, -20)) : (new Vector2(-50, -20));
-							Rectangle attack_range = (direction == EPlayerDirection.Right) ? (new Rectangle((int)(position.X + size.X / 2), (int)(position.Y), (int)size.X, (int)size.Y / 2)) : (new Rectangle((int)(position.X + size.X / 2), (int)(position.Y), -(int)size.X, -(int)size.Y / 2));
+							Rectangle attack_range = (direction == EPlayerDirection.Right) ? (new Rectangle((int)(position.X + size.X / 2), (int)(position.Y), (int)size.X, (int)size.Y / 2)) : (new Rectangle((int)(position.X - size.X / 2), (int)(position.Y), (int)size.X , (int)(size.Y / 2)));
 							punched = Attack(Game.Content.enemies, attack_range, 1, attack_force);
 							if (punched)
 							{
@@ -381,7 +379,7 @@ namespace Rage_of_Stickman
 						if (rage > 4)
 						{
 							Vector2 attack_force = (direction == EPlayerDirection.Right) ? (new Vector2(25, -40)) : (new Vector2(-25, -40));
-							Rectangle attack_range = (direction == EPlayerDirection.Right) ? (new Rectangle((int)(position.X + size.X / 2), (int)(position.Y + size.Y / 2), (int)size.X, (int)size.Y / 2)) : (new Rectangle((int)(position.X + size.X / 2), (int)(position.Y + size.Y / 2), -(int)size.X, -(int)size.Y / 2));
+							Rectangle attack_range = (direction == EPlayerDirection.Right) ? (new Rectangle((int)(position.X + size.X / 2), (int)(position.Y + size.Y / 2), (int)size.X, (int)size.Y / 2)) : (new Rectangle((int)(position.X - size.X / 2), (int)(position.Y + size.Y / 2), (int)size.X, (int)(size.Y / 2)));
 							kicked = Attack(Game.Content.enemies, attack_range, 5, attack_force);
 							if (kicked)
 							{
