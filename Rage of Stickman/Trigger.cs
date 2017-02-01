@@ -9,17 +9,42 @@ namespace Rage_of_Stickman
 {
 	class Trigger : GameObject
 	{
+		private AnimatedTexture2D background;
 		private GameEvent gameEvent;
 
-		public Trigger(GameEvent gameEvent, Vector2 position, Vector2 size, bool active = true)
-			: base(position, size, 0, Color.Purple, active, false)
+		private bool onlyOnce;
+
+		public Trigger(AnimatedTexture2D background, GameEvent gameEvent, Vector2 position, Vector2 size, bool onlyOnce = false, bool isVisible = true, bool isActive = true)
+			: base(position, size, 0, Color.Purple, isActive, isVisible)
 		{
+			this.background = background;
 			this.gameEvent = gameEvent;
+			this.onlyOnce = onlyOnce;
 		}
 
 		public void Activate()
 		{
-			Game.Content.gameEvents.Add(gameEvent);
+			if (isActive)
+			{
+				Game.Content.gameEvents.Add(gameEvent);
+
+				if (onlyOnce)
+				{
+					isActive = false;
+					isVisible = false;
+				}
+			}
+		}
+
+		public override void Draw()
+		{
+			if (isVisible)
+			{
+				if (background != null)
+				{
+					background.Draw(position);
+				}
+			}
 		}
 	}
 }

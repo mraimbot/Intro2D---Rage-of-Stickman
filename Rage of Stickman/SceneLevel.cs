@@ -26,12 +26,14 @@ namespace Rage_of_Stickman
 			{
 				for (int ID = Game.Content.gameEvents.Count - 1; ID >= 0; ID--)
 				{
-					if (Game.Content.gameEvents[ID].Target() == ETarget.Scene)
+					if (Game.Content.gameEvents[ID].Target() == ETarget.Level)
 					{
-						//switch (Game.Content.gameEvents[ID].Event())
-						//{
-							
-						//}
+						switch (Game.Content.gameEvents[ID].Event())
+						{
+							case EGameEvent.Player_Heal:
+								Game.Content.player.Damage(-(int)Game.Content.gameEvents[ID].Value());
+								break;
+						}
 						Game.Content.gameEvents.RemoveAt(ID);
 					}
 				}
@@ -73,6 +75,11 @@ namespace Rage_of_Stickman
 			}
 
 			Game.Content.player.Draw();
+
+			foreach (Trigger trigger in Game.Content.triggers)
+			{
+				trigger.Draw();
+			}
 
 			if (foreground != null)
 			{

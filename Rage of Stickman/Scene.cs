@@ -298,7 +298,8 @@ namespace Rage_of_Stickman
 			Game.Content.enemies.Add(new Zombie(new Vector2(43, 20) * Game.Content.tileSize));
 			// ----- Trigger -----
 			Game.Content.triggers.Clear();
-			Game.Content.triggers.Add(new Trigger(new GameEvent(ETarget.Main, EGameEvent.Open_Level2), new Vector2(251, 25) * Game.Content.tileSize, new Vector2(1,1) * Game.Content.tileSize));
+			Game.Content.triggers.Add(new Trigger(null, new GameEvent(ETarget.Main, EGameEvent.Open_Level2), new Vector2(251, 25) * Game.Content.tileSize, new Vector2(1,1) * Game.Content.tileSize, false, false, true));
+			Game.Content.triggers.Add(new Trigger(new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Images/MediPack") }, 999), new GameEvent(ETarget.Level, EGameEvent.Player_Heal, 50), new Vector2(120, 26) * Game.Content.tileSize, new Vector2(32, 32), true, true, true));
 			return scene;
 		}
 
@@ -333,7 +334,7 @@ namespace Rage_of_Stickman
 			Game.Content.enemies.Add(new Zombie(new Vector2(43, 20) * Game.Content.tileSize));
 			// ----- Trigger -----
 			Game.Content.triggers.Clear();
-			Game.Content.triggers.Add(new Trigger(new GameEvent(ETarget.Main, EGameEvent.Open_Level3), new Vector2(251, 25) * Game.Content.tileSize, new Vector2(1, 1) * Game.Content.tileSize));
+			Game.Content.triggers.Add(new Trigger(null, new GameEvent(ETarget.Main, EGameEvent.Open_Level3), new Vector2(251, 25) * Game.Content.tileSize, new Vector2(1, 1) * Game.Content.tileSize, false, false, true));
 			return scene;
 		}
 
@@ -368,7 +369,7 @@ namespace Rage_of_Stickman
 			Game.Content.enemies.Add(new Zombie(new Vector2(43, 20) * Game.Content.tileSize));
 			// ----- Trigger -----
 			Game.Content.triggers.Clear();
-			Game.Content.triggers.Add(new Trigger(new GameEvent(ETarget.Main, EGameEvent.Open_Outro), new Vector2(251, 25) * Game.Content.tileSize, new Vector2(1, 1) * Game.Content.tileSize));
+			Game.Content.triggers.Add(new Trigger(null, new GameEvent(ETarget.Main, EGameEvent.Open_Outro), new Vector2(251, 25) * Game.Content.tileSize, new Vector2(1, 1) * Game.Content.tileSize, false, false, true));
 			return scene;
 		}
 

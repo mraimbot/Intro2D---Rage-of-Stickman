@@ -36,6 +36,7 @@ namespace Rage_of_Stickman
 		protected bool isGrounded;
 
 		protected List<int> damages;
+		protected bool gotHurt;
 		protected bool gotFallDamage;
 
 		public Entity(Vector2 position, Vector2 size, float rotation, int health = 1, float mass = 1, bool isImmortal = false, bool useGravity = false, bool useWind = false, bool useBouncing = false, bool useFriction = false, bool useFallDamage = false, bool isActive = true, bool isVisible = true)
@@ -68,6 +69,7 @@ namespace Rage_of_Stickman
 			isGrounded = false;
 
 			this.damages = new List<int>();
+			gotHurt = false;
 		}
 
 		public void LoadAnimations(AnimatedTexture2D animation, bool useDynamicSize)
@@ -130,6 +132,11 @@ namespace Rage_of_Stickman
 			// ----- Health -----
 			if (!isImmortal)
 			{
+				if (damage_taken > 0)
+				{
+					gotHurt = true;
+				}
+
 				health -= damage_taken;
 				if (health < 0)
 				{

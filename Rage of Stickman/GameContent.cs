@@ -139,6 +139,8 @@ namespace Rage_of_Stickman
 
 		ShowMessagebox,
 
+		Player_Heal,
+
 		Game_Exit
 	}
 

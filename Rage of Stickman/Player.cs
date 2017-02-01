@@ -39,6 +39,7 @@ namespace Rage_of_Stickman
 		private bool move_punch;
 		private bool move_kick;
 
+		private bool moved;
 		private bool jumped;
 		private bool punched;
 		private bool kicked;
@@ -54,6 +55,8 @@ namespace Rage_of_Stickman
 		private float speed_max;
 		private float speed_force_input;
 		private float speed_force;
+
+		private Timer sound_move_timer;
 
 		private float jump_force_max;
 		private float jump_force_input;
@@ -149,7 +152,8 @@ namespace Rage_of_Stickman
 			jump_force_input = 50;
 			can_Jump = new Timer(0.3f);
 			can_Attack = new Timer(1);
-			claim_timer = new Timer(1);
+			claim_timer = new Timer(1.5f);
+			sound_move_timer = new Timer(0.2f);
 			Initialize();
 		}
 
@@ -228,6 +232,7 @@ namespace Rage_of_Stickman
 
 		private void Logic()
 		{
+			moved = false;
 			jumped = false;
 			punched = false;
 			kicked = false;
@@ -236,6 +241,7 @@ namespace Rage_of_Stickman
 			{
 				can_Jump.Update(false);
 				can_Attack.Update(false);
+				sound_move_timer.Update(false);
 
 				if (hit_left || hit_right)
 				{
@@ -245,6 +251,12 @@ namespace Rage_of_Stickman
 				if (hit_up || hit_down)
 				{
 					jump_force *= 0.25f;
+				}
+
+				// ----- Health -----
+				if (health > health_max)
+				{
+					health = health_max;
 				}
 
 				// ----- Movement -----
@@ -265,6 +277,7 @@ namespace Rage_of_Stickman
 				{
 					if (isGrounded)
 					{
+						moved = true;
 						speed_force -= (speed_force_input * Game.Content.gameTime.ElapsedGameTime.Milliseconds * Game.Content.timeScale);
 					}
 					else
@@ -278,6 +291,7 @@ namespace Rage_of_Stickman
 				{
 					if (isGrounded)
 					{
+						moved = true;
 						speed_force += (speed_force_input * Game.Content.gameTime.ElapsedGameTime.Milliseconds * Game.Content.timeScale);
 					}
 					else
@@ -343,7 +357,7 @@ namespace Rage_of_Stickman
 				// ----- Attacks -----
 				if (can_Attack.IsTimeUp())
 				{
-					if (move_punch && rage > 0)
+					if (move_punch)
 					{
 						if (rage > 0)
 						{
@@ -356,11 +370,10 @@ namespace Rage_of_Stickman
 						else
 						{
 							isClaiming = true;
-							claim_timer.Reset(6);
 						}
 					}
 
-					else if (move_kick && rage > 4)
+					else if (move_kick)
 					{
 						if (rage > 4)
 						{
@@ -373,17 +386,19 @@ namespace Rage_of_Stickman
 						else
 						{
 							isClaiming = true;
-							claim_timer.Reset(6);
 						}
 					}
 				}
 
-				if (isClaiming)
+				// ----- Speech -----
+				if (isClaiming || gotHurt)
 				{
 					claim_timer.Update(false);
 					if (claim_timer.IsTimeUp())
 					{
+						claim_timer.Reset();
 						isClaiming = false;
+						gotHurt = false;
 					}
 				}
 			}
@@ -456,18 +471,7 @@ namespace Rage_of_Stickman
 					s = SpriteEffects.None;
 				}
 
-				// TODO Player.Draw() : Build in animation_landing
-				if (!isGrounded)
-				{
-					animation_jump.Update();
-					animation_jump.Draw(position, s);
-				}
-				else if (move_left || move_right)
-				{
-					animation_move.Update();
-					animation_move.Draw(position, s);
-				}
-				else if (move_punch)
+				if (move_punch)
 				{
 					animation_punch.Update();
 					animation_punch.Draw(position, s);
@@ -476,6 +480,16 @@ namespace Rage_of_Stickman
 				{
 					animation_kick.Update();
 					animation_kick.Draw(position, s);
+				}
+				else if (!isGrounded)
+				{
+					animation_jump.Update();
+					animation_jump.Draw(position, s);
+				}
+				else if (move_left || move_right)
+				{
+					animation_move.Update();
+					animation_move.Draw(position, s);
 				}
 				else if (move_jump)
 				{
@@ -488,7 +502,12 @@ namespace Rage_of_Stickman
 					animation_idle.Draw(position, s);
 				}
 
-				if (isClaiming)
+				if (gotHurt)
+				{
+					ShowText.Text(new Vector2(position.X + size.X / 2, position.Y - 32), "Ouch!", Color.Red, 0, 1, ETextAlign.Center);
+				}
+
+				else if (isClaiming)
 				{
 					ShowText.Text(new Vector2(position.X + size.X / 2, position.Y - 32), "I'm not that angry.", Color.Red, 0, 1, ETextAlign.Center);
 				}
@@ -498,7 +517,11 @@ namespace Rage_of_Stickman
 			{
 				sound_jump.Play(0.05f, RandomGenerator.NextFloat(min: -1, max: -0.5f), 0);
 			}
-
+			else if (moved && sound_move_timer.IsTimeUp())
+			{
+				sound_move_timer.Reset();
+				sound_move.Play(0.02f, -1 + RandomGenerator.NextFloat(min: 0, max: 0.2f), -0.01f);
+			}
 			else if (punched)
 			{
 				sound_punch.Play(1, RandomGenerator.NextFloat(min: -0.2f, max: 0.2f), 0);
