@@ -276,7 +276,7 @@ namespace Rage_of_Stickman
 			Game.Content.player = new Player(new Vector2(8, 25) * Game.Content.tileSize);
 			// ----- Map -----
 			Game.Content.tileMap = new TileMap(Game.Content.contentManager.Load<Texture2D>("Graphics/TileMaps/Level1"));
-			SceneLevel level = new SceneLevel(new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Background") }), null, Vector2.Zero, new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));
+			SceneLevel level = new SceneLevel(new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Backgrounds/Background_Level1") }), new AnimatedTexture2D(new Texture2D[] { Game.Content.contentManager.Load<Texture2D>("Graphics/Backgrounds/Foreground_Level1") }), Vector2.Zero, new Vector2(Game.Content.viewport.Width, Game.Content.viewport.Height));
 			SceneRainSimulation rain = new SceneRainSimulation(1000, 20, new Vector2(0, 0), new Vector2(Game.Content.viewport.Width * 2, 1), Game.Content.player);
 			// ----- Music -----
 			SceneMusic background_music = new SceneMusic(Game.Content.contentManager.Load<Song>("Music/backbeat-db-110bpm-01-6414"));
