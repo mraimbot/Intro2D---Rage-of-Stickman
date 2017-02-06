@@ -53,6 +53,7 @@ namespace Rage_of_Stickman
 			claims.Add("Oh, my back hurts!");
 			claims.Add("Don't just run around!");
 			claims.Add("Can you help me?");
+			claims.Add("I am not dead!");
 			move_timer = new Timer(0.2f);
 			Initialize();
 		}
