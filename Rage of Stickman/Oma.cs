@@ -196,10 +196,13 @@ namespace Rage_of_Stickman
 					if (move_attack)
 					{
 						Vector2 attack_force = (direction == EEnemyDirection.Right) ? (new Vector2(50, -20)) : (new Vector2(-50, -20));
-						Rectangle attack_range = (direction == EEnemyDirection.Right) ? (new Rectangle((int)(position.X + size.X / 2), (int)(position.Y), (int)size.X, (int)size.Y / 2)) : (new Rectangle((int)(position.X - size.X / 2), (int)(position.Y), (int)size.X, (int)(size.Y / 2)));
-						attacked = Annoy(new List<Entity> { target }, attack_range, 2, Vector2.Zero);
-						Attack(new List<Entity> { target }, attack_range, 60, attack_force);
-						can_Attack.Reset(5);
+						Rectangle attack_range = new Rectangle((int)(position.X), (int)(position.Y), (int)size.X, (int)size.Y);
+						attacked = Annoy(new List<Entity> { target }, attack_range, 1, Vector2.Zero);
+						if (attacked)
+						{
+							Attack(new List<Entity> { target }, attack_range, 60, attack_force);
+							can_Attack.Reset(0.5f);
+						}
 					}
 				}
 			}
