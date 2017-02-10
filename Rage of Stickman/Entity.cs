@@ -170,7 +170,7 @@ namespace Rage_of_Stickman
 
 					if (force.Y > 0)
 					{
-						force.Y *= 0.5f;
+						force.Y *= 0.025f;
 						if (force.Y < 1)
 						{
 							force.Y = 0;

@@ -33,6 +33,10 @@ namespace Rage_of_Stickman
 							case EGameEvent.Player_Heal:
 								Game.Content.player.Damage(-(int)Game.Content.gameEvents[ID].Value());
 								break;
+
+							case EGameEvent.Player_Rage:
+								Game.Content.player.Rage((int)Game.Content.gameEvents[ID].Value());
+								break;
 						}
 						Game.Content.gameEvents.RemoveAt(ID);
 					}

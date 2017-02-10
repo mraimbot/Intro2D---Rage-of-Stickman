@@ -159,17 +159,6 @@ namespace Rage_of_Stickman
 				}
 
 				// ----- Movement -----
-				// TODO Zombie.Logic() : take it into KI
-				//if (hit_left || hit_right)
-				//{
-				//	speed_force *= 0.25f;
-				//}
-
-				//if (hit_up || hit_down)
-				//{
-				//	jump_force *= 0.25f;
-				//}
-
 				if (move_timer.IsTimeUp())
 				{
 					move_timer.Reset();
@@ -195,28 +184,16 @@ namespace Rage_of_Stickman
 				}
 
 				// ----- Attacks -----
-				// TODO Zombie.Logic() : Zombie BRAAAAINN!!!
-				//if (can_Attack.IsTimeUp())
-				//{
-				//	if (move_attack)
-				//	{
-				//		if (rage > 0)
-				//		{
-				//			Vector2 attack_force = (direction == EPlayerDirection.Right) ? (new Vector2(50, -20)) : (new Vector2(-50, -20));
-				//			Rectangle attack_range = (direction == EPlayerDirection.Right) ? (new Rectangle((int)(position.X + size.X / 2), (int)(position.Y), (int)size.X, (int)size.Y / 2)) : (new Rectangle((int)(position.X - size.X / 2), (int)(position.Y), (int)size.X, (int)(size.Y / 2)));
-				//			punched = Attack(Game.Content.enemies, attack_range, 1, attack_force);
-				//			if (punched)
-				//			{
-				//				rage--;
-				//			}
-				//			can_Attack.Reset(0.5f);
-				//		}
-				//		else
-				//		{
-				//			isClaiming = true;
-				//		}
-				//	}
-				//}
+				if (can_Attack.IsTimeUp())
+				{
+					if (move_attack)
+					{
+						Vector2 attack_force = (direction == EEnemyDirection.Right) ? (new Vector2(50, -20)) : (new Vector2(-50, -20));
+						Rectangle attack_range = (direction == EEnemyDirection.Right) ? (new Rectangle((int)(position.X + size.X / 2), (int)(position.Y), (int)size.X, (int)size.Y / 2)) : (new Rectangle((int)(position.X - size.X / 2), (int)(position.Y), (int)size.X, (int)(size.Y / 2)));
+						attacked = Attack(new List<Entity> { target }, attack_range, 15, attack_force);
+						can_Attack.Reset(3);
+					}
+				}
 			}
 		}
 

@@ -136,10 +136,12 @@ namespace Rage_of_Stickman
 
 		NewBackground,
 		TogglePause,
+		Gameover,
 
 		ShowMessagebox,
 
 		Player_Heal,
+		Player_Rage,
 
 		Game_Exit
 	}

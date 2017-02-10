@@ -257,6 +257,16 @@ namespace Rage_of_Stickman
 					health = health_max;
 				}
 
+				// ----- Rage -----
+				if (rage > 100)
+				{
+					rage = 100;
+				}
+				else if (rage < 0)
+				{
+					rage = 0;
+				}
+
 				// ----- Movement -----
 				if (!move_left && !move_right)
 				{
@@ -311,7 +321,6 @@ namespace Rage_of_Stickman
 				Impulse(new Vector2(speed_force, 0));
 
 				// ----- Jump -----
-				// TODO Player.Logic() : Adjust playerjump
 				if (isGrounded)
 				{
 					jumping = false;
@@ -360,7 +369,7 @@ namespace Rage_of_Stickman
 						if (rage > 0)
 						{
 							// TODO Player.Logic() : attack_force for punch
-							Vector2 attack_force = (direction == EPlayerDirection.Right) ? (new Vector2(5000, -400)) : (new Vector2(-5000, -400));
+							Vector2 attack_force = (direction == EPlayerDirection.Right) ? (new Vector2(2000, -400)) : (new Vector2(-2000, -400));
 							Rectangle attack_range = (direction == EPlayerDirection.Right) ? (new Rectangle((int)(position.X + size.X / 2), (int)(position.Y), (int)size.X, (int)size.Y / 2)) : (new Rectangle((int)(position.X - size.X / 2), (int)(position.Y), (int)size.X , (int)(size.Y / 2)));
 							punched = Attack(Game.Content.enemies, attack_range, 1, attack_force);
 							if (punched)
@@ -380,7 +389,7 @@ namespace Rage_of_Stickman
 						if (rage > 2)
 						{
 							// TODO Player.Logic() : attack_force for kick
-							Vector2 attack_force = (direction == EPlayerDirection.Right) ? (new Vector2(2500, -400)) : (new Vector2(-2500, -400));
+							Vector2 attack_force = (direction == EPlayerDirection.Right) ? (new Vector2(2000, -400)) : (new Vector2(-2000, -400));
 							Rectangle attack_range = (direction == EPlayerDirection.Right) ? (new Rectangle((int)(position.X + size.X / 2), (int)(position.Y + size.Y / 2), (int)size.X, (int)size.Y / 2)) : (new Rectangle((int)(position.X - size.X / 2), (int)(position.Y + size.Y / 2), (int)size.X, (int)(size.Y / 2)));
 							kicked = Attack(Game.Content.enemies, attack_range, 5, attack_force);
 							if (kicked)
@@ -407,6 +416,10 @@ namespace Rage_of_Stickman
 						gotHurt = false;
 					}
 				}
+			}
+			else
+			{
+				Game.Content.gameEvents.Add(new GameEvent(ETarget.Scene, EGameEvent.Gameover));
 			}
 		}
 
@@ -460,6 +473,11 @@ namespace Rage_of_Stickman
 			}
 
 			return hitTarget;
+		}
+
+		public void Rage(int rage)
+		{
+			this.rage += rage;
 		}
 
 		public override void Draw()

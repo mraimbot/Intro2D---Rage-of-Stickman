@@ -20,8 +20,10 @@ namespace Rage_of_Stickman
 		private List<SceneComponent> components;
 
 		private Messagebox messagebox;
+		private Window window_gameover;
 		private Window window_paused;
 
+		private bool isGameover;
 		private bool isPaused;
 		private bool ShowMessagebox;
 
@@ -33,6 +35,7 @@ namespace Rage_of_Stickman
 
 		public void Initialize()
 		{
+			isGameover = false;
 			isPaused = false;
 			ShowMessagebox = false;
 		}
@@ -55,6 +58,10 @@ namespace Rage_of_Stickman
 
 							case EGameEvent.TogglePause:
 								isPaused = !isPaused;
+								break;
+
+							case EGameEvent.Gameover:
+								isGameover = true;
 								break;
 						}
 						Game.Content.gameEvents.RemoveAt(ID);
@@ -84,7 +91,17 @@ namespace Rage_of_Stickman
 				}
 			}
 
-			if (isPaused && !ShowMessagebox)
+			if (isGameover)
+			{
+				if (window_gameover == null)
+				{
+					window_gameover = CreateGameoverWindow();
+				}
+				window_gameover.MoveTo(new Vector2(Game.Content.camera.Position().X - 100, Game.Content.camera.Position().Y - 200));
+				window_gameover.Update(false);
+			}
+
+			else if (isPaused && !ShowMessagebox)
 			{
 				if (window_paused == null)
 				{
@@ -140,12 +157,17 @@ namespace Rage_of_Stickman
 				}
 			}
 
-			if (ShowMessagebox && messagebox != null)
+			if (isGameover && window_gameover != null)
+			{
+				window_gameover.Draw();
+			}
+
+			else if (ShowMessagebox && messagebox != null)
 			{
 				messagebox.Draw();
 			}
 
-			if (isPaused && !ShowMessagebox)
+			else if (isPaused && !ShowMessagebox)
 			{
 				window_paused.Draw();
 			}
@@ -156,6 +178,15 @@ namespace Rage_of_Stickman
 			List<WindowComponent> window_components = new List<WindowComponent>();
 			window_components.Add(new WindowText(true, new GameEvent(ETarget.Scene, EGameEvent.TogglePause), "Continue", Color.Red, Color.Green, new Vector2(100, 32), ETextAlign.Center));
 			window_components.Add(new WindowText(true, new GameEvent(ETarget.Main, EGameEvent.Open_Mainmenu), "Back to Menu", Color.Red, Color.Green, new Vector2(100, 64), ETextAlign.Center));
+			return new Window(window_components, null, new Color(16, 0, 0, 16), new Vector2(Game.Content.camera.Position().X - 100, Game.Content.camera.Position().Y - 100), new Vector2(200, 128));
+		}
+
+		public static Window CreateGameoverWindow()
+		{
+			List<WindowComponent> window_components = new List<WindowComponent>();
+			window_components.Add(new WindowText(false, null, "Game Over", Color.Red, Color.Green, new Vector2(100, 32), ETextAlign.Center));
+			window_components.Add(new WindowText(false, null, "You are dead!", Color.Red, Color.Green, new Vector2(100, 64), ETextAlign.Center));
+			window_components.Add(new WindowText(true, new GameEvent(ETarget.Main, EGameEvent.Open_Mainmenu), "Back to Menu", Color.Red, Color.Green, new Vector2(100, 96), ETextAlign.Center));
 			return new Window(window_components, null, new Color(16, 0, 0, 16), new Vector2(Game.Content.camera.Position().X - 100, Game.Content.camera.Position().Y - 100), new Vector2(200, 128));
 		}
 

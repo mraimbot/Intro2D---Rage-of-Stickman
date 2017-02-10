@@ -83,6 +83,7 @@ namespace Rage_of_Stickman
 			position = position_start;
 			health = health_max;
 			can_Jump.Reset();
+			can_Attack.Reset(0.1f);
 		}
 
 		public override void Update(bool isPaused)
@@ -179,6 +180,43 @@ namespace Rage_of_Stickman
 			{
 				sound_attack.Play(1, RandomGenerator.NextFloat(min: -0.2f, max: 0.2f), 0);
 			}
+		}
+
+		protected bool Attack(List<Entity> targets, Rectangle attack_range, int damage, Vector2 attack_force)
+		{
+			bool hitTarget = false;
+
+			foreach (Entity target in targets)
+			{
+				if (attack_range.Intersects(new Rectangle((int)target.Position().X, (int)target.Position().Y, (int)target.Size().X, (int)target.Size().Y)))
+				{
+					target.Damage(damage);
+					target.Impulse(attack_force);
+					hitTarget = true;
+				}
+			}
+
+			return hitTarget;
+		}
+
+		protected bool Annoy(List<Entity> targets, Rectangle attack_range, int damage, Vector2 attack_force)
+		{
+			bool hitTarget = false;
+
+			foreach (Entity target in targets)
+			{
+				if (attack_range.Intersects(new Rectangle((int)target.Position().X, (int)target.Position().Y, (int)target.Size().X, (int)target.Size().Y)))
+				{
+					if (target is Player)
+					{
+						(target as Player).Rage(damage);
+					}
+					target.Impulse(attack_force);
+					hitTarget = true;
+				}
+			}
+
+			return hitTarget;
 		}
 	}
 }
